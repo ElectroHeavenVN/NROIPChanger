@@ -1,4 +1,3 @@
-
 #include "../Menu/Jni.hpp"
 #include "../Menu/Menu.hpp"
 #include "../Includes/Utils.hpp"
@@ -6,12 +5,13 @@
 
 void Init(JNIEnv *env, jobject thiz, jobject ctx, jobject title, jobject subtitle) {
     //Set sub title
-    setText(env, title, "<b>NROIPChanger</b>");
+    setText(env, title, "<b>NROIPChanger v1.0.0</b>");
 
     //Set sub title
     setText(env, subtitle, "<b><marquee><p style=\"font-size:30\">"
         "<p style=\"color:green;\">Created by ElectroHeavenVN - Template from LGL</p> | "
-        "https://github.com/ElectroHeavenVN/NROIPChanger</p>"
+        "https://github.com/ElectroHeavenVN/NROIPChanger</p> | "
+        "<p style=\"color:red;\">Do not install from other sources!</p>"
         "</marquee></b>");
 
     //Dialog Example
