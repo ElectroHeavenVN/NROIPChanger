@@ -1,0 +1,134 @@
+name: Build solution and publish Nightly release 
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - NROIPChanger*/**
+      - NROIPChanger.sln
+permissions:
+  contents: write
+  actions: write
+jobs:
+  build-nightly:
+    name: Build solution and Android project (${{ matrix.configuration }})
+    runs-on: windows-latest
+    strategy:
+      matrix:
+        configuration: [Debug, Release]
+    env:
+      SolutionName: NROIPChanger.sln
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup MSBuild
+        uses: microsoft/setup-msbuild@v2
+
+      - name: Setup NuGet
+        uses: nuget/setup-nuget@v2
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'adopt'
+          java-version: '17'
+
+      - name: Restore solution
+        run: |
+          msbuild $env:SolutionName /t:Restore /p:Configuration=${{ matrix.configuration }} /p:Platform="x86"
+          msbuild $env:SolutionName /t:Restore /p:Configuration=${{ matrix.configuration }} /p:Platform="x64"
+          msbuild $env:SolutionName /t:Restore /p:Configuration=${{ matrix.configuration }} /p:Platform="ARM32"
+          msbuild $env:SolutionName /t:Restore /p:Configuration=${{ matrix.configuration }} /p:Platform="ARM64"
+
+      - name: Restore NuGet Packages
+        run: nuget restore $env:SolutionName
+
+      - name: Build solution
+        run: |
+          msbuild $env:SolutionName /t:rebuild /p:Configuration=${{ matrix.configuration }} /p:Platform="x86"
+          msbuild $env:SolutionName /t:rebuild /p:Configuration=${{ matrix.configuration }} /p:Platform="x64"
+          msbuild $env:SolutionName /t:rebuild /p:Configuration=${{ matrix.configuration }} /p:Platform="ARM32"
+          msbuild $env:SolutionName /t:rebuild /p:Configuration=${{ matrix.configuration }} /p:Platform="ARM64"
+
+      - name: Build Android project
+        run: |
+          cd NROIPChanger.IL2CPP.Android\Java
+          ./gradlew.bat assemble${{ matrix.configuration }}
+
+      - name: Decompile APK file and copy Smali folder to output
+        run: |
+          curl -L -o apktool.jar https://bitbucket.org/iBotPeaches/apktool/downloads/apktool_2.10.0.jar
+          New-Item -ItemType Directory -Path Decompile -Force
+          if ("${{ matrix.configuration }}" -eq "Release") {
+            java -jar apktool.jar d -f --only-main-classes -o Decompile NROIPChanger.IL2CPP.Android\Java\app\build\outputs\apk\release\app-release-unsigned.apk
+          } else {
+            java -jar apktool.jar d -f --only-main-classes -o Decompile NROIPChanger.IL2CPP.Android\Java\app\build\outputs\apk\debug\app-debug.apk
+          }
+          New-Item -ItemType Directory -Path Output/${{ matrix.configuration }}/Android/SmaliFULL -Force
+          Copy-Item -Path Decompile/smali/* -Destination Output/${{ matrix.configuration }}/Android/SmaliFULL -Recurse
+          $i = 2
+          while (Test-Path "Decompile/smali_classes$i") {
+            Copy-Item -Path "Decompile/smali_classes$i/*" -Destination Output/${{ matrix.configuration }}/Android/SmaliFULL -Recurse -Force
+            $i++
+          }
+          Remove-Item Output/${{ matrix.configuration }}/Android/SmaliFULL* -Include R.smali -Recurse
+          Remove-Item Output/${{ matrix.configuration }}/Android/SmaliFULL* -Include R$*.smali -Recurse
+
+      - name: Delete unnecessary files
+        run: |
+          Remove-Item -Path Output/${{ matrix.configuration }}/Android/*.so.recipe -Force
+          Remove-Item -Path Output/${{ matrix.configuration }}/*.exp -Force -Recurse
+          Remove-Item -Path Output/${{ matrix.configuration }}/*.lib -Force -Recurse
+          Remove-Item -Path Output/${{ matrix.configuration }}/*.pdb -Force -Recurse
+
+      - name: Copy Smali folder
+        run: Copy-Item -Path NROIPChanger.IL2CPP.Android.Minimalistic/Smali -Destination Output/${{ matrix.configuration }}/Android/SmaliMIN -Recurse
+
+      - name: Upload build artifacts (Desktop, ${{ matrix.configuration }})
+        uses: actions/upload-artifact@v4
+        with:
+          name: NROIPChanger Desktop (${{ matrix.configuration }})
+          path: Output/${{ matrix.configuration }}/Desktop/*
+
+      - name: Upload build artifacts (Android, ${{ matrix.configuration }})
+        uses: actions/upload-artifact@v4
+        with:
+          name: NROIPChanger Android (${{ matrix.configuration }})
+          path: Output/${{ matrix.configuration }}/Android/*
+  
+  create-nightly-release:
+    name: Create Nightly release
+    runs-on: ubuntu-latest
+    needs: build-nightly
+    steps:
+      - name: Download build artifacts
+        uses: dawidd6/action-download-artifact@v7
+        with: 
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          workflow_search: false
+          workflow_conclusion: ""
+          skip_unpack: true
+      - name: Rename files 
+        run: |
+          mv "NROIPChanger Desktop (Debug).zip" NROIPChanger.Desktop.Debug.zip
+          mv "NROIPChanger Android (Debug).zip" NROIPChanger.Android.Debug.zip
+          mv "NROIPChanger Desktop (Release).zip" NROIPChanger.Desktop.Release.zip
+          mv "NROIPChanger Android (Release).zip" NROIPChanger.Android.Release.zip
+      - name: Create Nightly release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            NROIPChanger.Desktop.Debug.zip
+            NROIPChanger.Android.Debug.zip
+            NROIPChanger.Desktop.Release.zip
+            NROIPChanger.Android.Release.zip
+          token: ${{ secrets.GITHUB_TOKEN }}
+          name: NROIPChanger Nightly
+          draft: false
+          prerelease: true
+          tag_name: Nightly
+          body: Bản phát hành này được tự động tạo từ mã nguồn mới nhất bằng GitHub Actions.

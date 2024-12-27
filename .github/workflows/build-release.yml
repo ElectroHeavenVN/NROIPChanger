@@ -1,0 +1,114 @@
+name: Build solution and publish release
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Tag name'
+        required: true
+      body:
+        description: 'Release notes'
+        required: true
+permissions:
+  contents: write
+
+jobs:
+  build-release:
+    name: Build solution and publish release
+    runs-on: windows-latest
+    env:
+      SolutionName: NROIPChanger.sln
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup MSBuild
+        uses: microsoft/setup-msbuild@v2
+
+      - name: Setup NuGet
+        uses: nuget/setup-nuget@v2
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'adopt'
+          java-version: '17'
+
+      - name: Restore solution
+        run: |
+          msbuild $env:SolutionName /t:Restore /p:Configuration=Release /p:Platform="x86"
+          msbuild $env:SolutionName /t:Restore /p:Configuration=Release /p:Platform="x64"
+          msbuild $env:SolutionName /t:Restore /p:Configuration=Release /p:Platform="ARM32"
+          msbuild $env:SolutionName /t:Restore /p:Configuration=Release /p:Platform="ARM64"
+
+      - name: Restore NuGet Packages
+        run: nuget restore $env:SolutionName
+
+      - name: Build solution
+        run: |
+          msbuild $env:SolutionName /t:rebuild /p:Configuration=Release /p:Platform="x86"
+          msbuild $env:SolutionName /t:rebuild /p:Configuration=Release /p:Platform="x64"
+          msbuild $env:SolutionName /t:rebuild /p:Configuration=Release /p:Platform="ARM32"
+          msbuild $env:SolutionName /t:rebuild /p:Configuration=Release /p:Platform="ARM64"
+
+      - name: Build Android project
+        run: |
+          cd NROIPChanger.IL2CPP.Android\Java
+          ./gradlew.bat assembleRelease
+
+      - name: Decompile APK file and copy Smali folder to output
+        run: |
+          curl -L -o apktool.jar https://bitbucket.org/iBotPeaches/apktool/downloads/apktool_2.10.0.jar
+          New-Item -ItemType Directory -Path Decompile -Force
+          java -jar apktool.jar d -f --only-main-classes -o Decompile NROIPChanger.IL2CPP.Android\Java\app\build\outputs\apk\release\app-release-unsigned.apk
+          New-Item -ItemType Directory -Path Output/Release/Android/SmaliFULL -Force
+          Copy-Item -Path Decompile/smali/* -Destination Output/Release/Android/SmaliFULL -Recurse
+          $i = 2
+          while (Test-Path "Decompile/smali_classes$i") {
+            Copy-Item -Path "Decompile/smali_classes$i/*" -Destination Output/Release/Android/SmaliFULL -Recurse -Force
+            $i++
+          }
+          Remove-Item Output/Release/Android/SmaliFULL* -Include R.smali -Recurse
+          Remove-Item Output/Release/Android/SmaliFULL* -Include R$*.smali -Recurse
+
+      - name: Delete unnecessary files
+        run: |
+          Remove-Item -Path Output/Release/Android/*.so.recipe -Force
+          Remove-Item -Path Output/Release/*.exp -Force -Recurse
+          Remove-Item -Path Output/Release/*.lib -Force -Recurse
+          Remove-Item -Path Output/Release/*.pdb -Force -Recurse
+
+      - name: Copy Smali folder
+        run: Copy-Item -Path NROIPChanger.IL2CPP.Android.Minimalistic/Smali -Destination Output/Release/Android/SmaliMIN -Recurse
+
+      - name: Upload build artifacts (Desktop)
+        uses: actions/upload-artifact@v4
+        with:
+          name: NROIPChanger Desktop
+          path: Output/Release/Desktop/*
+
+      - name: Upload build artifacts (Android)
+        uses: actions/upload-artifact@v4
+        with:
+          name: NROIPChanger Android
+          path: Output/Release/Android/*
+      
+      - name: Compress files (Desktop)
+        run: Compress-Archive -Path Output/Release/Desktop/* -DestinationPath "NROIPChanger Desktop.zip"
+
+      - name: Compress files (Android)
+        run: Compress-Archive -Path Output/Release/Android/* -DestinationPath "NROIPChanger Android.zip"
+
+      - name: Create release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            NROIPChanger Desktop.zip
+            NROIPChanger Android.zip
+          token: ${{ secrets.GITHUB_TOKEN }}
+          name: ${{ github.event.inputs.tag }}
+          draft: false
+          prerelease: false
+          tag_name: ${{ github.event.inputs.tag }}
+          body: ${{ github.event.inputs.body }}

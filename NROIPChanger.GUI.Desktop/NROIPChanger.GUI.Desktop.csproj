@@ -1,0 +1,33 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net9.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <UseWindowsForms>true</UseWindowsForms>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Platforms>AnyCPU</Platforms>
+    <ApplicationIcon>icon.ico</ApplicationIcon>   
+	<AssemblyTitle>Ứng dụng GUI của NROIPChanger</AssemblyTitle>
+	<AssemblyVersion>1.0.0.0</AssemblyVersion>
+	<AssemblyProduct>NROIPChanger</AssemblyProduct>
+	<Authors>ElectroHeavenVN (EHVN)</Authors>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DebugType>embedded</DebugType>
+  </PropertyGroup>
+
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="mkdir ..\Output\$(ConfigurationName)\Desktop\&#xD;&#xA;copy /y &quot;$(TargetDir)*&quot; ..\Output\$(ConfigurationName)\Desktop\" />
+  </Target>
+
+  <ItemGroup>
+    <Content Include="icon.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Properties\" />
+  </ItemGroup>
+
+</Project>
