@@ -130,5 +130,6 @@ jobs:
           name: NROIPChanger Nightly
           draft: false
           prerelease: true
+          make_latest: true
           tag_name: Nightly
           body: Bản phát hành này được tự động tạo từ mã nguồn mới nhất bằng GitHub Actions.
