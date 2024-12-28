@@ -5,7 +5,10 @@
 
 void Init(JNIEnv *env, jobject thiz, jobject ctx, jobject title, jobject subtitle) {
     //Set sub title
-    setText(env, title, "<b>NROIPChanger v1.0.0</b>");
+    if (strcmp(VERSION, "nightly") == 0)
+        setText(env, title, "<b>NROIPChanger Nightly</b>");
+    else 
+        setText(env, title, "<b>NROIPChanger v" VERSION "</b>");
 
     //Set sub title
     setText(env, subtitle, "<b><marquee><p style=\"font-size:30\">"

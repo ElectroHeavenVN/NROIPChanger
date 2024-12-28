@@ -15,9 +15,6 @@
 
 using namespace std;
 
-//#define LOGI(...) ((void)__android_log_print(ANDROID_LOG_INFO, "NROIPChanger", __VA_ARGS__))
-//#define LOGW(...) ((void)__android_log_print(ANDROID_LOG_WARN, "NROIPChanger", __VA_ARGS__))
-
 #if defined(__arm__)
 #define ABI "armeabi-v7a"
 #elif defined(__aarch64__)
@@ -35,7 +32,7 @@ extern "C" {
 	const char * NROIPChanger::getPlatformABI()
 	{
 		LOGI("This dynamic shared library is compiled with ABI: %s", ABI);
-		return "This native library is compiled with ABI: %s" ABI ".";
+		return "This native library is compiled with ABI: " ABI ".";
 	}
 
 	void NROIPChanger()
@@ -199,7 +196,11 @@ void Init(JNIEnv* env, jobject ctx)
 {
 	env->GetJavaVM(&jvm);
     LOGI("Package name: %s", ToStdString(env, GetPackageName(env, ctx)).c_str());
-    ShowToast("NROIPChanger v1.0.0 (" ABI ") by ElectroHeavenVN", ToastLength::LENGTH_LONG);
+	if (strcmp(VERSION, "nightly") == 0)
+        ShowToast("NROIPChanger Nightly (" ABI ") by ElectroHeavenVN", ToastLength::LENGTH_LONG);
+    else
+        ShowToast("NROIPChanger v" VERSION " (" ABI ") by ElectroHeavenVN", ToastLength::LENGTH_LONG);
+    ShowToast("NROIPChanger v" VERSION " (" ABI ") by ElectroHeavenVN", ToastLength::LENGTH_LONG);
     ShowToast("https://github.com/ElectroHeavenVN/NROIPChanger", ToastLength::LENGTH_LONG);
     ShowToast("Do not install from other sources!", ToastLength::LENGTH_SHORT);
     LoadHookAddressesFromResource(env, ctx);

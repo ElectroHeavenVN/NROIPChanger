@@ -57,19 +57,6 @@ static void ShowToastOnUIThread(JavaVM* jvm, jclass declaringType, std::string c
 	ShowToastOnUIThread(jvm, declaringType, content.c_str(), duration);
 }
 
-static void Toast(JNIEnv* env, jobject context, jstring text, int duration) {
-    jclass toast = env->FindClass("android/widget/Toast");
-    jmethodID methodMakeText = env->GetStaticMethodID(toast, "makeText", "(Landroid/content/Context;Ljava/lang/CharSequence;I)Landroid/widget/Toast;");
-    jobject toastobj = env->CallStaticObjectMethod(toast, methodMakeText, context, text, duration);
-    jmethodID methodShow = env->GetMethodID(toast, "show", "()V");
-    env->CallVoidMethod(toastobj, methodShow);
-}
-
-static void Toast(JNIEnv *env, jobject context, const char *text, int duration) {
-    jstring jstr = env->NewStringUTF(text);
-	Toast(env, context, jstr, duration);
-}
-
 static std::string ToStdString(JNIEnv *env, jstring jStr) {
     if (!jStr)
         return "";

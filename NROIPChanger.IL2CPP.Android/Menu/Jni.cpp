@@ -42,7 +42,7 @@ void setDialog(jobject ctx, JNIEnv *env, const char *title, const char *msg){
     env->CallVoidMethod(creaetob, show);
 }
 
-void _Toast(JNIEnv* env, jobject context, jstring text, int duration) {
+void Toast(JNIEnv* env, jobject context, jstring text, int duration) {
     jclass toast = env->FindClass("android/widget/Toast");
     jmethodID methodMakeText = env->GetStaticMethodID(toast, "makeText", "(Landroid/content/Context;Ljava/lang/CharSequence;I)Landroid/widget/Toast;");
     jobject toastobj = env->CallStaticObjectMethod(toast, methodMakeText, context, text, duration);
@@ -50,14 +50,14 @@ void _Toast(JNIEnv* env, jobject context, jstring text, int duration) {
     env->CallVoidMethod(toastobj, methodShow);
 }
 
-void _Toast(JNIEnv* env, jobject context, const char* text, int duration) {
+void Toast(JNIEnv* env, jobject context, const char* text, int duration) {
     jstring jstr = env->NewStringUTF(text);
-    _Toast(env, context, jstr, duration);
+    Toast(env, context, jstr, duration);
 }
 
-void _Toast(JNIEnv* env, jobject context, const wchar_t* text, int duration) {
+void Toast(JNIEnv* env, jobject context, const wchar_t* text, int duration) {
     jstring jstr = env->NewString((uint16_t*)text, wcslen(text));
-    _Toast(env, context, jstr, duration);
+    Toast(env, context, jstr, duration);
 }
 
 void startService(JNIEnv *env, jobject ctx){
@@ -123,8 +123,7 @@ void CheckOverlayPermission(JNIEnv *env, jclass thiz, jobject ctx){
 			jmethodID overlayNotificationMethod = env->GetStaticMethodID(strings, "overlayNotification", "()Ljava/lang/String;");
 			jstring overlayNotification = static_cast<jstring>(env->CallStaticObjectMethod(strings, overlayNotificationMethod));
 
-            _Toast(env, ctx, overlayNotification, 1);
-            //_Toast(env, ctx, overlayNotification, 1);
+            Toast(env, ctx, overlayNotification, 1);
             startActivityPermisson(env, ctx);
 
             pthread_t ptid;

@@ -8,6 +8,9 @@ on:
       body:
         description: 'Release notes'
         required: true
+      version:
+        description: 'Version (e.g. 1.0.0)'
+        required: true
 permissions:
   contents: write
 
@@ -17,6 +20,7 @@ jobs:
     runs-on: windows-latest
     env:
       SolutionName: NROIPChanger.sln
+      VERSION: ${{ github.event.inputs.version }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -37,20 +41,20 @@ jobs:
 
       - name: Restore solution
         run: |
-          msbuild $env:SolutionName /t:Restore /p:Configuration=Release /p:Platform="x86"
-          msbuild $env:SolutionName /t:Restore /p:Configuration=Release /p:Platform="x64"
-          msbuild $env:SolutionName /t:Restore /p:Configuration=Release /p:Platform="ARM32"
-          msbuild $env:SolutionName /t:Restore /p:Configuration=Release /p:Platform="ARM64"
+          msbuild $env:SolutionName /t:Restore /p:Configuration=Release /p:Platform="x86" /p:Version=${{ env.VERSION }}.0
+          msbuild $env:SolutionName /t:Restore /p:Configuration=Release /p:Platform="x64" /p:Version=${{ env.VERSION }}.0
+          msbuild $env:SolutionName /t:Restore /p:Configuration=Release /p:Platform="ARM32" /p:Version=${{ env.VERSION }}.0
+          msbuild $env:SolutionName /t:Restore /p:Configuration=Release /p:Platform="ARM64" /p:Version=${{ env.VERSION }}.0
 
       - name: Restore NuGet Packages
         run: nuget restore $env:SolutionName
 
       - name: Build solution
         run: |
-          msbuild $env:SolutionName /t:rebuild /p:Configuration=Release /p:Platform="x86"
-          msbuild $env:SolutionName /t:rebuild /p:Configuration=Release /p:Platform="x64"
-          msbuild $env:SolutionName /t:rebuild /p:Configuration=Release /p:Platform="ARM32"
-          msbuild $env:SolutionName /t:rebuild /p:Configuration=Release /p:Platform="ARM64"
+          msbuild $env:SolutionName /t:rebuild /p:Configuration=Release /p:Platform="x86" /p:Version=${{ env.VERSION }}.0
+          msbuild $env:SolutionName /t:rebuild /p:Configuration=Release /p:Platform="x64" /p:Version=${{ env.VERSION }}.0
+          msbuild $env:SolutionName /t:rebuild /p:Configuration=Release /p:Platform="ARM32" /p:Version=${{ env.VERSION }}.0
+          msbuild $env:SolutionName /t:rebuild /p:Configuration=Release /p:Platform="ARM64" /p:Version=${{ env.VERSION }}.0
 
       - name: Build Android project
         run: |

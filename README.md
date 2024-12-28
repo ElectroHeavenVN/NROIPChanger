@@ -17,6 +17,7 @@ Cài đặt trên Windows tương đối đơn giản. [Nhấn vào đây](./Doc
 Cài đặt trên Android yêu cầu bạn hiểu biết về cấu trúc tệp APK và cách sửa đổi tệp APK. [Nhấn vào đây](./Docs/Installation-Android.md) để xem hướng dẫn chi tiết.
 ## Biên dịch
 - Clone repo này bằng [git](https://git-scm.com/) hoặc [GitHub Desktop](https://github.com/apps/desktop).
+- Tạo 1 biến môi trường `VERSION` chứa phiên bản hoặc `nightly`.
 - Sử dụng [Visual Studio](https://visualstudio.microsoft.com/vs/) để biên dịch mã nguồn C++ và C#.
 - Sử dụng [Android Studio](https://developer.android.com/studio) để biên dịch mã nguồn Java.
 ## Giấy phép

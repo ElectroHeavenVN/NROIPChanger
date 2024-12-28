@@ -27,14 +27,6 @@
 
 using namespace std;
 
-//#if defined(__aarch64__)
-//#define HOOKCCV __fastcall
-//#elif defined(__arm__)
-//#define HOOKCCV __fastcall
-//#endif
-#define HOOKCCV
-#define targetLibName "libil2cpp.so"
-
 #if defined(__arm__)
 #define ABI "armeabi-v7a"
 #elif defined(__aarch64__)
@@ -47,15 +39,12 @@ using namespace std;
 #define ABI "unknown"
 #endif
 
-//#define LOGI(...) ((void)__android_log_print(ANDROID_LOG_INFO, "NROIPChanger", __VA_ARGS__))
-//#define LOGW(...) ((void)__android_log_print(ANDROID_LOG_WARN, "NROIPChanger", __VA_ARGS__))
-
 extern "C" {
 	/* This trivial function returns the platform ABI for which this dynamic native library is compiled.*/
 	const char* NROIPChanger::getPlatformABI()
 	{
 		LOGI("This dynamic shared library is compiled with ABI: %s", ABI);
-		return "This native library is compiled with ABI: %s" ABI ".";
+		return "This native library is compiled with ABI: " ABI ".";
 	}
 
 	void NROIPChanger()
@@ -70,6 +59,14 @@ extern "C" {
 	{
 	}
 }
+
+//#if defined(__aarch64__)
+//#define HOOKCCV __fastcall
+//#elif defined(__arm__)
+//#define HOOKCCV __fastcall
+//#endif
+#define HOOKCCV
+#define targetLibName "libil2cpp.so"
 
 static jclass utilsClass;
 static JavaVM* jvm;
@@ -127,7 +124,7 @@ static bool ChangeIP(System_Net_Sockets_TcpClient_o* _this, System_String_o* hos
 	string s_hostname = GetStdStr(hostname);
 	string originalIPAddr = s_hostname + ":" + to_string(port);
 	regex privateIPPattern(R"((^10\.)|(^172\.(1[6-9]|2[0-9]|3[0-1])\.)|(^192\.168\.))");
-	if (!enabled || customIP.empty() || !hasCreateStringUTF8 || !hasCreateStringUTF16 || regex_match(s_hostname, privateIPPattern))
+	if (!enabled || customIP.empty() || customPort < 0 || !hasCreateStringUTF8 || !hasCreateStringUTF16 || regex_match(s_hostname, privateIPPattern))
 	{
 		ShowToast(originalIPAddr, ToastLength::LENGTH_SHORT);
 		return false;
@@ -161,7 +158,8 @@ void Changes(JNIEnv* env, jclass clazz, jobject obj, jint featNum, jstring featN
 			customIP = ToStdString(env, text);
 			break;
 		case 4: //custom port
-			customPort = value;
+			if (value > 0)
+				customPort = value;
 			break;
 		case 5: //  System_String__CreateString_utf8 address
 			if (AssignCreateStringUTF8(ToStdString(env, text)))
@@ -203,7 +201,10 @@ static void* Initialize(void*)
 	}
 	//InstallHooks();	//Hooks will be installed from the Changes function
 	LOGI("Initialization complete.");
-	ShowToast("NROIPChanger v1.0.0 (" ABI ") by ElectroHeavenVN", ToastLength::LENGTH_SHORT);
+	if (strcmp(VERSION, "nightly") == 0)
+		ShowToast("NROIPChanger Nightly (" ABI ") by ElectroHeavenVN", ToastLength::LENGTH_LONG);
+	else
+		ShowToast("NROIPChanger v" VERSION " (" ABI ") by ElectroHeavenVN", ToastLength::LENGTH_LONG);
 	ShowToast("https://github.com/ElectroHeavenVN/NROIPChanger", ToastLength::LENGTH_LONG);
 	ShowToast("Do not install from other sources!", ToastLength::LENGTH_SHORT);
 	return nullptr;

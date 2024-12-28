@@ -40,6 +40,10 @@ static void Main()
     if (debugMode)
     {
         AllocConsole();
+        if (strcmp(VERSION, "nightly") == 0)
+		    SetConsoleTitle(L"NROIPChanger Nightly - debug console");
+        else 
+			SetConsoleTitle(L"NROIPChanger v" VERSION " - debug console");
         freopen("CONOUT$", "w", stdout);
         freopen("CONOUT$", "w", stderr);
         logDebug("Debug mode enabled! Log messages will be displayed here.");

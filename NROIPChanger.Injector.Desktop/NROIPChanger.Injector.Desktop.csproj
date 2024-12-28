@@ -11,7 +11,7 @@
     <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
-    <Deterministic>true</Deterministic>
+    <Deterministic>false</Deterministic>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
     <DebugSymbols>true</DebugSymbols>
@@ -94,5 +94,9 @@ xcopy /y "$(TargetDir)" "$(SolutionDir)Output\$(ConfigurationName)\Desktop\Injec
 move "$(SolutionDir)Output\$(ConfigurationName)\Desktop\Injector\$(TargetName).exe" "$(SolutionDir)Output\$(ConfigurationName)\Desktop\Injector\$(TargetName).$(PlatformName).exe"
 move "$(SolutionDir)Output\$(ConfigurationName)\Desktop\Injector\$(TargetName).exe.config" "$(SolutionDir)Output\$(ConfigurationName)\Desktop\Injector\$(TargetName).$(PlatformName).exe.config"
 move "$(SolutionDir)Output\$(ConfigurationName)\Desktop\Injector\$(TargetName).pdb" "$(SolutionDir)Output\$(ConfigurationName)\Desktop\Injector\$(TargetName).$(PlatformName).pdb" || set errorlevel=0</PostBuildEvent>
+  </PropertyGroup>
+  <PropertyGroup>
+    <PreBuildEvent>cd "$(ProjectDir)"
+powershell -File "$(SolutionDir)SetVersion.ps1"</PreBuildEvent>
   </PropertyGroup>
 </Project>

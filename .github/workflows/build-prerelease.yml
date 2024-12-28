@@ -19,6 +19,7 @@ jobs:
         configuration: [Debug, Release]
     env:
       SolutionName: NROIPChanger.sln
+      VERSION: nightly
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -39,20 +40,20 @@ jobs:
 
       - name: Restore solution
         run: |
-          msbuild $env:SolutionName /t:Restore /p:Configuration=${{ matrix.configuration }} /p:Platform="x86"
-          msbuild $env:SolutionName /t:Restore /p:Configuration=${{ matrix.configuration }} /p:Platform="x64"
-          msbuild $env:SolutionName /t:Restore /p:Configuration=${{ matrix.configuration }} /p:Platform="ARM32"
-          msbuild $env:SolutionName /t:Restore /p:Configuration=${{ matrix.configuration }} /p:Platform="ARM64"
+          msbuild $env:SolutionName /t:Restore /p:Configuration=${{ matrix.configuration }} /p:Platform="x86" /p:AssemblyVersion=0.0.0.0 /p:Version=0.0.0-${{ env.VERSION }}
+          msbuild $env:SolutionName /t:Restore /p:Configuration=${{ matrix.configuration }} /p:Platform="x64" /p:AssemblyVersion=0.0.0.0 /p:Version=0.0.0-${{ env.VERSION }}
+          msbuild $env:SolutionName /t:Restore /p:Configuration=${{ matrix.configuration }} /p:Platform="ARM32" /p:AssemblyVersion=0.0.0.0 /p:Version=0.0.0-${{ env.VERSION }}
+          msbuild $env:SolutionName /t:Restore /p:Configuration=${{ matrix.configuration }} /p:Platform="ARM64" /p:AssemblyVersion=0.0.0.0 /p:Version=0.0.0-${{ env.VERSION }}
 
       - name: Restore NuGet Packages
         run: nuget restore $env:SolutionName
 
       - name: Build solution
         run: |
-          msbuild $env:SolutionName /t:rebuild /p:Configuration=${{ matrix.configuration }} /p:Platform="x86"
-          msbuild $env:SolutionName /t:rebuild /p:Configuration=${{ matrix.configuration }} /p:Platform="x64"
-          msbuild $env:SolutionName /t:rebuild /p:Configuration=${{ matrix.configuration }} /p:Platform="ARM32"
-          msbuild $env:SolutionName /t:rebuild /p:Configuration=${{ matrix.configuration }} /p:Platform="ARM64"
+          msbuild $env:SolutionName /t:rebuild /p:Configuration=${{ matrix.configuration }} /p:Platform="x86" /p:AssemblyVersion=0.0.0.0 /p:Version=0.0.0-${{ env.VERSION }}
+          msbuild $env:SolutionName /t:rebuild /p:Configuration=${{ matrix.configuration }} /p:Platform="x64" /p:AssemblyVersion=0.0.0.0 /p:Version=0.0.0-${{ env.VERSION }}
+          msbuild $env:SolutionName /t:rebuild /p:Configuration=${{ matrix.configuration }} /p:Platform="ARM32" /p:AssemblyVersion=0.0.0.0 /p:Version=0.0.0-${{ env.VERSION }}
+          msbuild $env:SolutionName /t:rebuild /p:Configuration=${{ matrix.configuration }} /p:Platform="ARM64" /p:AssemblyVersion=0.0.0.0 /p:Version=0.0.0-${{ env.VERSION }}
 
       - name: Build Android project
         run: |
