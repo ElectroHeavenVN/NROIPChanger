@@ -20,46 +20,45 @@ jobs:
     env:
       SolutionName: NROIPChanger.sln
       VERSION: nightly
+      CacheKey: nightly-${{ matrix.configuration }}
     steps:
+      - name: Restore cache
+        id: cache-restore
+        uses: actions/cache@v4
+        with:
+          path: ./
+          key: ${{ env.CacheKey }}
       - name: Checkout
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-
       - name: Setup MSBuild
         uses: microsoft/setup-msbuild@v2
-
       - name: Setup NuGet
         uses: nuget/setup-nuget@v2
-
       - name: Set up Java
         uses: actions/setup-java@v4
         with:
           distribution: 'adopt'
           java-version: '17'
-
       - name: Restore solution
         run: |
           msbuild $env:SolutionName /t:Restore /p:Configuration=${{ matrix.configuration }} /p:Platform="x86" /p:AssemblyVersion=0.0.0.0 /p:Version=0.0.0-${{ env.VERSION }}
           msbuild $env:SolutionName /t:Restore /p:Configuration=${{ matrix.configuration }} /p:Platform="x64" /p:AssemblyVersion=0.0.0.0 /p:Version=0.0.0-${{ env.VERSION }}
           msbuild $env:SolutionName /t:Restore /p:Configuration=${{ matrix.configuration }} /p:Platform="ARM32" /p:AssemblyVersion=0.0.0.0 /p:Version=0.0.0-${{ env.VERSION }}
           msbuild $env:SolutionName /t:Restore /p:Configuration=${{ matrix.configuration }} /p:Platform="ARM64" /p:AssemblyVersion=0.0.0.0 /p:Version=0.0.0-${{ env.VERSION }}
-
       - name: Restore NuGet Packages
         run: nuget restore $env:SolutionName
-
       - name: Build solution
         run: |
           msbuild $env:SolutionName /t:rebuild /p:Configuration=${{ matrix.configuration }} /p:Platform="x86" /p:AssemblyVersion=0.0.0.0 /p:Version=0.0.0-${{ env.VERSION }}
           msbuild $env:SolutionName /t:rebuild /p:Configuration=${{ matrix.configuration }} /p:Platform="x64" /p:AssemblyVersion=0.0.0.0 /p:Version=0.0.0-${{ env.VERSION }}
           msbuild $env:SolutionName /t:rebuild /p:Configuration=${{ matrix.configuration }} /p:Platform="ARM32" /p:AssemblyVersion=0.0.0.0 /p:Version=0.0.0-${{ env.VERSION }}
           msbuild $env:SolutionName /t:rebuild /p:Configuration=${{ matrix.configuration }} /p:Platform="ARM64" /p:AssemblyVersion=0.0.0.0 /p:Version=0.0.0-${{ env.VERSION }}
-
       - name: Build Android project
         run: |
           cd NROIPChanger.IL2CPP.Android\Java
           ./gradlew.bat assemble${{ matrix.configuration }}
-
       - name: Decompile APK file and copy Smali folder to output
         run: |
           curl -L -o apktool.jar https://bitbucket.org/iBotPeaches/apktool/downloads/apktool_2.10.0.jar
@@ -78,28 +77,40 @@ jobs:
           }
           Remove-Item Output/${{ matrix.configuration }}/Android/SmaliFULL* -Include R.smali -Recurse
           Remove-Item Output/${{ matrix.configuration }}/Android/SmaliFULL* -Include R$*.smali -Recurse
-
       - name: Delete unnecessary files
         run: |
           Remove-Item -Path Output/${{ matrix.configuration }}/Android/*.so.recipe -Force
           Remove-Item -Path Output/${{ matrix.configuration }}/*.exp -Force -Recurse
           Remove-Item -Path Output/${{ matrix.configuration }}/*.lib -Force -Recurse
           Remove-Item -Path Output/${{ matrix.configuration }}/*.pdb -Force -Recurse
-
       - name: Copy Smali folder
         run: Copy-Item -Path NROIPChanger.IL2CPP.Android.Minimalistic/Smali -Destination Output/${{ matrix.configuration }}/Android/SmaliMIN -Recurse
-
       - name: Upload build artifacts (Desktop, ${{ matrix.configuration }})
         uses: actions/upload-artifact@v4
         with:
           name: NROIPChanger Desktop (${{ matrix.configuration }})
           path: Output/${{ matrix.configuration }}/Desktop/*
-
       - name: Upload build artifacts (Android, ${{ matrix.configuration }})
         uses: actions/upload-artifact@v4
         with:
           name: NROIPChanger Android (${{ matrix.configuration }})
           path: Output/${{ matrix.configuration }}/Android/*
+      - name: Delete files
+        run: |
+          Remove-Item -Path Output -Force -Recurse
+          Remove-Item -Path Decompile -Force -Recurse
+      - name: Delete old cache
+        if: ${{ steps.cache-restore.outputs.cache-hit }}
+        continue-on-error: true
+        run: |
+          gh cache delete "${{ env.CacheKey }}" --repo ${{ github.repository }}
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Save cache
+        uses: actions/cache/save@v4
+        with: 
+          path: ./
+          key: ${{ env.CacheKey }}
   
   create-nightly-release:
     name: Create Nightly release
