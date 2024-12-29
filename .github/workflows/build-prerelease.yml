@@ -28,7 +28,7 @@ jobs:
           fetch-depth: 1
       - name: Restore cache
         id: cache-restore
-        uses: actions/cache@v4
+        uses: actions/cache/restore@v4
         with:
           path: ./
           key: ${{ env.CacheKey }}
@@ -133,7 +133,7 @@ jobs:
         with: 
           path: Cache
           key: ${{ env.CacheKey }}
-  
+
   create-nightly-release:
     name: Create Nightly release
     runs-on: ubuntu-latest

@@ -21,46 +21,45 @@ jobs:
     env:
       SolutionName: NROIPChanger.sln
       VERSION: ${{ github.event.inputs.version }}
+      CacheKey: Release
     steps:
       - name: Checkout
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-
+      - name: Restore cache
+        id: cache-restore
+        uses: actions/cache/restore@v4
+        with:
+          path: ./
+          key: ${{ env.CacheKey }}
       - name: Setup MSBuild
         uses: microsoft/setup-msbuild@v2
-
       - name: Setup NuGet
         uses: nuget/setup-nuget@v2
-
       - name: Set up Java
         uses: actions/setup-java@v4
         with:
           distribution: 'adopt'
           java-version: '17'
-
       - name: Restore solution
         run: |
           msbuild $env:SolutionName /t:Restore /p:Configuration=Release /p:Platform="x86" /p:Version=${{ env.VERSION }}.0
           msbuild $env:SolutionName /t:Restore /p:Configuration=Release /p:Platform="x64" /p:Version=${{ env.VERSION }}.0
           msbuild $env:SolutionName /t:Restore /p:Configuration=Release /p:Platform="ARM32" /p:Version=${{ env.VERSION }}.0
           msbuild $env:SolutionName /t:Restore /p:Configuration=Release /p:Platform="ARM64" /p:Version=${{ env.VERSION }}.0
-
       - name: Restore NuGet Packages
         run: nuget restore $env:SolutionName
-
       - name: Build solution
         run: |
           msbuild $env:SolutionName /t:rebuild /p:Configuration=Release /p:Platform="x86" /p:Version=${{ env.VERSION }}.0
           msbuild $env:SolutionName /t:rebuild /p:Configuration=Release /p:Platform="x64" /p:Version=${{ env.VERSION }}.0
           msbuild $env:SolutionName /t:rebuild /p:Configuration=Release /p:Platform="ARM32" /p:Version=${{ env.VERSION }}.0
           msbuild $env:SolutionName /t:rebuild /p:Configuration=Release /p:Platform="ARM64" /p:Version=${{ env.VERSION }}.0
-
       - name: Build Android project
         run: |
           cd NROIPChanger.IL2CPP.Android\Java
           ./gradlew.bat assembleRelease
-
       - name: Decompile APK file and copy Smali folder to output
         run: |
           curl -L -o apktool.jar https://bitbucket.org/iBotPeaches/apktool/downloads/apktool_2.10.0.jar
@@ -75,35 +74,28 @@ jobs:
           }
           Remove-Item Output/Release/Android/SmaliFULL* -Include R.smali -Recurse
           Remove-Item Output/Release/Android/SmaliFULL* -Include R$*.smali -Recurse
-
       - name: Delete unnecessary files
         run: |
           Remove-Item -Path Output/Release/Android/*.so.recipe -Force
           Remove-Item -Path Output/Release/*.exp -Force -Recurse
           Remove-Item -Path Output/Release/*.lib -Force -Recurse
           Remove-Item -Path Output/Release/*.pdb -Force -Recurse
-
       - name: Copy Smali folder
         run: Copy-Item -Path NROIPChanger.IL2CPP.Android.Minimalistic/Smali -Destination Output/Release/Android/SmaliMIN -Recurse
-
       - name: Upload build artifacts (Desktop)
         uses: actions/upload-artifact@v4
         with:
           name: NROIPChanger Desktop
           path: Output/Release/Desktop/*
-
       - name: Upload build artifacts (Android)
         uses: actions/upload-artifact@v4
         with:
           name: NROIPChanger Android
           path: Output/Release/Android/*
-      
       - name: Compress files (Desktop)
         run: Compress-Archive -Path Output/Release/Desktop/* -DestinationPath "NROIPChanger Desktop.zip"
-
       - name: Compress files (Android)
         run: Compress-Archive -Path Output/Release/Android/* -DestinationPath "NROIPChanger Android.zip"
-
       - name: Create release
         uses: softprops/action-gh-release@v2
         with:
@@ -116,3 +108,43 @@ jobs:
           prerelease: false
           tag_name: ${{ github.event.inputs.tag }}
           body: ${{ github.event.inputs.body }}
+      - name: Delete and move files
+        run: |
+          Remove-Item -Path "NROIPChanger Desktop.zip" -Force
+          Remove-Item -Path "NROIPChanger Android.zip" -Force
+          Remove-Item -Path Output -Force -Recurse
+          Remove-Item -Path Decompile -Force -Recurse
+          Remove-Item -Path apktool.jar -Force
+          New-Item -ItemType Directory -Path Cache -Force
+          New-Item -ItemType Directory -Path Cache/NROIPChanger.GUI.Desktop -Force
+          New-Item -ItemType Directory -Path Cache/NROIPChanger.Injector.Desktop -Force
+          New-Item -ItemType Directory -Path Cache/NROIPChanger.Mono.Desktop -Force
+          New-Item -ItemType Directory -Path Cache/NROIPChanger.IL2CPP.Desktop -Force
+          New-Item -ItemType Directory -Path Cache/NROIPChanger.IL2CPP.Android -Force
+          New-Item -ItemType Directory -Path Cache/NROIPChanger.IL2CPP.Android.Minimalistic -Force
+          New-Item -ItemType Directory -Path Cache/NROIPChanger.IL2CPP.Android/Java/ -Force
+          New-Item -ItemType Directory -Path Cache/NROIPChanger.IL2CPP.Android/Java/app/ -Force
+          Move-Item -Path NROIPChanger.GUI.Desktop/bin/ -Destination Cache/NROIPChanger.GUI.Desktop/bin -Force
+          Move-Item -Path NROIPChanger.GUI.Desktop/obj/ -Destination Cache/NROIPChanger.GUI.Desktop/obj -Force
+          Move-Item -Path NROIPChanger.Injector.Desktop/bin/ -Destination Cache/NROIPChanger.Injector.Desktop/bin -Force
+          Move-Item -Path NROIPChanger.Injector.Desktop/obj/ -Destination Cache/NROIPChanger.Injector.Desktop/obj -Force
+          # Move-Item -Path NROIPChanger.Mono.Desktop/bin/ -Destination Cache/NROIPChanger.Mono.Desktop/bin -Force
+          Move-Item -Path NROIPChanger.Mono.Desktop/obj/ -Destination Cache/NROIPChanger.Mono.Desktop/obj -Force
+          Move-Item -Path NROIPChanger.IL2CPP.Desktop/.temp/ -Destination Cache/NROIPChanger.IL2CPP.Desktop/.temp -Force
+          Move-Item -Path NROIPChanger.IL2CPP.Android/.temp/ -Destination Cache/NROIPChanger.IL2CPP.Android/.temp -Force
+          Move-Item -Path NROIPChanger.IL2CPP.Android.Minimalistic/.temp/ -Destination Cache/NROIPChanger.IL2CPP.Android.Minimalistic/.temp -Force
+          Move-Item -Path NROIPChanger.IL2CPP.Android/Java/.gradle/ -Destination Cache/NROIPChanger.IL2CPP.Android/Java/.gradle -Force
+          Move-Item -Path NROIPChanger.IL2CPP.Android/Java/app/build/ -Destination Cache/NROIPChanger.IL2CPP.Android/Java/app/build -Force
+          Move-Item -Path packages/ -Destination Cache/packages -Force
+      - name: Delete old cache
+        if: ${{ steps.cache-restore.outputs.cache-hit }}
+        continue-on-error: true
+        run: |
+          gh cache delete "${{ env.CacheKey }}" --repo ${{ github.repository }}
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Save cache
+        uses: actions/cache/save@v4
+        with: 
+          path: Cache
+          key: ${{ env.CacheKey }}
