@@ -105,6 +105,10 @@
       <GenerateDebugInformation>DebugFull</GenerateDebugInformation>
       <EnableUAC>false</EnableUAC>
     </Link>
+    <PreBuildEvent>
+      <Command>cd "$(ProjectDir)"
+powershell -File "$(SolutionDir)SetVersion.ps1"</Command>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -125,6 +129,10 @@
       <GenerateDebugInformation>false</GenerateDebugInformation>
       <EnableUAC>false</EnableUAC>
     </Link>
+    <PreBuildEvent>
+      <Command>cd "$(ProjectDir)"
+powershell -File "$(SolutionDir)SetVersion.ps1"</Command>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -141,6 +149,10 @@
       <GenerateDebugInformation>DebugFull</GenerateDebugInformation>
       <EnableUAC>false</EnableUAC>
     </Link>
+    <PreBuildEvent>
+      <Command>cd "$(ProjectDir)"
+powershell -File "$(SolutionDir)SetVersion.ps1"</Command>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -161,6 +173,10 @@
       <GenerateDebugInformation>false</GenerateDebugInformation>
       <EnableUAC>false</EnableUAC>
     </Link>
+    <PreBuildEvent>
+      <Command>cd "$(ProjectDir)"
+powershell -File "$(SolutionDir)SetVersion.ps1"</Command>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="AetherimMod\api.hpp" />

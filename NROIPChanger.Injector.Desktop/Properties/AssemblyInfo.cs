@@ -17,7 +17,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyCopyright("Copyright © ElectroHeavenVN 2024")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
-[assembly: AssemblyMetadata("RepositoryUrl", "https://github.com/ElectroHeavenVN/NROIPChangerhttps://github.com/ElectroHeavenVN/NROIPChanger")]
+[assembly: AssemblyMetadata("RepositoryUrl", "https://github.com/ElectroHeavenVN/NROIPChanger")]
 
 // Setting ComVisible to false makes the types in this assembly not visible
 // to COM components.  If you need to access a type in this assembly from
