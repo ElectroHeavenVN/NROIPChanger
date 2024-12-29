@@ -117,7 +117,7 @@ jobs:
           Move-Item -Path NROIPChanger.Mono.Desktop/obj/ -Destination Cache/NROIPChanger.Mono.Desktop/obj -Force
           Move-Item -Path NROIPChanger.IL2CPP.Desktop/.temp/ -Destination Cache/NROIPChanger.IL2CPP.Desktop/.temp -Force
           Move-Item -Path NROIPChanger.IL2CPP.Android/.temp/ -Destination Cache/NROIPChanger.IL2CPP.Android/.temp -Force
-          Move-Item -Path NROIPChanger.IL2CPP.Android/.temp/ -Destination Cache/NROIPChanger.IL2CPP.Android.Minimalistic/.temp -Force
+          Move-Item -Path NROIPChanger.IL2CPP.Android/Minimalistic/.temp/ -Destination Cache/NROIPChanger.IL2CPP.Android.Minimalistic/.temp -Force
           Move-Item -Path NROIPChanger.IL2CPP.Android/Java/.gradle/ -Destination Cache/NROIPChanger.IL2CPP.Android/Java/.gradle -Force
           Move-Item -Path NROIPChanger.IL2CPP.Android/Java/app/build/ -Destination Cache/NROIPChanger.IL2CPP.Android/Java/app/build -Force
           Move-Item -Path packages/ -Destination Cache/packages -Force
