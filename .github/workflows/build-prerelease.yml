@@ -121,6 +121,7 @@ jobs:
           Move-Item -Path NROIPChanger.IL2CPP.Android/Java/.gradle/ -Destination Cache/NROIPChanger.IL2CPP.Android/Java/.gradle -Force
           Move-Item -Path NROIPChanger.IL2CPP.Android/Java/app/build/ -Destination Cache/NROIPChanger.IL2CPP.Android/Java/app/build -Force
           Move-Item -Path packages/ -Destination Cache/packages -Force
+          Move-Item -Path .vs -Destination Cache/.vs -Force
       - name: Delete old cache
         if: ${{ steps.cache-restore.outputs.cache-hit }}
         continue-on-error: true
