@@ -22,16 +22,16 @@ jobs:
       VERSION: nightly
       CacheKey: nightly-${{ matrix.configuration }}
     steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
       - name: Restore cache
         id: cache-restore
         uses: actions/cache@v4
         with:
           path: ./
           key: ${{ env.CacheKey }}
-      - name: Checkout
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 1
       - name: Setup MSBuild
         uses: microsoft/setup-msbuild@v2
       - name: Setup NuGet
@@ -51,10 +51,10 @@ jobs:
         run: nuget restore $env:SolutionName
       - name: Build solution
         run: |
-          msbuild $env:SolutionName /t:rebuild /p:Configuration=${{ matrix.configuration }} /p:Platform="x86" /p:AssemblyVersion=0.0.0.0 /p:Version=0.0.0-${{ env.VERSION }}
-          msbuild $env:SolutionName /t:rebuild /p:Configuration=${{ matrix.configuration }} /p:Platform="x64" /p:AssemblyVersion=0.0.0.0 /p:Version=0.0.0-${{ env.VERSION }}
-          msbuild $env:SolutionName /t:rebuild /p:Configuration=${{ matrix.configuration }} /p:Platform="ARM32" /p:AssemblyVersion=0.0.0.0 /p:Version=0.0.0-${{ env.VERSION }}
-          msbuild $env:SolutionName /t:rebuild /p:Configuration=${{ matrix.configuration }} /p:Platform="ARM64" /p:AssemblyVersion=0.0.0.0 /p:Version=0.0.0-${{ env.VERSION }}
+          msbuild $env:SolutionName /t:build /p:Configuration=${{ matrix.configuration }} /p:Platform="x86" /p:AssemblyVersion=0.0.0.0 /p:Version=0.0.0-${{ env.VERSION }}
+          msbuild $env:SolutionName /t:build /p:Configuration=${{ matrix.configuration }} /p:Platform="x64" /p:AssemblyVersion=0.0.0.0 /p:Version=0.0.0-${{ env.VERSION }}
+          msbuild $env:SolutionName /t:build /p:Configuration=${{ matrix.configuration }} /p:Platform="ARM32" /p:AssemblyVersion=0.0.0.0 /p:Version=0.0.0-${{ env.VERSION }}
+          msbuild $env:SolutionName /t:build /p:Configuration=${{ matrix.configuration }} /p:Platform="ARM64" /p:AssemblyVersion=0.0.0.0 /p:Version=0.0.0-${{ env.VERSION }}
       - name: Build Android project
         run: |
           cd NROIPChanger.IL2CPP.Android\Java
@@ -95,10 +95,32 @@ jobs:
         with:
           name: NROIPChanger Android (${{ matrix.configuration }})
           path: Output/${{ matrix.configuration }}/Android/*
-      - name: Delete files
+      - name: Delete and move files
         run: |
           Remove-Item -Path Output -Force -Recurse
           Remove-Item -Path Decompile -Force -Recurse
+          Remove-Item -Path apktool.jar -Force
+          New-Item -ItemType Directory -Path Cache -Force
+          New-Item -ItemType Directory -Path Cache/NROIPChanger.GUI.Desktop -Force
+          New-Item -ItemType Directory -Path Cache/NROIPChanger.Injector.Desktop -Force
+          New-Item -ItemType Directory -Path Cache/NROIPChanger.Mono.Desktop -Force
+          New-Item -ItemType Directory -Path Cache/NROIPChanger.IL2CPP.Desktop -Force
+          New-Item -ItemType Directory -Path Cache/NROIPChanger.IL2CPP.Android -Force
+          New-Item -ItemType Directory -Path Cache/NROIPChanger.IL2CPP.Android.Minimalistic -Force
+          New-Item -ItemType Directory -Path Cache/NROIPChanger.IL2CPP.Android/Java/ -Force
+          New-Item -ItemType Directory -Path Cache/NROIPChanger.IL2CPP.Android/Java/app/ -Force
+          Move-Item -Path NROIPChanger.GUI.Desktop/bin/ -Destination Cache/NROIPChanger.GUI.Desktop/bin -Force
+          Move-Item -Path NROIPChanger.GUI.Desktop/obj/ -Destination Cache/NROIPChanger.GUI.Desktop/obj -Force
+          Move-Item -Path NROIPChanger.Injector.Desktop/bin/ -Destination Cache/NROIPChanger.Injector.Desktop/bin -Force
+          Move-Item -Path NROIPChanger.Injector.Desktop/obj/ -Destination Cache/NROIPChanger.Injector.Desktop/obj -Force
+          # Move-Item -Path NROIPChanger.Mono.Desktop/bin/ -Destination Cache/NROIPChanger.Mono.Desktop/bin -Force
+          Move-Item -Path NROIPChanger.Mono.Desktop/obj/ -Destination Cache/NROIPChanger.Mono.Desktop/obj -Force
+          Move-Item -Path NROIPChanger.IL2CPP.Desktop/.temp/ -Destination Cache/NROIPChanger.IL2CPP.Desktop/.temp -Force
+          Move-Item -Path NROIPChanger.IL2CPP.Android/.temp/ -Destination Cache/NROIPChanger.IL2CPP.Android/.temp -Force
+          Move-Item -Path NROIPChanger.IL2CPP.Android/.temp/ -Destination Cache/NROIPChanger.IL2CPP.Android.Minimalistic/.temp -Force
+          Move-Item -Path NROIPChanger.IL2CPP.Android/Java/.gradle/ -Destination Cache/NROIPChanger.IL2CPP.Android/Java/.gradle -Force
+          Move-Item -Path NROIPChanger.IL2CPP.Android/Java/app/build/ -Destination Cache/NROIPChanger.IL2CPP.Android/Java/app/build -Force
+          Move-Item -Path packages/ -Destination Cache/packages -Force
       - name: Delete old cache
         if: ${{ steps.cache-restore.outputs.cache-hit }}
         continue-on-error: true
@@ -109,7 +131,7 @@ jobs:
       - name: Save cache
         uses: actions/cache/save@v4
         with: 
-          path: ./
+          path: Cache
           key: ${{ env.CacheKey }}
   
   create-nightly-release:
