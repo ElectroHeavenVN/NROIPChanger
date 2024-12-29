@@ -30,8 +30,22 @@ jobs:
         id: cache-restore
         uses: actions/cache/restore@v4
         with:
-          path: ./
+          path: Cache
           key: ${{ env.CacheKey }}
+      - name: Move files
+        run: |
+          Move-Item -Path Cache/NROIPChanger.GUI.Desktop/bin -Destination NROIPChanger.GUI.Desktop/bin -Force
+          Move-Item -Path Cache/NROIPChanger.GUI.Desktop/obj -Destination NROIPChanger.GUI.Desktop/obj -Force
+          Move-Item -Path Cache/NROIPChanger.Injector.Desktop/bin -Destination NROIPChanger.Injector.Desktop/bin -Force
+          Move-Item -Path Cache/NROIPChanger.Injector.Desktop/obj -Destination NROIPChanger.Injector.Desktop/obj -Force
+          # Move-Item -Path Cache/NROIPChanger.Mono.Desktop/bin -Destination NROIPChanger.Mono.Desktop/bin -Force
+          Move-Item -Path Cache/NROIPChanger.Mono.Desktop/obj -Destination NROIPChanger.Mono.Desktop/obj -Force
+          Move-Item -Path Cache/NROIPChanger.IL2CPP.Desktop/.temp -Destination NROIPChanger.IL2CPP.Desktop/.temp -Force
+          Move-Item -Path Cache/NROIPChanger.IL2CPP.Android/.temp -Destination NROIPChanger.IL2CPP.Android/.temp -Force
+          Move-Item -Path Cache/NROIPChanger.IL2CPP.Android.Minimalistic/.temp -Destination NROIPChanger.IL2CPP.Android.Minimalistic/.temp -Force
+          Move-Item -Path Cache/NROIPChanger.IL2CPP.Android/Java/.gradle -Destination NROIPChanger.IL2CPP.Android/Java/.gradle -Force
+          Move-Item -Path Cache/NROIPChanger.IL2CPP.Android/Java/app/build -Destination NROIPChanger.IL2CPP.Android/Java/app/build -Force
+          Move-Item -Path Cache/packages -Destination packages -Force
       - name: Setup MSBuild
         uses: microsoft/setup-msbuild@v2
       - name: Setup NuGet
@@ -121,7 +135,6 @@ jobs:
           Move-Item -Path NROIPChanger.IL2CPP.Android/Java/.gradle/ -Destination Cache/NROIPChanger.IL2CPP.Android/Java/.gradle -Force
           Move-Item -Path NROIPChanger.IL2CPP.Android/Java/app/build/ -Destination Cache/NROIPChanger.IL2CPP.Android/Java/app/build -Force
           Move-Item -Path packages/ -Destination Cache/packages -Force
-          Move-Item -Path .vs -Destination Cache/.vs -Force
       - name: Delete old cache
         if: ${{ steps.cache-restore.outputs.cache-hit }}
         continue-on-error: true
