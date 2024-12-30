@@ -158,7 +158,7 @@
       <PrecompiledHeaderCompileAs>CompileAsCpp</PrecompiledHeaderCompileAs>
       <AdditionalOptions>-fshort-wchar %(AdditionalOptions)</AdditionalOptions>
       <ExceptionHandling>Enabled</ExceptionHandling>
-      <PreprocessorDefinitions>__ANDROID_MIN_SDK_VERSION__=$(AndroidAPILevelNumber);VERSION="$(VERSION)";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>__ANDROID_MIN_SDK_VERSION__=$(AndroidAPILevelNumber);ENV_VERSION="$(envVersion)";%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -170,7 +170,7 @@
       <PrecompiledHeaderCompileAs>CompileAsCpp</PrecompiledHeaderCompileAs>
       <AdditionalOptions>-fshort-wchar %(AdditionalOptions)</AdditionalOptions>
       <ExceptionHandling>Enabled</ExceptionHandling>
-      <PreprocessorDefinitions>__ANDROID_MIN_SDK_VERSION__=$(AndroidAPILevelNumber);VERSION="$(VERSION)";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>__ANDROID_MIN_SDK_VERSION__=$(AndroidAPILevelNumber);ENV_VERSION="$(envVersion)";%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <DebuggerSymbolInformation>OmitAllSymbolInformation</DebuggerSymbolInformation>
@@ -185,7 +185,7 @@
       <PrecompiledHeaderCompileAs>CompileAsCpp</PrecompiledHeaderCompileAs>
       <AdditionalOptions>-fshort-wchar %(AdditionalOptions)</AdditionalOptions>
       <ExceptionHandling>Enabled</ExceptionHandling>
-      <PreprocessorDefinitions>__ANDROID_MIN_SDK_VERSION__=$(AndroidAPILevelNumber);VERSION="$(VERSION)";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>__ANDROID_MIN_SDK_VERSION__=$(AndroidAPILevelNumber);ENV_VERSION="$(envVersion)";%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x86'">
@@ -197,7 +197,7 @@
       <PrecompiledHeaderCompileAs>CompileAsCpp</PrecompiledHeaderCompileAs>
       <AdditionalOptions>-fshort-wchar %(AdditionalOptions)</AdditionalOptions>
       <ExceptionHandling>Enabled</ExceptionHandling>
-      <PreprocessorDefinitions>__ANDROID_MIN_SDK_VERSION__=$(AndroidAPILevelNumber);VERSION="$(VERSION)";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>__ANDROID_MIN_SDK_VERSION__=$(AndroidAPILevelNumber);ENV_VERSION="$(envVersion)";%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <DebuggerSymbolInformation>OmitAllSymbolInformation</DebuggerSymbolInformation>
@@ -212,7 +212,7 @@
       <PrecompiledHeaderCompileAs>CompileAsCpp</PrecompiledHeaderCompileAs>
       <AdditionalOptions>-fshort-wchar %(AdditionalOptions)</AdditionalOptions>
       <ExceptionHandling>Enabled</ExceptionHandling>
-      <PreprocessorDefinitions>__ANDROID_MIN_SDK_VERSION__=$(AndroidAPILevelNumber);VERSION="$(VERSION)";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>__ANDROID_MIN_SDK_VERSION__=$(AndroidAPILevelNumber);ENV_VERSION="$(envVersion)";%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM64'">
@@ -224,7 +224,7 @@
       <PrecompiledHeaderCompileAs>CompileAsCpp</PrecompiledHeaderCompileAs>
       <AdditionalOptions>-fshort-wchar %(AdditionalOptions)</AdditionalOptions>
       <ExceptionHandling>Enabled</ExceptionHandling>
-      <PreprocessorDefinitions>__ANDROID_MIN_SDK_VERSION__=$(AndroidAPILevelNumber);VERSION="$(VERSION)";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>__ANDROID_MIN_SDK_VERSION__=$(AndroidAPILevelNumber);ENV_VERSION="$(envVersion)";%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <DebuggerSymbolInformation>OmitAllSymbolInformation</DebuggerSymbolInformation>
@@ -239,7 +239,7 @@
       <PrecompiledHeaderCompileAs>CompileAsCpp</PrecompiledHeaderCompileAs>
       <ExceptionHandling>Enabled</ExceptionHandling>
       <AdditionalOptions>-fshort-wchar %(AdditionalOptions)</AdditionalOptions>
-      <PreprocessorDefinitions>__ANDROID_MIN_SDK_VERSION__=$(AndroidAPILevelNumber);VERSION="$(VERSION)";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>__ANDROID_MIN_SDK_VERSION__=$(AndroidAPILevelNumber);ENV_VERSION="$(envVersion)";%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">
@@ -251,7 +251,7 @@
       <PrecompiledHeaderCompileAs>CompileAsCpp</PrecompiledHeaderCompileAs>
       <AdditionalOptions>-fshort-wchar %(AdditionalOptions)</AdditionalOptions>
       <ExceptionHandling>Enabled</ExceptionHandling>
-      <PreprocessorDefinitions>__ANDROID_MIN_SDK_VERSION__=$(AndroidAPILevelNumber);VERSION="$(VERSION)";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>__ANDROID_MIN_SDK_VERSION__=$(AndroidAPILevelNumber);ENV_VERSION="$(envVersion)";%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <DebuggerSymbolInformation>OmitAllSymbolInformation</DebuggerSymbolInformation>

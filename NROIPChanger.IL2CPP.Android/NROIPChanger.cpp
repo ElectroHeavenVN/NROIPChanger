@@ -101,10 +101,10 @@ jobjectArray GetFeatureList(JNIEnv* env, jobject context) {
 	return (ret);
 }
 
-static void ShowToast(char* content, int duration)
+static void ShowToast(char* content, int duration, bool forceShow = false)
 {
 	LOGI("ShowToast: %s", content);
-	if (!showNotification)
+	if (!forceShow && !showNotification)
 		return;
 	ShowToastOnUIThread(jvm, utilsClass, content, duration);
 }
@@ -201,12 +201,12 @@ static void* Initialize(void*)
 	}
 	//InstallHooks();	//Hooks will be installed from the Changes function
 	LOGI("Initialization complete.");
-	if (strcmp(VERSION, "nightly") == 0)
-		ShowToast("NROIPChanger Nightly (" ABI ") by ElectroHeavenVN", ToastLength::LENGTH_LONG);
+	if (strcmp(ENV_VERSION, "nightly") == 0)
+		ShowToast("NROIPChanger Nightly (" ABI ") by ElectroHeavenVN", ToastLength::LENGTH_LONG, true);
 	else
-		ShowToast("NROIPChanger v" VERSION " (" ABI ") by ElectroHeavenVN", ToastLength::LENGTH_LONG);
-	ShowToast("https://github.com/ElectroHeavenVN/NROIPChanger", ToastLength::LENGTH_LONG);
-	ShowToast("Do not install from other sources!", ToastLength::LENGTH_SHORT);
+		ShowToast("NROIPChanger v" ENV_VERSION " (" ABI ") by ElectroHeavenVN", ToastLength::LENGTH_LONG, true);
+	ShowToast("https://github.com/ElectroHeavenVN/NROIPChanger", ToastLength::LENGTH_LONG, true);
+	ShowToast("Do not install from other sources!", ToastLength::LENGTH_SHORT, true);
 	return nullptr;
 }
 

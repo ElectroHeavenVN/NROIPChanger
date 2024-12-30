@@ -196,11 +196,11 @@ void Init(JNIEnv* env, jobject ctx)
 {
 	env->GetJavaVM(&jvm);
     LOGI("Package name: %s", ToStdString(env, GetPackageName(env, ctx)).c_str());
-	if (strcmp(VERSION, "nightly") == 0)
+	if (strcmp(ENV_VERSION, "nightly") == 0)
         ShowToast("NROIPChanger Nightly (" ABI ") by ElectroHeavenVN", ToastLength::LENGTH_LONG);
     else
-        ShowToast("NROIPChanger v" VERSION " (" ABI ") by ElectroHeavenVN", ToastLength::LENGTH_LONG);
-    ShowToast("NROIPChanger v" VERSION " (" ABI ") by ElectroHeavenVN", ToastLength::LENGTH_LONG);
+        ShowToast("NROIPChanger v" ENV_VERSION " (" ABI ") by ElectroHeavenVN", ToastLength::LENGTH_LONG);
+    ShowToast("NROIPChanger v" ENV_VERSION " (" ABI ") by ElectroHeavenVN", ToastLength::LENGTH_LONG);
     ShowToast("https://github.com/ElectroHeavenVN/NROIPChanger", ToastLength::LENGTH_LONG);
     ShowToast("Do not install from other sources!", ToastLength::LENGTH_SHORT);
     LoadHookAddressesFromResource(env, ctx);

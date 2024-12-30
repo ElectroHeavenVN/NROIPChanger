@@ -20,7 +20,7 @@ jobs:
     runs-on: windows-latest
     env:
       SolutionName: NROIPChanger.sln
-      VERSION: ${{ github.event.inputs.version }}
+      envVersion: ${{ github.event.inputs.version }}
       CacheKey: Release
     steps:
       - name: Checkout
@@ -58,18 +58,18 @@ jobs:
           java-version: '17'
       - name: Restore solution
         run: |
-          msbuild $env:SolutionName /t:Restore /p:Configuration=Release /p:Platform="x86" /p:Version=${{ env.VERSION }}.0
-          msbuild $env:SolutionName /t:Restore /p:Configuration=Release /p:Platform="x64" /p:Version=${{ env.VERSION }}.0
-          msbuild $env:SolutionName /t:Restore /p:Configuration=Release /p:Platform="ARM32" /p:Version=${{ env.VERSION }}.0
-          msbuild $env:SolutionName /t:Restore /p:Configuration=Release /p:Platform="ARM64" /p:Version=${{ env.VERSION }}.0
+          msbuild $env:SolutionName /t:Restore /p:Configuration=Release /p:Platform="x86" /p:Version=${{ env.envVersion }}.0
+          msbuild $env:SolutionName /t:Restore /p:Configuration=Release /p:Platform="x64" /p:Version=${{ env.envVersion }}.0
+          msbuild $env:SolutionName /t:Restore /p:Configuration=Release /p:Platform="ARM32" /p:Version=${{ env.envVersion }}.0
+          msbuild $env:SolutionName /t:Restore /p:Configuration=Release /p:Platform="ARM64" /p:Version=${{ env.envVersion }}.0
       - name: Restore NuGet Packages
         run: nuget restore $env:SolutionName
       - name: Build solution
         run: |
-          msbuild $env:SolutionName /t:build /p:Configuration=Release /p:Platform="x86" /p:Version=${{ env.VERSION }}.0
-          msbuild $env:SolutionName /t:build /p:Configuration=Release /p:Platform="x64" /p:Version=${{ env.VERSION }}.0
-          msbuild $env:SolutionName /t:build /p:Configuration=Release /p:Platform="ARM32" /p:Version=${{ env.VERSION }}.0
-          msbuild $env:SolutionName /t:build /p:Configuration=Release /p:Platform="ARM64" /p:Version=${{ env.VERSION }}.0
+          msbuild $env:SolutionName /t:build /p:Configuration=Release /p:Platform="x86" /p:Version=${{ env.envVersion }}.0
+          msbuild $env:SolutionName /t:build /p:Configuration=Release /p:Platform="x64" /p:Version=${{ env.envVersion }}.0
+          msbuild $env:SolutionName /t:build /p:Configuration=Release /p:Platform="ARM32" /p:Version=${{ env.envVersion }}.0
+          msbuild $env:SolutionName /t:build /p:Configuration=Release /p:Platform="ARM64" /p:Version=${{ env.envVersion }}.0
       - name: Build Android project
         run: |
           cd NROIPChanger.IL2CPP.Android\Java
