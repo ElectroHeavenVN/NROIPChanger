@@ -67,6 +67,7 @@ extern "C" {
 //#endif
 #define HOOKCCV
 #define targetLibName "libil2cpp.so"
+#define REPO "https://github.com/ElectroHeavenVN/NROIPChanger"
 
 static jclass utilsClass;
 static JavaVM* jvm;
@@ -202,10 +203,9 @@ static void* Initialize(void*)
 	//InstallHooks();	//Hooks will be installed from the Changes function
 	LOGI("Initialization complete.");
 	if (strcmp(ENV_VERSION, "nightly") == 0)
-		ShowToast("NROIPChanger Nightly (" ABI ") by ElectroHeavenVN", ToastLength::LENGTH_LONG, true);
+		ShowToast("NROIPChanger Nightly (" ABI ")\n" REPO, ToastLength::LENGTH_LONG, true);
 	else
-		ShowToast("NROIPChanger v" ENV_VERSION " (" ABI ") by ElectroHeavenVN", ToastLength::LENGTH_LONG, true);
-	ShowToast("https://github.com/ElectroHeavenVN/NROIPChanger", ToastLength::LENGTH_LONG, true);
+		ShowToast("NROIPChanger v" ENV_VERSION " (" ABI ")\n" REPO, ToastLength::LENGTH_LONG, true);
 	ShowToast("Do not install from other sources!", ToastLength::LENGTH_SHORT, true);
 	return nullptr;
 }
