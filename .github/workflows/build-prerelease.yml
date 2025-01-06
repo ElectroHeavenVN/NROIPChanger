@@ -1,6 +1,12 @@
 name: Build solution and publish Nightly release 
 on:
   workflow_dispatch:
+    inputs:
+      use-cache:
+        description: 'Use cache'
+        required: false
+        type: boolean
+        default: false
   push:
     branches:
       - main
@@ -27,12 +33,14 @@ jobs:
         with:
           fetch-depth: 1
       - name: Restore cache
+        if: ${{ github.event.inputs.use-cache }}
         id: cache-restore
         uses: actions/cache/restore@v4
         with:
           path: Cache
           key: ${{ env.CacheKey }}
       - name: Move files
+        if: ${{ github.event.inputs.use-cache && steps.cache-restore.outputs.cache-hit }}
         run: |
           Move-Item -Path Cache/NROIPChanger.GUI.Desktop/bin -Destination NROIPChanger.GUI.Desktop/bin -Force
           Move-Item -Path Cache/NROIPChanger.GUI.Desktop/obj -Destination NROIPChanger.GUI.Desktop/obj -Force
@@ -110,6 +118,7 @@ jobs:
           name: NROIPChanger Android (${{ matrix.configuration }})
           path: Output/${{ matrix.configuration }}/Android/*
       - name: Delete and move files
+        if: ${{ github.event.inputs.use-cache }}
         run: |
           Remove-Item -Path Output -Force -Recurse
           Remove-Item -Path Decompile -Force -Recurse
@@ -136,13 +145,14 @@ jobs:
           Move-Item -Path NROIPChanger.IL2CPP.Android/Java/app/build/ -Destination Cache/NROIPChanger.IL2CPP.Android/Java/app/build -Force
           Move-Item -Path packages/ -Destination Cache/packages -Force
       - name: Delete old cache
-        if: ${{ steps.cache-restore.outputs.cache-hit }}
+        if: ${{ github.event.inputs.use-cache && steps.cache-restore.outputs.cache-hit }}
         continue-on-error: true
         run: |
           gh cache delete "${{ env.CacheKey }}" --repo ${{ github.repository }}
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Save cache
+        if: ${{ github.event.inputs.use-cache }}
         uses: actions/cache/save@v4
         with: 
           path: Cache
