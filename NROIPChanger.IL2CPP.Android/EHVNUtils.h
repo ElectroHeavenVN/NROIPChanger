@@ -57,6 +57,13 @@ static void ShowToastOnUIThread(JavaVM* jvm, jclass declaringType, std::string c
 	ShowToastOnUIThread(jvm, declaringType, content.c_str(), duration);
 }
 
+static jstring GetPackageName(JNIEnv* env, jobject activity) {
+    jclass activityClass = env->GetObjectClass(activity);
+    jmethodID getPackageName = env->GetMethodID(activityClass, "getPackageName", "()Ljava/lang/String;");
+    jstring packageName = (jstring)env->CallObjectMethod(activity, getPackageName);
+    return packageName;
+}
+
 static std::string ToStdString(JNIEnv *env, jstring jStr) {
     if (!jStr)
         return "";

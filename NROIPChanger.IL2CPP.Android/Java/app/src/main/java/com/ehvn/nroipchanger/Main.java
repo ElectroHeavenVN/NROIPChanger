@@ -17,6 +17,8 @@ public class Main {
 
     private static native void CheckOverlayPermission(Context context);
 
+    private static native void Init(Context context);
+
 //    public static void StartWithoutPermission(Context context) {
 //        CrashHandler.init(context, true);
 //        if (context instanceof Activity) {
@@ -33,5 +35,6 @@ public class Main {
         mainActivity = context;
         CrashHandler.init(context, false);
         CheckOverlayPermission(context);
+        Init(context);  //Init after the user grants the permission
     }
 }

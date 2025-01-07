@@ -8,6 +8,8 @@
 #include "Menu/Menu.hpp"
 #include "Menu/Setup.hpp"
 #include "NROIPChanger.h"
+#include <android/asset_manager.h>
+#include <android/asset_manager_jni.h>
 #include <android/log.h>
 #include <cstring>
 #include <dlfcn.h>
@@ -18,6 +20,7 @@
 #include <locale>
 #include <pthread.h>
 #include <regex>
+#include <sstream>
 #include <string>
 #include <string.h>
 #include <sys/resource.h>
@@ -176,9 +179,9 @@ void Changes(JNIEnv* env, jclass clazz, jobject obj, jint featNum, jstring featN
 			string offset = ToStdString(env, text);
 			if (offset.empty())
 				break;
-			System_Net_Sockets_TcpClient__Connect_address = stoul(offset, nullptr, 16);
-			if (System_Net_Sockets_TcpClient__Connect_address == 0)
-				break;
+			unsigned long addr = stoul(offset, nullptr, 16);
+			if (addr != 0)
+				System_Net_Sockets_TcpClient__Connect_address = addr;
 			HOOK_BY_NAME(System_Net_Sockets_TcpClient__Connect);
 			hooked = true;
 			break;
@@ -202,18 +205,88 @@ static void* Initialize(void*)
 	}
 	//InstallHooks();	//Hooks will be installed from the Changes function
 	LOGI("Initialization complete.");
-	if (strcmp(ENV_VERSION, "nightly") == 0)
-		ShowToast("NROIPChanger Nightly (" ABI ")\n" REPO, ToastLength::LENGTH_LONG, true);
-	else
-		ShowToast("NROIPChanger v" ENV_VERSION " (" ABI ")\n" REPO, ToastLength::LENGTH_LONG, true);
-	ShowToast("Do not install from other sources!", ToastLength::LENGTH_SHORT, true);
 	return nullptr;
 }
 
-__attribute__((constructor)) void lib_main()
+static void LoadHookAddressesFromResource(JNIEnv* env, jobject ctx)
 {
+	jclass context = env->GetObjectClass(ctx);
+	jmethodID getResources = env->GetMethodID(context, "getResources", "()Landroid/content/res/Resources;");
+	jobject resourcesInstance = env->CallObjectMethod(ctx, getResources);
+	jclass resources = env->GetObjectClass(resourcesInstance);
+	jmethodID getAssets = env->GetMethodID(resources, "getAssets", "()Landroid/content/res/AssetManager;");
+	jobject assetManager = env->CallObjectMethod(resourcesInstance, getAssets);
+	AAssetManager* mgr = AAssetManager_fromJava(env, assetManager);
+	AAsset* asset = AAssetManager_open(mgr, "hook_addresses", AASSET_MODE_BUFFER);
+	if (nullptr == asset)
+		return;
+	long size = AAsset_getLength(asset);
+	char* buffer = (char*)malloc(sizeof(char) * size);
+	AAsset_read(asset, buffer, size);
+	stringstream ss(buffer);
+	string hookAddr;
+	for (int i = 0; getline(ss, hookAddr, '|'); i++) {
+		if (i == 0) {
+			if (AssignCreateStringUTF8(hookAddr))
+				hasCreateStringUTF8 = true;
+		}
+		else if (i == 1) {
+			if (AssignCreateStringUTF16(hookAddr))
+				hasCreateStringUTF16 = true;
+		}
+		else if (i == 2)
+			System_Net_Sockets_TcpClient__Connect_address = stoul(hookAddr, nullptr, 16);
+		hookAddr = "";
+	}
+	delete buffer;
+	AAsset_close(asset);
+}
+
+static void LoadCustomIPFromResource(JNIEnv* env, jobject ctx)
+{
+	jclass context = env->GetObjectClass(ctx);
+	jmethodID getResources = env->GetMethodID(context, "getResources", "()Landroid/content/res/Resources;");
+	jobject resourcesInstance = env->CallObjectMethod(ctx, getResources);
+	jclass resources = env->GetObjectClass(resourcesInstance);
+	jmethodID getAssets = env->GetMethodID(resources, "getAssets", "()Landroid/content/res/AssetManager;");
+	jobject assetManager = env->CallObjectMethod(resourcesInstance, getAssets);
+	AAssetManager* mgr = AAssetManager_fromJava(env, assetManager);
+	AAsset* asset = AAssetManager_open(mgr, "ip_server", AASSET_MODE_BUFFER);
+	if (nullptr == asset)
+		return;
+	long size = AAsset_getLength(asset);
+	if (0 == size)
+		return;
+	char* buffer = (char*)malloc(sizeof(char) * size);
+	AAsset_read(asset, buffer, size);
+	stringstream ss(buffer);
+	string str;
+	while (getline(ss, str)) {
+		if (str.empty() || str.length() < 5 || str[0] == '#') {
+			str = "";
+			continue;
+		}
+		customIP = str.substr(0, str.find(':'));
+		customPort = stoi(str.substr(str.find(':') + 1));
+		LOGI("Default custom IP server: %s", str.c_str());
+		break;
+	}
+	delete buffer;
+	AAsset_close(asset);
+}
+
+extern "C" JNIEXPORT void JNICALL Java_com_ehvn_nroipchanger_Main_Init(JNIEnv* env, jclass clazz, jobject ctx) {
+	env->GetJavaVM(&jvm);
+	LOGI("Package name: %s", ToStdString(env, GetPackageName(env, ctx)).c_str());
+	if (strcmp(ENV_VERSION, "nightly") == 0)
+		ShowToast("NROIPChanger Nightly (" ABI ")\n" REPO, ToastLength::LENGTH_LONG);
+	else
+		ShowToast("NROIPChanger v" ENV_VERSION " (" ABI ")\n" REPO, ToastLength::LENGTH_LONG);
+	ShowToast("Do not install from other sources!", ToastLength::LENGTH_SHORT);
+	LoadHookAddressesFromResource(env, ctx);
+	LoadCustomIPFromResource(env, ctx);
 	pthread_t ptid;
-	pthread_create(&ptid, NULL, Initialize, NULL);
+	pthread_create(&ptid, nullptr, Initialize, nullptr);
 }
 
 extern "C" JNIEXPORT jint JNICALL JNI_OnLoad(JavaVM* vm, void* reserved) {
