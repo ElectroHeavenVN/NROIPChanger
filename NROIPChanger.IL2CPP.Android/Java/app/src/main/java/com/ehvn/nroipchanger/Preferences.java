@@ -24,46 +24,62 @@ public class Preferences {
 
     public static native void Changes(Context context, int featNum, String featName, int value, long Lvalue, boolean isOn, String inputText);
 
-    public static void changeFeatureInt(String featureName, int featureNum, int value) {
+    public static void changeFeatureInt(String featureID, int featureNum, int value) {
         Preferences.with(context).writeInt(featureNum, value);
-        Changes(context, featureNum, featureName, value, 0, false, null);
+        Changes(context, featureNum, featureID, value, 0, false, null);
     }
 
-    public static void changeFeatureLong(String featureName, int featureNum, long Lvalue) {
+    public static void changeFeatureLong(String featureID, int featureNum, long Lvalue) {
         Preferences.with(context).writeLong(String.valueOf(featureNum), Lvalue);
-        Changes(context, featureNum, featureName, 0, Lvalue, false, null);
+        Changes(context, featureNum, featureID, 0, Lvalue, false, null);
     }
 
-    public static void changeFeatureString(String featureName, int featureNum, String inputString) {
+    public static void changeFeatureString(String featureID, int featureNum, String inputString) {
         Preferences.with(context).writeString(featureNum, inputString);
-        Changes(context, featureNum, featureName, 0, 0, false, inputString);
+        Changes(context, featureNum, featureID, 0, 0, false, inputString);
     }
 
-    public static void changeFeatureBool(String featureName, int featureNum, boolean bool) {
+    public static void changeFeatureBool(String featureID, int featureNum, boolean bool) {
         Preferences.with(context).writeBoolean(featureNum, bool);
-        Changes(context, featureNum, featureName, 0, 0, bool, null);
+        Changes(context, featureNum, featureID, 0, 0, bool, null);
     }
 
-    public static int loadPrefInt(String featureName, int featureNum) {
+    public static int readFeatureInt(int featureNum) {
+        return Preferences.with(context).readInt(featureNum);
+    }
+
+    public static long readFeatureLong(int featureNum) {
+        return Preferences.with(context).readLong(String.valueOf(featureNum));
+    }
+
+    public static String readFeatureString(int featureNum) {
+        return Preferences.with(context).readString(featureNum);
+    }
+
+    public static boolean readFeatureBool(int featureNum) {
+        return Preferences.with(context).readBoolean(featureNum);
+    }
+
+    public static int loadPrefInt(String featureID, int featureNum) {
         if (loadPref) {
-            int value = Preferences.with(context).readInt(featureNum);
-            Changes(context, featureNum, featureName, value , 0, false, null);
+            int value = readFeatureInt(featureNum);
+            Changes(context, featureNum, featureID, value , 0, false, null);
             return value;
         }
         return 0;
     }
 
-    public static long loadPrefLong(String featureName, int featureNum) {
+    public static long loadPrefLong(String featureID, int featureNum) {
         if (loadPref) {
-            long Lvalue = Preferences.with(context).readLong(String.valueOf(featureNum));
-            Changes(context, featureNum, featureName, 0, Lvalue, false, null);
+            long Lvalue = readFeatureLong(featureNum);
+            Changes(context, featureNum, featureID, 0, Lvalue, false, null);
             return Lvalue;
         }
         return 0;
     }
 
-    public static boolean loadPrefBool(String featureName, int featureNum, boolean bDef) {
-        boolean bool = Preferences.with(context).readBoolean(featureNum, bDef);
+    public static boolean loadPrefBool(String featureID, int featureNum, boolean bDef) {
+        boolean bool = readFeatureBool(featureNum);
         if (featureNum == -1) {
             loadPref = bool;
         }
@@ -74,14 +90,14 @@ public class Preferences {
             bDef = bool;
         }
 
-        Changes(context, featureNum, featureName, 0,0, bDef, null);
+        Changes(context, featureNum, featureID, 0,0, bDef, null);
         return bDef;
     }
 
-    public static String loadPrefString(String featureName, int featureNum) {
+    public static String loadPrefString(String featureID, int featureNum) {
         if (loadPref || featureNum <= 0) {
-            String text = Preferences.with(context).readString(featureNum);
-            Changes(context, featureNum, featureName, 0,0, false, text);
+            String text = readFeatureString(featureNum);
+            Changes(context, featureNum, featureID, 0,0, false, text);
             return text;
         }
         return "";
@@ -142,8 +158,7 @@ public class Preferences {
      * @param forceInstantiation
      * @return Returns a 'Preferences' instance
      */
-    public static Preferences with(Context context, String preferencesName,
-                                   boolean forceInstantiation) {
+    public static Preferences with(Context context, String preferencesName, boolean forceInstantiation) {
         if (forceInstantiation) {
             prefsInstance = new Preferences(context, preferencesName);
         }
@@ -206,7 +221,6 @@ public class Preferences {
     public int readInt(String what) {
         return sharedPreferences.getInt(what, DEFAULT_INT_VALUE);
     }
-
 
     /**
      * @param what
@@ -388,97 +402,6 @@ public class Preferences {
      */
     public void writeBoolean(int where, boolean what) {
         sharedPreferences.edit().putBoolean(String.valueOf(where), what).apply();
-    }
-
-    // String set methods
-
-    /**
-     * @param key
-     * @param value
-     */
-    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-    public void putStringSet(final String key, final Set<String> value) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-            sharedPreferences.edit().putStringSet(key, value).apply();
-        } else {
-            // Workaround for pre-HC's lack of StringSets
-            putOrderedStringSet(key, value);
-        }
-    }
-
-    /**
-     * @param key
-     * @param value
-     */
-    public void putOrderedStringSet(String key, Set<String> value) {
-        int stringSetLength = 0;
-        if (sharedPreferences.contains(key + LENGTH)) {
-            // First read what the value was
-            stringSetLength = readInt(key + LENGTH);
-        }
-        writeInt(key + LENGTH, value.size());
-        int i = 0;
-        for (String aValue : value) {
-            writeString(key + "[" + i + "]", aValue);
-            i++;
-        }
-        for (; i < stringSetLength; i++) {
-            // Remove any remaining values
-            remove(key + "[" + i + "]");
-        }
-    }
-
-    /**
-     * @param key
-     * @param defValue
-     * @return Returns the String Set with HoneyComb compatibility
-     */
-    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-    public Set<String> getStringSet(final String key, final Set<String> defValue) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-            return sharedPreferences.getStringSet(key, defValue);
-        } else {
-            // Workaround for pre-HC's missing getStringSet
-            return getOrderedStringSet(key, defValue);
-        }
-    }
-
-    /**
-     * @param key
-     * @param defValue
-     * @return Returns the ordered String Set
-     */
-    public Set<String> getOrderedStringSet(String key, final Set<String> defValue) {
-        if (contains(key + LENGTH)) {
-            LinkedHashSet<String> set = new LinkedHashSet<>();
-            int stringSetLength = readInt(key + LENGTH);
-            if (stringSetLength >= 0) {
-                for (int i = 0; i < stringSetLength; i++) {
-                    set.add(readString(key + "[" + i + "]"));
-                }
-            }
-            return set;
-        }
-        return defValue;
-    }
-
-    // end related methods
-
-    /**
-     * @param key
-     */
-    public void remove(final String key) {
-        if (contains(key + LENGTH)) {
-            // Workaround for pre-HC's lack of StringSets
-            int stringSetLength = readInt(key + LENGTH);
-            if (stringSetLength >= 0) {
-                sharedPreferences.edit().remove(key + LENGTH).apply();
-                for (int i = 0; i < stringSetLength; i++) {
-                    sharedPreferences.edit().remove(key + "[" + i + "]").apply();
-                }
-            }
-        }
-        sharedPreferences.edit().remove(key).apply();
     }
 
     /**

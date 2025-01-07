@@ -67,7 +67,7 @@ int RegisterMain(JNIEnv *env) {
     return JNI_OK;
 }
 
-jint JNICALL JNIOnLoad(JavaVM *vm, void *reserved) {
+extern "C" JNIEXPORT jint JNICALL JNI_OnLoad(JavaVM* vm, void* reserved) {
     JNIEnv *env;
     vm->GetEnv((void **) &env, JNI_VERSION_1_6);
     if (RegisterMenu(env) != 0)

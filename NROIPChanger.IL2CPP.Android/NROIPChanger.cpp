@@ -72,8 +72,6 @@ extern "C" {
 #define targetLibName "libil2cpp.so"
 #define REPO "https://github.com/ElectroHeavenVN/NROIPChanger"
 
-static jclass utilsClass;
-static JavaVM* jvm;
 static bool hooked = false;
 static bool hasCreateStringUTF8 = false;
 static bool hasCreateStringUTF16 = false;
@@ -89,7 +87,7 @@ jobjectArray GetFeatureList(JNIEnv* env, jobject context) {
 	jobjectArray ret;
 	vector<string> features = {
 		"1_Toggle_activate",
-		"2_Toggle_showNoti",
+		"2_Toggle_showNoti_True",
 		"3_InputText_newIPAddr",
 		"4_InputValue_newPort",
 		"Collapse_hookAddr",
@@ -110,7 +108,7 @@ static void ShowToast(char* content, int duration, bool forceShow = false)
 	LOGI("ShowToast: %s", content);
 	if (!forceShow && !showNotification)
 		return;
-	ShowToastOnUIThread(jvm, utilsClass, content, duration);
+	ShowToastOnUIThread(content, duration);
 }
 
 static void ShowToast(string content, int duration)
@@ -149,7 +147,7 @@ void HOOKCCV System_Net_Sockets_TcpClient__Connect_hook(System_Net_Sockets_TcpCl
 }
 #pragma endregion
 
-void Changes(JNIEnv* env, jclass clazz, jobject obj, jint featNum, jstring featName, jint value, jlong Lvalue, jboolean boolean, jstring text) {
+void Changes(JNIEnv* env, jclass clazz, jobject obj, jint featNum, jstring featureID, jint value, jlong Lvalue, jboolean boolean, jstring text) {
 	switch (featNum) 
 	{
 		case 1: //  on/off
@@ -179,9 +177,9 @@ void Changes(JNIEnv* env, jclass clazz, jobject obj, jint featNum, jstring featN
 			string offset = ToStdString(env, text);
 			if (offset.empty())
 				break;
-			unsigned long addr = stoul(offset, nullptr, 16);
-			if (addr != 0)
-				System_Net_Sockets_TcpClient__Connect_address = addr;
+			System_Net_Sockets_TcpClient__Connect_address = stoul(offset, nullptr, 16);
+			if (System_Net_Sockets_TcpClient__Connect_address == 0)
+				break;
 			HOOK_BY_NAME(System_Net_Sockets_TcpClient__Connect);
 			hooked = true;
 			break;
@@ -227,15 +225,17 @@ static void LoadHookAddressesFromResource(JNIEnv* env, jobject ctx)
 	string hookAddr;
 	for (int i = 0; getline(ss, hookAddr, '|'); i++) {
 		if (i == 0) {
-			if (AssignCreateStringUTF8(hookAddr))
-				hasCreateStringUTF8 = true;
+			if (ReadFeatureString(5).empty())
+				ChangeFeatureString("utf8CreateStringRVA", 5, hookAddr.c_str());
 		}
 		else if (i == 1) {
-			if (AssignCreateStringUTF16(hookAddr))
-				hasCreateStringUTF16 = true;
+			if (ReadFeatureString(6).empty())
+				ChangeFeatureString("utf16CreateStringRVA", 6, hookAddr.c_str());
 		}
-		else if (i == 2)
-			System_Net_Sockets_TcpClient__Connect_address = stoul(hookAddr, nullptr, 16);
+		else if (i == 2) {
+			if (ReadFeatureString(7).empty())
+				ChangeFeatureString("tcpClientConnectRVA", 7, hookAddr.c_str());
+		}
 		hookAddr = "";
 	}
 	delete buffer;
@@ -266,8 +266,10 @@ static void LoadCustomIPFromResource(JNIEnv* env, jobject ctx)
 			str = "";
 			continue;
 		}
-		customIP = str.substr(0, str.find(':'));
-		customPort = stoi(str.substr(str.find(':') + 1));
+		if (ReadFeatureString(3).empty())
+			ChangeFeatureString("newIPAddr", 3, str.substr(0, str.find(':')).c_str());
+		if (ReadFeatureInt(4) == 0)
+			ChangeFeatureInt("newPort", 4, stoi(str.substr(str.find(':') + 1)));
 		LOGI("Default custom IP server: %s", str.c_str());
 		break;
 	}
@@ -276,7 +278,7 @@ static void LoadCustomIPFromResource(JNIEnv* env, jobject ctx)
 }
 
 extern "C" JNIEXPORT void JNICALL Java_com_ehvn_nroipchanger_Main_Init(JNIEnv* env, jclass clazz, jobject ctx) {
-	env->GetJavaVM(&jvm);
+	InitClasses(env);
 	LOGI("Package name: %s", ToStdString(env, GetPackageName(env, ctx)).c_str());
 	if (strcmp(ENV_VERSION, "nightly") == 0)
 		ShowToast("NROIPChanger Nightly (" ABI ")\n" REPO, ToastLength::LENGTH_LONG);
@@ -287,13 +289,4 @@ extern "C" JNIEXPORT void JNICALL Java_com_ehvn_nroipchanger_Main_Init(JNIEnv* e
 	LoadCustomIPFromResource(env, ctx);
 	pthread_t ptid;
 	pthread_create(&ptid, nullptr, Initialize, nullptr);
-}
-
-extern "C" JNIEXPORT jint JNICALL JNI_OnLoad(JavaVM* vm, void* reserved) {
-	JNIEnv* env;
-	vm->GetEnv((void**)&env, JNI_VERSION_1_6);
-	env->GetJavaVM(&jvm);
-	jclass clasz = env->FindClass("com/ehvn/nroipchanger/Utils");
-	utilsClass = (jclass)env->NewGlobalRef(clasz);
-	return JNIOnLoad(vm, reserved);
 }

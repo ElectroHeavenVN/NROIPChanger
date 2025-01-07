@@ -472,73 +472,73 @@ public class Menu {
                 featNum = i - subFeat;
             }
             String[] strSplit = feature.split("_");
-            String featureName = Strings.fromFeature(strSplit[1]);
+            String featureID = strSplit[1];
             switch (strSplit[0]) {
                 case "Toggle":
-                    Switch(linearLayout, featNum, featureName, switchedOn);
+                    Switch(linearLayout, featNum, featureID, switchedOn);
                     break;
                 case "SeekBar":
                     if (strSplit.length == 4)
-                        SeekBar(linearLayout, featNum, featureName, Integer.parseInt(strSplit[2]), Integer.parseInt(strSplit[3]), 0);
+                        SeekBar(linearLayout, featNum, featureID, Integer.parseInt(strSplit[2]), Integer.parseInt(strSplit[3]), 0);
                     else if (strSplit.length == 5)
-                        SeekBar(linearLayout, featNum, featureName, Integer.parseInt(strSplit[2]), Integer.parseInt(strSplit[3]), Integer.parseInt(strSplit[4]));
+                        SeekBar(linearLayout, featNum, featureID, Integer.parseInt(strSplit[2]), Integer.parseInt(strSplit[3]), Integer.parseInt(strSplit[4]));
                     break;
                 case "Button":
-                    Button(linearLayout, featNum, featureName);
+                    Button(linearLayout, featNum, featureID);
                     break;
                 case "ButtonOnOff":
-                    ButtonOnOff(linearLayout, featNum, featureName, switchedOn);
+                    ButtonOnOff(linearLayout, featNum, featureID, switchedOn);
                     break;
                 case "Spinner":
-                    TextView(linearLayout, featureName);
-                    Spinner(linearLayout, featNum, featureName, strSplit[2]);
+                    TextView(linearLayout, featureID);
+                    Spinner(linearLayout, featNum, featureID, strSplit[2]);
                     break;
                 case "InputText":
-                    InputText(linearLayout, featNum, featureName);
+                    InputText(linearLayout, featNum, featureID);
                     break;
                 case "InputValue":
                     if (strSplit.length == 3)
-                        InputNum(linearLayout, featNum, strSplit[2], Integer.parseInt(featureName));
+                        InputNum(linearLayout, featNum, featureID, Integer.parseInt(strSplit[2]));
                     if (strSplit.length == 2)
-                        InputNum(linearLayout, featNum, featureName, 0);
+                        InputNum(linearLayout, featNum, featureID, 0);
                     break;
                 case "InputLValue":
                     if (strSplit.length == 3)
-                        InputLNum(linearLayout, featNum, strSplit[2], Long.parseLong(featureName));
+                        InputLNum(linearLayout, featNum, featureID, Long.parseLong(strSplit[2]));
                     if (strSplit.length == 2)
-                        InputLNum(linearLayout, featNum, featureName, 0);
+                        InputLNum(linearLayout, featNum, featureID, 0);
                     break;
                 case "CheckBox":
-                    CheckBox(linearLayout, featNum, featureName, switchedOn);
+                    CheckBox(linearLayout, featNum, featureID, switchedOn);
                     break;
                 case "RadioButton":
-                    RadioButton(linearLayout, featNum, featureName, strSplit[2]);
+                    RadioButton(linearLayout, featNum, featureID, strSplit[2]);
                     break;
                 case "Collapse":
-                    Collapse(linearLayout, featureName, switchedOn);
+                    Collapse(linearLayout, featureID, switchedOn);
                     subFeat++;
                     break;
                 case "ButtonLink":
                     subFeat++;
-                    ButtonLink(linearLayout, featureName, strSplit[2]);
+                    ButtonLink(linearLayout, featureID, strSplit[2]);
                     break;
                 case "Category":
                     subFeat++;
-                    Category(linearLayout, featureName);
+                    Category(linearLayout, featureID);
                     break;
                 case "RichTextView":
                     subFeat++;
-                    TextView(linearLayout, featureName);
+                    TextView(linearLayout, featureID);
                     break;
                 case "RichWebView":
                     subFeat++;
-                    WebTextView(linearLayout, featureName);
+                    WebTextView(linearLayout, featureID);
                     break;
             }
         }
     }
 
-    private void Switch(LinearLayout linLayout, final int featNum, final String featName, boolean swiOn) {
+    private void Switch(LinearLayout linLayout, final int featNum, final String featureID, boolean swiOn) {
         final Switch switchR = new Switch(getContext);
         ColorStateList buttonStates = new ColorStateList(
                 new int[][]{
@@ -561,13 +561,13 @@ public class Menu {
                 Log.d(TAG, String.valueOf(ex));
             }
         }
-        switchR.setText(featName);
+        switchR.setText(Strings.fromFeature(featureID));
         switchR.setTextColor(TEXT_COLOR_2);
         switchR.setPadding(10, 5, 0, 5);
-        switchR.setChecked(Preferences.loadPrefBool(featName, featNum, swiOn));
+        switchR.setChecked(Preferences.loadPrefBool(featureID, featNum, swiOn));
         switchR.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton compoundButton, boolean bool) {
-                Preferences.changeFeatureBool(featName, featNum, bool);
+                Preferences.changeFeatureBool(featureID, featNum, bool);
                 switch (featNum) {
                     case -1: //Save perferences
                         Preferences.with(switchR.getContext()).writeBoolean(-1, bool);
@@ -585,8 +585,8 @@ public class Menu {
         linLayout.addView(switchR);
     }
 
-    private void SeekBar(LinearLayout linLayout, final int featNum, final String featName, final int min, int max, int value) {
-        int loadedProg = Preferences.loadPrefInt(featName, featNum);
+    private void SeekBar(LinearLayout linLayout, final int featNum, final String featureID, final int min, int max, int value) {
+        int loadedProg = Preferences.loadPrefInt(featureID, featNum);
         LinearLayout linearLayout = new LinearLayout(getContext);
         linearLayout.setPadding(10, 5, 0, 5);
         linearLayout.setOrientation(LinearLayout.VERTICAL);
@@ -603,16 +603,16 @@ public class Menu {
         if (loadedProg == 0)
         {
             if (value != 0) {
-                textView.setText(Html.fromHtml(featName + ": <font color='" + NumberTxtColor + "'>" + Math.max(min, value)));
+                textView.setText(Html.fromHtml(Strings.fromFeature(featureID) + ": <font color='" + NumberTxtColor + "'>" + Math.max(min, value)));
                 seekBar.setProgress(Math.max(min, value));
             }
             else {
-                textView.setText(Html.fromHtml(featName + ": <font color='" + NumberTxtColor + "'>" + min));
+                textView.setText(Html.fromHtml(Strings.fromFeature(featureID) + ": <font color='" + NumberTxtColor + "'>" + min));
                 seekBar.setProgress(min);
             }
         }
         else {
-            textView.setText(Html.fromHtml(featName + ": <font color='" + NumberTxtColor + "'>" + Math.max(min, loadedProg)));
+            textView.setText(Html.fromHtml(Strings.fromFeature(featureID) + ": <font color='" + NumberTxtColor + "'>" + Math.max(min, loadedProg)));
             seekBar.setProgress(Math.max(min, loadedProg));
         }
         seekBar.getThumb().setColorFilter(SeekBarColor, PorterDuff.Mode.SRC_ATOP);
@@ -627,8 +627,8 @@ public class Menu {
             public void onProgressChanged(SeekBar seekBar, int i, boolean z) {
                 //if progress is greater than minimum, don't go below. Else, set progress
                 seekBar.setProgress(i < min ? min : i);
-                Preferences.changeFeatureInt(featName, featNum, i < min ? min : i);
-                textView.setText(Html.fromHtml(featName + ": <font color='" + NumberTxtColor + "'>" + (i < min ? min : i)));
+                Preferences.changeFeatureInt(featureID, featNum, i < min ? min : i);
+                textView.setText(Html.fromHtml(Strings.fromFeature(featureID) + ": <font color='" + NumberTxtColor + "'>" + (i < min ? min : i)));
             }
         });
         linearLayout.addView(textView);
@@ -637,14 +637,14 @@ public class Menu {
         linLayout.addView(linearLayout);
     }
 
-    private void Button(LinearLayout linLayout, final int featNum, final String featName) {
+    private void Button(LinearLayout linLayout, final int featNum, final String featureID) {
         final Button button = new Button(getContext);
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(MATCH_PARENT, MATCH_PARENT);
         layoutParams.setMargins(7, 5, 7, 5);
         button.setLayoutParams(layoutParams);
         button.setTextColor(TEXT_COLOR_2);
         button.setAllCaps(false); //Disable caps to support html
-        button.setText(Html.fromHtml(featName));
+        button.setText(Html.fromHtml(Strings.fromFeature(featureID)));
         button.setBackgroundColor(BTN_COLOR);
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -658,21 +658,21 @@ public class Menu {
                         stopChecking = true;
                         break;
                 }
-                Preferences.changeFeatureInt(featName, featNum, 0);
+                Preferences.changeFeatureInt(featureID, featNum, 0);
             }
         });
 
         linLayout.addView(button);
     }
 
-    private void ButtonLink(LinearLayout linLayout, final String featName, final String url) {
+    private void ButtonLink(LinearLayout linLayout, final String featureID, final String url) {
         final Button button = new Button(getContext);
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(MATCH_PARENT, MATCH_PARENT);
         layoutParams.setMargins(7, 5, 7, 5);
         button.setLayoutParams(layoutParams);
         button.setAllCaps(false); //Disable caps to support html
         button.setTextColor(TEXT_COLOR_2);
-        button.setText(Html.fromHtml(featName));
+        button.setText(Html.fromHtml(Strings.fromFeature(featureID)));
         button.setBackgroundColor(BTN_COLOR);
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -685,7 +685,7 @@ public class Menu {
         linLayout.addView(button);
     }
 
-    private void ButtonOnOff(LinearLayout linLayout, final int featNum, String featName, boolean switchedOn) {
+    private void ButtonOnOff(LinearLayout linLayout, final int featNum, String featureID, boolean switchedOn) {
         final Button button = new Button(getContext);
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(MATCH_PARENT, MATCH_PARENT);
         layoutParams.setMargins(7, 5, 7, 5);
@@ -693,14 +693,13 @@ public class Menu {
         button.setTextColor(TEXT_COLOR_2);
         button.setAllCaps(false); //Disable caps to support html
 
-        final String finalfeatName = featName.replace("OnOff_", "");
-        boolean isOn = Preferences.loadPrefBool(featName, featNum, switchedOn);
+        boolean isOn = Preferences.loadPrefBool(featureID, featNum, switchedOn);
         if (isOn) {
-            button.setText(Html.fromHtml(finalfeatName + ": " + Strings.on()));
+            button.setText(Html.fromHtml(Strings.fromFeature(featureID) + ": " + Strings.on()));
             button.setBackgroundColor(BtnON);
             isOn = false;
         } else {
-            button.setText(Html.fromHtml(finalfeatName + ": " + Strings.off()));
+            button.setText(Html.fromHtml(Strings.fromFeature(featureID) + ": " + Strings.off()));
             button.setBackgroundColor(BtnOFF);
             isOn = true;
         }
@@ -709,14 +708,13 @@ public class Menu {
             boolean isOn = finalIsOn;
 
             public void onClick(View v) {
-                Preferences.changeFeatureBool(finalfeatName, featNum, isOn);
-                //Log.d(TAG, finalfeatName + " " + featNum + " " + isActive2);
+                Preferences.changeFeatureBool(featureID, featNum, isOn);
                 if (isOn) {
-                    button.setText(Html.fromHtml(finalfeatName + ": " + Strings.on()));
+                    button.setText(Html.fromHtml(Strings.fromFeature(featureID) + ": " + Strings.on()));
                     button.setBackgroundColor(BtnON);
                     isOn = false;
                 } else {
-                    button.setText(Html.fromHtml(finalfeatName + ": " + Strings.off()));
+                    button.setText(Html.fromHtml(Strings.fromFeature(featureID) + ": " + Strings.off()));
                     button.setBackgroundColor(BtnOFF);
                     isOn = true;
                 }
@@ -725,8 +723,7 @@ public class Menu {
         linLayout.addView(button);
     }
 
-    private void Spinner(LinearLayout linLayout, final int featNum, final String featName, final String list) {
-        Log.d(TAG, "spinner " + featNum + " " + featName + " " + list);
+    private void Spinner(LinearLayout linLayout, final int featNum, final String featureID, final String list) {
         final List<String> lists = new LinkedList<>(Arrays.asList(list.split(",")));
 
         // Create another LinearLayout as a workaround to use it as a background
@@ -746,7 +743,7 @@ public class Menu {
         aa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         //Setting the ArrayAdapter data on the Spinner'
         spinner.setAdapter(aa);
-        spinner.setSelection(Preferences.loadPrefInt(featName, featNum));
+        spinner.setSelection(Preferences.loadPrefInt(featureID, featNum));
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
@@ -762,14 +759,14 @@ public class Menu {
         linLayout.addView(linearLayout2);
     }
 
-    private void InputNum(LinearLayout linLayout, final int featNum, final String featName, final int maxValue) {
+    private void InputNum(LinearLayout linLayout, final int featNum, final String featureID, final int maxValue) {
         LinearLayout linearLayout = new LinearLayout(getContext);
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(MATCH_PARENT, MATCH_PARENT);
         layoutParams.setMargins(7, 5, 7, 5);
 
         final Button button = new Button(getContext);
-        int num = Preferences.loadPrefInt(featName, featNum);
-        button.setText(Html.fromHtml(featName + ": <font color='" + NumberTxtColor + "'>" + num + "</font>"));
+        int num = Preferences.loadPrefInt(featureID, featNum);
+        button.setText(Html.fromHtml(Strings.fromFeature(featureID) + ": <font color='" + NumberTxtColor + "'>" + num + "</font>"));
         button.setAllCaps(false);
         button.setLayoutParams(layoutParams);
         button.setBackgroundColor(BTN_COLOR);
@@ -821,8 +818,8 @@ public class Menu {
                                 num = Integer.MAX_VALUE;
                         }
 
-                        button.setText(Html.fromHtml(featName + ": <font color='" + NumberTxtColor + "'>" + num + "</font>"));
-                        Preferences.changeFeatureInt(featName, featNum, num);
+                        button.setText(Html.fromHtml(Strings.fromFeature(featureID) + ": <font color='" + NumberTxtColor + "'>" + num + "</font>"));
+                        Preferences.changeFeatureInt(featureID, featNum, num);
                         editText.setFocusable(false);
                     }
                 });
@@ -849,14 +846,14 @@ public class Menu {
         linLayout.addView(linearLayout);
     }
 
-    private void InputLNum(LinearLayout linLayout, final int featNum, final String featName, final long maxValue) {
+    private void InputLNum(LinearLayout linLayout, final int featNum, final String featureID, final long maxValue) {
         LinearLayout linearLayout = new LinearLayout(getContext);
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(MATCH_PARENT, MATCH_PARENT);
         layoutParams.setMargins(7, 5, 7, 5);
 
         final Button button = new Button(getContext);
-        long num = Preferences.loadPrefLong(featName, featNum);
-        button.setText(Html.fromHtml(featName + ": <font color='" + NumberTxtColor + "'>" + num + "</font>"));
+        long num = Preferences.loadPrefLong(featureID, featNum);
+        button.setText(Html.fromHtml(Strings.fromFeature(featureID) + ": <font color='" + NumberTxtColor + "'>" + num + "</font>"));
         button.setAllCaps(false);
         button.setLayoutParams(layoutParams);
         button.setBackgroundColor(BTN_COLOR);
@@ -908,8 +905,8 @@ public class Menu {
                                 num = Long.MAX_VALUE;
                         }
 
-                        button.setText(Html.fromHtml(featName + ": <font color='" + NumberTxtColor + "'>" + num + "</font>"));
-                        Preferences.changeFeatureLong(featName, featNum, num);
+                        button.setText(Html.fromHtml(Strings.fromFeature(featureID) + ": <font color='" + NumberTxtColor + "'>" + num + "</font>"));
+                        Preferences.changeFeatureLong(featureID, featNum, num);
 
                         editText.setFocusable(false);
                     }
@@ -937,17 +934,17 @@ public class Menu {
         linLayout.addView(linearLayout);
     }
 
-    private void InputText(LinearLayout linLayout, final int featNum, final String featName) {
+    private void InputText(LinearLayout linLayout, final int featNum, final String featureID) {
         LinearLayout linearLayout = new LinearLayout(getContext);
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(MATCH_PARENT, MATCH_PARENT);
         layoutParams.setMargins(7, 5, 7, 5);
 
         final Button button = new Button(getContext);
 
-        String string = Preferences.loadPrefString(featName, featNum);
+        String string = Preferences.loadPrefString(featureID, featNum);
         if (string.isEmpty())
             string = "[" + Strings.empty() + "]";
-        button.setText(Html.fromHtml(featName + ": <font color='" + NumberTxtColor + "'>" + string + "</font>"));
+        button.setText(Html.fromHtml(Strings.fromFeature(featureID) + ": <font color='" + NumberTxtColor + "'>" + string + "</font>"));
 
         button.setAllCaps(false);
         button.setLayoutParams(layoutParams);
@@ -982,8 +979,8 @@ public class Menu {
                 alertName.setPositiveButton(Strings.ok(), new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
                         String str = editText.getText().toString();
-                        button.setText(Html.fromHtml(featName + ": <font color='" + NumberTxtColor + "'>" + str + "</font>"));
-                        Preferences.changeFeatureString(featName, featNum, str);
+                        button.setText(Html.fromHtml(Strings.fromFeature(featureID) + ": <font color='" + NumberTxtColor + "'>" + str + "</font>"));
+                        Preferences.changeFeatureString(featureID, featNum, str);
                         editText.setFocusable(false);
                     }
                 });
@@ -1011,32 +1008,32 @@ public class Menu {
         linLayout.addView(linearLayout);
     }
 
-    private void CheckBox(LinearLayout linLayout, final int featNum, final String featName, boolean switchedOn) {
+    private void CheckBox(LinearLayout linLayout, final int featNum, final String featureID, boolean switchedOn) {
         final CheckBox checkBox = new CheckBox(getContext);
-        checkBox.setText(featName);
+        checkBox.setText(Strings.fromFeature(featureID));
         checkBox.setTextColor(TEXT_COLOR_2);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
             checkBox.setButtonTintList(ColorStateList.valueOf(CheckBoxColor));
-        checkBox.setChecked(Preferences.loadPrefBool(featName, featNum, switchedOn));
+        checkBox.setChecked(Preferences.loadPrefBool(featureID, featNum, switchedOn));
         checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (checkBox.isChecked()) {
-                    Preferences.changeFeatureBool(featName, featNum, isChecked);
+                    Preferences.changeFeatureBool(featureID, featNum, isChecked);
                 } else {
-                    Preferences.changeFeatureBool(featName, featNum, isChecked);
+                    Preferences.changeFeatureBool(featureID, featNum, isChecked);
                 }
             }
         });
         linLayout.addView(checkBox);
     }
 
-    private void RadioButton(LinearLayout linLayout, final int featNum, String featName, final String list) {
+    private void RadioButton(LinearLayout linLayout, final int featNum, String featureID, final String list) {
         //Credit: LoraZalora
         final List<String> lists = new LinkedList<>(Arrays.asList(list.split(",")));
 
         final TextView textView = new TextView(getContext);
-        textView.setText(featName + ":");
+        textView.setText(Strings.fromFeature(featureID) + ":");
         textView.setTextColor(TEXT_COLOR_2);
 
         final RadioGroup radioGroup = new RadioGroup(getContext);
@@ -1046,11 +1043,11 @@ public class Menu {
 
         for (int i = 0; i < lists.size(); i++) {
             final RadioButton Radioo = new RadioButton(getContext);
-            final String finalfeatName = featName, radioName = lists.get(i);
+            final String radioName = lists.get(i);
             View.OnClickListener first_radio_listener = new View.OnClickListener() {
                 public void onClick(View v) {
-                    textView.setText(Html.fromHtml(finalfeatName + ": <font color='" + NumberTxtColor + "'>" + radioName));
-                    Preferences.changeFeatureInt(finalfeatName, featNum, radioGroup.indexOfChild(Radioo));
+                    textView.setText(Html.fromHtml(Strings.fromFeature(featureID) + ": <font color='" + NumberTxtColor + "'>" + radioName));
+                    Preferences.changeFeatureInt(Strings.fromFeature(featureID), featNum, radioGroup.indexOfChild(Radioo));
                 }
             };
             System.out.println(lists.get(i));
@@ -1062,9 +1059,9 @@ public class Menu {
             radioGroup.addView(Radioo);
         }
 
-        int index = Preferences.loadPrefInt(featName, featNum);
+        int index = Preferences.loadPrefInt(featureID, featNum);
         if (index > 0) { //Preventing it to get an index less than 1. below 1 = null = crash
-            textView.setText(Html.fromHtml(featName + ": <font color='" + NumberTxtColor + "'>" + lists.get(index - 1)));
+            textView.setText(Html.fromHtml(Strings.fromFeature(featureID) + ": <font color='" + NumberTxtColor + "'>" + lists.get(index - 1)));
             ((RadioButton) radioGroup.getChildAt(index)).setChecked(true);
         }
         linLayout.addView(radioGroup);
