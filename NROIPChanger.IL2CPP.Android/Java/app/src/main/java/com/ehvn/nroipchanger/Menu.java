@@ -1094,7 +1094,7 @@ public class Menu {
 
         if (expanded) {
             collapseSub.setVisibility(View.VISIBLE);
-            textView.setText("△ " + text + " △");
+            textView.setText("△ " + Strings.fromFeature(featureID) + " △");
         }
 
         textView.setOnClickListener(new View.OnClickListener() {
@@ -1107,11 +1107,11 @@ public class Menu {
                 isChecked = z;
                 if (z) {
                     collapseSub.setVisibility(View.VISIBLE);
-                    textView.setText("△ " + text + " △");
+                    textView.setText("△ " + Strings.fromFeature(featureID) + " △");
                     return;
                 }
                 collapseSub.setVisibility(View.GONE);
-                textView.setText("▽ " + text + " ▽");
+                textView.setText("▽ " + Strings.fromFeature(featureID) + " ▽");
             }
         });
         collapse.addView(textView);
