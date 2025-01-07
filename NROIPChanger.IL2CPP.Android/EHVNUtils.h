@@ -128,9 +128,7 @@ static std::string ReadFeatureString(int featureNum) {
 		return "";
 	jmethodID jReadFeatureString = env->GetStaticMethodID(preferencesClass, "readFeatureString", "(I)Ljava/lang/String;");
 	jstring ret = (jstring)env->CallStaticObjectMethod(preferencesClass, jReadFeatureString, featureNum);
-	string str = ToStdString(env, ret);
-	jvm->DetachCurrentThread();
-	return str;
+	return std::string(env->GetStringUTFChars(ret, 0));
 }
 
 static bool ReadFeatureBool(int featureNum) {
