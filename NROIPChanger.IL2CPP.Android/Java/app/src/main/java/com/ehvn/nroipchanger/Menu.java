@@ -1119,10 +1119,10 @@ public class Menu {
         linLayout.addView(collapse);
     }
 
-    private void Category(LinearLayout linLayout, String text) {
+    private void Category(LinearLayout linLayout, String featureID) {
         TextView textView = new TextView(getContext);
         textView.setBackgroundColor(CategoryBG);
-        textView.setText(Html.fromHtml(text));
+        textView.setText(Html.fromHtml(Strings.fromFeature(featureID)));
         textView.setGravity(Gravity.CENTER);
         textView.setTextColor(TEXT_COLOR_2);
         textView.setTypeface(null, Typeface.BOLD);
@@ -1130,17 +1130,17 @@ public class Menu {
         linLayout.addView(textView);
     }
 
-    private void TextView(LinearLayout linLayout, String text) {
+    private void TextView(LinearLayout linLayout, String featureID) {
         TextView textView = new TextView(getContext);
-        textView.setText(Html.fromHtml(text));
+        textView.setText(Html.fromHtml(Strings.fromFeature(featureID)));
         textView.setTextColor(TEXT_COLOR_2);
         textView.setPadding(10, 5, 10, 5);
         linLayout.addView(textView);
     }
 
-    private void WebTextView(LinearLayout linLayout, String text) {
+    private void WebTextView(LinearLayout linLayout, String featureID) {
         WebView wView = new WebView(getContext);
-        wView.loadData(text, "text/html", "utf-8");
+        wView.loadData(Strings.fromFeature(featureID), "text/html", "utf-8");
         wView.setBackgroundColor(0x00000000); //Transparent
         wView.setPadding(0, 5, 0, 5);
         wView.getSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);

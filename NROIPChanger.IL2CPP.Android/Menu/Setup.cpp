@@ -3,7 +3,7 @@
 #include "../Includes/Utils.hpp"
 #include <jni.h>
 
-void Init(JNIEnv *env, jobject thiz, jobject ctx, jobject title, jobject subtitle) {
+void InitMenu(JNIEnv *env, jobject thiz, jobject ctx, jobject title, jobject subtitle) {
     //Set sub title
     if (strcmp(ENV_VERSION, "nightly") == 0)
         setText(env, title, "<b>NROIPChanger Nightly</b>");
@@ -29,7 +29,6 @@ int RegisterMenu(JNIEnv *env) {
         {"Icon", "()Ljava/lang/String;", reinterpret_cast<void*>(Icon)},
         {"IconWebViewData", "()Ljava/lang/String;", reinterpret_cast<void*>(IconWebViewData)},
         {"IsGameLibLoaded", "()Z", reinterpret_cast<void*>(isGameLibLoaded)},
-        {"Init", "(Landroid/content/Context;Landroid/widget/TextView;Landroid/widget/TextView;)V", reinterpret_cast<void *>(Init)},
         {"SettingsList", "()[Ljava/lang/String;", reinterpret_cast<void*>(SettingsList)},
         {"GetFeatureList", "()[Ljava/lang/String;", reinterpret_cast<void*>(GetFeatureList)},
     };

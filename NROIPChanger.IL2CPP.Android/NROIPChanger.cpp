@@ -148,6 +148,7 @@ void HOOKCCV System_Net_Sockets_TcpClient__Connect_hook(System_Net_Sockets_TcpCl
 #pragma endregion
 
 void Changes(JNIEnv* env, jclass clazz, jobject obj, jint featNum, jstring featureID, jint value, jlong Lvalue, jboolean boolean, jstring text) {
+	//LOGI("Changes: featNum: %d, value: %d, Lvalue: %lld, boolean: %d, text: %s", featNum, value, Lvalue, boolean, env->GetStringUTFChars(text, 0));
 	switch (featNum) 
 	{
 		case 1: //  on/off
@@ -225,16 +226,22 @@ static void LoadHookAddressesFromResource(JNIEnv* env, jobject ctx)
 	string hookAddr;
 	for (int i = 0; getline(ss, hookAddr, '|'); i++) {
 		if (i == 0) {
-			if (ReadFeatureString(5).empty())
+			if (ReadFeatureString(5).empty()) {
 				ChangeFeatureString("utf8CreateStringRVA", 5, hookAddr.c_str());
+				LOGI("Default utf8CreateStringRVA: %s", hookAddr.c_str());
+			}
 		}
 		else if (i == 1) {
-			if (ReadFeatureString(6).empty())
+			if (ReadFeatureString(6).empty()) {
 				ChangeFeatureString("utf16CreateStringRVA", 6, hookAddr.c_str());
+				LOGI("Default utf16CreateStringRVA: %s", hookAddr.c_str());
+			}
 		}
 		else if (i == 2) {
-			if (ReadFeatureString(7).empty())
+			if (ReadFeatureString(7).empty()) {
 				ChangeFeatureString("tcpClientConnectRVA", 7, hookAddr.c_str());
+				LOGI("Default tcpClientConnectRVA: %s", hookAddr.c_str());
+			}
 		}
 		hookAddr = "";
 	}
@@ -277,6 +284,14 @@ static void LoadCustomIPFromResource(JNIEnv* env, jobject ctx)
 	AAsset_close(asset);
 }
 
+//context only available after the menu is initialized, so we need to load the resources in the Init function
+static void LoadResources(JNIEnv* env, jobject thiz, jobject ctx, jobject title, jobject subtitle)
+{
+	InitMenu(env, thiz, ctx, title, subtitle);
+	LoadHookAddressesFromResource(env, ctx);
+	LoadCustomIPFromResource(env, ctx);
+}
+
 extern "C" JNIEXPORT void JNICALL Java_com_ehvn_nroipchanger_Main_Init(JNIEnv* env, jclass clazz, jobject ctx) {
 	InitClasses(env);
 	LOGI("Package name: %s", ToStdString(env, GetPackageName(env, ctx)).c_str());
@@ -285,8 +300,10 @@ extern "C" JNIEXPORT void JNICALL Java_com_ehvn_nroipchanger_Main_Init(JNIEnv* e
 	else
 		ShowToast("NROIPChanger v" ENV_VERSION " (" ABI ")\n" REPO, ToastLength::LENGTH_LONG);
 	ShowToast("Do not install from other sources!", ToastLength::LENGTH_SHORT);
-	LoadHookAddressesFromResource(env, ctx);
-	LoadCustomIPFromResource(env, ctx);
 	pthread_t ptid;
 	pthread_create(&ptid, nullptr, Initialize, nullptr);
+	JNINativeMethod methods[] = {
+		{"Init", "(Landroid/content/Context;Landroid/widget/TextView;Landroid/widget/TextView;)V", reinterpret_cast<void*>(LoadResources)},
+	};
+	env->RegisterNatives(env->FindClass("com/ehvn/nroipchanger/Menu"), methods, 1);
 }

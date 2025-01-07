@@ -79,7 +79,7 @@ public class Preferences {
     }
 
     public static boolean loadPrefBool(String featureID, int featureNum, boolean bDef) {
-        boolean bool = readFeatureBool(featureNum);
+        boolean bool = Preferences.with(context).readBoolean(featureNum, bDef);
         if (featureNum == -1) {
             loadPref = bool;
         }

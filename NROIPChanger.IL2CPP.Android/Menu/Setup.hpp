@@ -2,6 +2,5 @@
 #define SETUP_HPP
 
 #include <jni.h>
-jint JNICALL JNIOnLoad(JavaVM* vm, void* reserved);
-
+void InitMenu(JNIEnv* env, jobject thiz, jobject ctx, jobject title, jobject subtitle);
 #endif // !SETUP_HPP
