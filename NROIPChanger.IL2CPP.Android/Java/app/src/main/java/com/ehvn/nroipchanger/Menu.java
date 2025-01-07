@@ -1067,7 +1067,7 @@ public class Menu {
         linLayout.addView(radioGroup);
     }
 
-    private void Collapse(LinearLayout linLayout, final String text, final boolean expanded) {
+    private void Collapse(LinearLayout linLayout, final String featureID, final boolean expanded) {
         LinearLayout.LayoutParams layoutParamsLL = new LinearLayout.LayoutParams(MATCH_PARENT, MATCH_PARENT);
         layoutParamsLL.setMargins(0, 5, 0, 0);
 
@@ -1086,7 +1086,7 @@ public class Menu {
 
         final TextView textView = new TextView(getContext);
         textView.setBackgroundColor(CollapseColor);
-        textView.setText("▽ " + text + " ▽");
+        textView.setText("▽ " + Strings.fromFeature(featureID) + " ▽");
         textView.setGravity(Gravity.CENTER);
         textView.setTextColor(TEXT_COLOR_2);
         textView.setTypeface(null, Typeface.BOLD);

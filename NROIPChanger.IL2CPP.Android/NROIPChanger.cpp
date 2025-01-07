@@ -273,11 +273,11 @@ static void LoadCustomIPFromResource(JNIEnv* env, jobject ctx)
 			str = "";
 			continue;
 		}
-		if (ReadFeatureString(3).empty())
+		if (ReadFeatureString(3).empty()) {
 			ChangeFeatureString("newIPAddr", 3, str.substr(0, str.find(':')).c_str());
-		if (ReadFeatureInt(4) == 0)
 			ChangeFeatureInt("newPort", 4, stoi(str.substr(str.find(':') + 1)));
-		LOGI("Default custom IP server: %s", str.c_str());
+			LOGI("Default custom IP server: %s", str.c_str());
+		}
 		break;
 	}
 	delete buffer;
