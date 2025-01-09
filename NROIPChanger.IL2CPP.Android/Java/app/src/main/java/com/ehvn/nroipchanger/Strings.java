@@ -7,7 +7,7 @@ public final class Strings {
 
     static HashMap<String, String[]> features = new HashMap<String, String[]>();
 
-    static bool initialized = false;
+    static boolean initialized = false;
 
     static void Initialize()
     {
