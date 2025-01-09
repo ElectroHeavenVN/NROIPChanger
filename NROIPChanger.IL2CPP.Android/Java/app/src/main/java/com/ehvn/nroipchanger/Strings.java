@@ -41,6 +41,7 @@ public final class Strings {
         features.put("forceLoadMenu", new String[] {"Buộc tải menu", "Force load menu"});
         features.put("empty", new String[] {"Trống", "Empty"});
 
+        features.put("installFromOtherSourcesWarning", new String[] {"Không cài từ các nguồn không rõ!", "Do not install from other sources!"});
         features.put("defaultIPAddress", new String[] {"Địa chỉ máy chủ mặc định", "Default server address"});
         features.put("defaultRVAs", new String[] {"RVA mặc định", "Default RVAs"});
     }
