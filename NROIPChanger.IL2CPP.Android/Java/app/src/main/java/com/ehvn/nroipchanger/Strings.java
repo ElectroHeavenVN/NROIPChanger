@@ -150,4 +150,9 @@ public final class Strings {
     {
         return fromFeature("defaultRVAs");
     }
+
+    public static String installFromOtherSourcesWarning()
+    {
+        return fromFeature("installFromOtherSourcesWarning");
+    }
 }
