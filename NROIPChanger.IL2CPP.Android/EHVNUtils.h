@@ -19,6 +19,7 @@ System_String_o* (*System_String__CreateString_utf8)(void* instance, const char*
 static JavaVM* jvm;
 static jclass preferencesClass;
 static jclass utilsClass;
+static jclass stringsClass;
 
 static std::string ToStdString(JNIEnv * env, jstring jStr);
 
@@ -63,6 +64,17 @@ static void ShowToastOnUIThread(std::string content, int duration)
 	ShowToastOnUIThread(content.c_str(), duration);
 }
 
+static std::string GetStringValue(const char* key) {
+	JNIEnv* env;
+	if (jvm->AttachCurrentThread(&env, nullptr) != JNI_OK)
+		return "";
+	jmethodID jKeyMethod = env->GetStaticMethodID(stringsClass, key, "()Ljava/lang/String;");
+	jstring jValue = (jstring)env->CallStaticObjectMethod(stringsClass, jKeyMethod);
+	std::string ret = ToStdString(env, jValue);
+	jvm->DetachCurrentThread();
+	return ret;
+}
+
 static void ChangeFeatureInt(const char* featureID, int featureNum, int value) {
 	JNIEnv* env;
 	if (jvm->AttachCurrentThread(&env, nullptr) != JNI_OK)
@@ -70,7 +82,7 @@ static void ChangeFeatureInt(const char* featureID, int featureNum, int value) {
 	jstring jFeatureID = env->NewStringUTF(featureID);
 	jmethodID jChangeFeatureInt = env->GetStaticMethodID(preferencesClass, "changeFeatureInt", "(Ljava/lang/String;II)V");
 	env->CallStaticVoidMethod(preferencesClass, jChangeFeatureInt, jFeatureID, featureNum, value);
-	//jvm->DetachCurrentThread();
+	jvm->DetachCurrentThread();
 }
 
 static void ChangeFeatureLong(const char* featureID, int featureNum, long value) {
@@ -80,7 +92,7 @@ static void ChangeFeatureLong(const char* featureID, int featureNum, long value)
     jstring jFeatureID = env->NewStringUTF(featureID);
     jmethodID jChangeFeatureInt = env->GetStaticMethodID(preferencesClass, "changeFeatureLong", "(Ljava/lang/String;IJ)V");
     env->CallStaticVoidMethod(preferencesClass, jChangeFeatureInt, jFeatureID, featureNum, value);
-    //jvm->DetachCurrentThread();
+    jvm->DetachCurrentThread();
 }
 
 static void ChangeFeatureString(const char* featureID, int featureNum, const char* value) {
@@ -91,7 +103,7 @@ static void ChangeFeatureString(const char* featureID, int featureNum, const cha
 	jmethodID jChangeFeatureString = env->GetStaticMethodID(preferencesClass, "changeFeatureString", "(Ljava/lang/String;ILjava/lang/String;)V");
 	jstring jValue = env->NewStringUTF(value);
 	env->CallStaticVoidMethod(preferencesClass, jChangeFeatureString, jFeatureID, featureNum, jValue);
-	//jvm->DetachCurrentThread();
+	jvm->DetachCurrentThread();
 }
 
 static void ChangeFeatureBool(const char* featureID, int featureNum, bool value) {
@@ -110,7 +122,7 @@ static int ReadFeatureInt(int featureNum) {
 		return 0;
 	jmethodID jReadFeatureInt = env->GetStaticMethodID(preferencesClass, "readFeatureInt", "(I)I");
 	int ret = env->CallStaticIntMethod(preferencesClass, jReadFeatureInt, featureNum);
-	//jvm->DetachCurrentThread();
+	jvm->DetachCurrentThread();
 	return ret;
 }
 
@@ -120,7 +132,7 @@ static long ReadFeatureLong(int featureNum) {
 		return 0;
 	jmethodID jReadFeatureLong = env->GetStaticMethodID(preferencesClass, "readFeatureLong", "(I)J");
 	long ret = env->CallStaticLongMethod(preferencesClass, jReadFeatureLong, featureNum);
-	//jvm->DetachCurrentThread();
+	jvm->DetachCurrentThread();
 	return ret;
 }
 
@@ -139,7 +151,7 @@ static bool ReadFeatureBool(int featureNum) {
 		return false;
 	jmethodID jReadFeatureBool = env->GetStaticMethodID(preferencesClass, "readFeatureBool", "(I)Z");
 	bool ret = env->CallStaticBooleanMethod(preferencesClass, jReadFeatureBool, featureNum);
-	//jvm->DetachCurrentThread();
+	jvm->DetachCurrentThread();
 	return ret;
 }
 
@@ -149,6 +161,8 @@ static void InitClasses(JNIEnv* env) {
     utilsClass = (jclass)env->NewGlobalRef(clasz);
 	clasz = env->FindClass("com/ehvn/nroipchanger/Preferences");
 	preferencesClass = (jclass)env->NewGlobalRef(clasz);
+	clasz = env->FindClass("com/ehvn/nroipchanger/Strings");
+	stringsClass = (jclass)env->NewGlobalRef(clasz);
 }
 
 static jstring GetPackageName(JNIEnv* env, jobject activity) {

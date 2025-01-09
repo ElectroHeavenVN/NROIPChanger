@@ -111,9 +111,9 @@ static void ShowToast(char* content, int duration, bool forceShow = false)
 	ShowToastOnUIThread(content, duration);
 }
 
-static void ShowToast(string content, int duration)
+static void ShowToast(string content, int duration, bool forceShow = false)
 {
-	ShowToast((char*)content.c_str(), duration);
+	ShowToast((char*)content.c_str(), duration, forceShow);
 }
 
 static bool ChangeIP(System_Net_Sockets_TcpClient_o* _this, System_String_o* hostname, int32_t port, void (HOOKCCV* original)(System_Net_Sockets_TcpClient_o*, System_String_o*, int32_t, const MethodInfo*))
@@ -224,27 +224,33 @@ static void LoadHookAddressesFromResource(JNIEnv* env, jobject ctx)
 	AAsset_read(asset, buffer, size);
 	stringstream ss(buffer);
 	string hookAddr;
+	string defaultRVAs;
+	bool isLoadRVAFromResource = false;
 	for (int i = 0; getline(ss, hookAddr, '|'); i++) {
+		defaultRVAs += hookAddr + ", ";
 		if (i == 0) {
 			if (ReadFeatureString(5).empty()) {
 				ChangeFeatureString("utf8CreateStringRVA", 5, hookAddr.c_str());
-				LOGI("Default utf8CreateStringRVA: %s", hookAddr.c_str());
+				isLoadRVAFromResource = true;
 			}
 		}
 		else if (i == 1) {
 			if (ReadFeatureString(6).empty()) {
 				ChangeFeatureString("utf16CreateStringRVA", 6, hookAddr.c_str());
-				LOGI("Default utf16CreateStringRVA: %s", hookAddr.c_str());
+				isLoadRVAFromResource = true;
 			}
 		}
 		else if (i == 2) {
 			if (ReadFeatureString(7).empty()) {
 				ChangeFeatureString("tcpClientConnectRVA", 7, hookAddr.c_str());
-				LOGI("Default tcpClientConnectRVA: %s", hookAddr.c_str());
+				isLoadRVAFromResource = true;
 			}
 		}
 		hookAddr = "";
 	}
+	defaultRVAs = defaultRVAs.substr(0, defaultRVAs.length() - 2);
+	if (isLoadRVAFromResource)
+		ShowToast(GetStringValue("defaultRVAs") + ": " + defaultRVAs, ToastLength::LENGTH_SHORT, true);
 	delete buffer;
 	AAsset_close(asset);
 }
@@ -276,7 +282,7 @@ static void LoadCustomIPFromResource(JNIEnv* env, jobject ctx)
 		if (ReadFeatureString(3).empty()) {
 			ChangeFeatureString("newIPAddr", 3, str.substr(0, str.find(':')).c_str());
 			ChangeFeatureInt("newPort", 4, stoi(str.substr(str.find(':') + 1)));
-			LOGI("Default custom IP server: %s", str.c_str());
+			ShowToast(GetStringValue("defaultIPAddress") + ": " + str, ToastLength::LENGTH_SHORT, true);
 		}
 		break;
 	}
@@ -299,7 +305,10 @@ extern "C" JNIEXPORT void JNICALL Java_com_ehvn_nroipchanger_Main_Init(JNIEnv* e
 		ShowToast("NROIPChanger Nightly (" ABI ")\n" REPO, ToastLength::LENGTH_LONG);
 	else
 		ShowToast("NROIPChanger v" ENV_VERSION " (" ABI ")\n" REPO, ToastLength::LENGTH_LONG);
-	ShowToast("Do not install from other sources!", ToastLength::LENGTH_SHORT);
+	string str = GetStringValue("installFromOtherSourcesWarning");
+    if (str != "Do not install from other sources!" && str != utf8::utf16to8(std::u16string(u"Không cài từ các nguồn không rõ!")))
+		str = "Do not install from other sources!";
+	ShowToast(str, ToastLength::LENGTH_SHORT);
 	pthread_t ptid;
 	pthread_create(&ptid, nullptr, Initialize, nullptr);
 	JNINativeMethod methods[] = {
