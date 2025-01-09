@@ -52,11 +52,16 @@ static void ShowToastOnUIThread(JNIEnv* env, jstring content, int duration)
 static void ShowToastOnUIThread(const char* content, int duration)
 {
 	JNIEnv* env;
-	if (jvm->AttachCurrentThread(&env, nullptr) != JNI_OK)
-        return;
+	bool needDetach = false;
+	if (jvm->GetEnv((void**)&env, JNI_VERSION_1_6) != JNI_OK) {
+		if (jvm->AttachCurrentThread(&env, nullptr) != JNI_OK)
+			return;
+		needDetach = true;
+	}
 	jstring jstr = env->NewStringUTF(content);
 	ShowToastOnUIThread(env, jstr, duration);
-	jvm->DetachCurrentThread();
+	if (needDetach)
+		jvm->DetachCurrentThread();
 }
 
 static void ShowToastOnUIThread(std::string content, int duration)
@@ -66,25 +71,35 @@ static void ShowToastOnUIThread(std::string content, int duration)
 
 static std::string GetStringValue(const char* key) {
 	JNIEnv* env;
-	if (jvm->AttachCurrentThread(&env, nullptr) != JNI_OK)
-		return key;
+	bool needDetach = false;
+	if (jvm->GetEnv((void**)&env, JNI_VERSION_1_6) != JNI_OK) {
+		if (jvm->AttachCurrentThread(&env, nullptr) != JNI_OK)
+			return key;
+		needDetach = true;
+	}
 	jmethodID jKeyMethod = env->GetStaticMethodID(stringsClass, key, "()Ljava/lang/String;");
 	if (!jKeyMethod)
 		return key;
 	jstring jValue = (jstring)env->CallStaticObjectMethod(stringsClass, jKeyMethod);
 	std::string ret = ToStdString(env, jValue);
-	//jvm->DetachCurrentThread();
+	if (needDetach)
+		jvm->DetachCurrentThread();
 	return ret;
 }
 
 static void ChangeFeatureInt(const char* featureID, int featureNum, int value) {
 	JNIEnv* env;
-	if (jvm->AttachCurrentThread(&env, nullptr) != JNI_OK)
-		return;
+	bool needDetach = false;
+	if (jvm->GetEnv((void**)&env, JNI_VERSION_1_6) != JNI_OK) {
+		if (jvm->AttachCurrentThread(&env, nullptr) != JNI_OK)
+			return;
+		needDetach = true;
+	}
 	jstring jFeatureID = env->NewStringUTF(featureID);
 	jmethodID jChangeFeatureInt = env->GetStaticMethodID(preferencesClass, "changeFeatureInt", "(Ljava/lang/String;II)V");
 	env->CallStaticVoidMethod(preferencesClass, jChangeFeatureInt, jFeatureID, featureNum, value);
-	jvm->DetachCurrentThread();
+	if (needDetach)
+		jvm->DetachCurrentThread();
 }
 
 static void ChangeFeatureLong(const char* featureID, int featureNum, long value) {
@@ -94,66 +109,98 @@ static void ChangeFeatureLong(const char* featureID, int featureNum, long value)
     jstring jFeatureID = env->NewStringUTF(featureID);
     jmethodID jChangeFeatureInt = env->GetStaticMethodID(preferencesClass, "changeFeatureLong", "(Ljava/lang/String;IJ)V");
     env->CallStaticVoidMethod(preferencesClass, jChangeFeatureInt, jFeatureID, featureNum, value);
-    jvm->DetachCurrentThread();
+    //jvm->DetachCurrentThread();
 }
 
 static void ChangeFeatureString(const char* featureID, int featureNum, const char* value) {
 	JNIEnv* env;
-	if (jvm->AttachCurrentThread(&env, nullptr) != JNI_OK)
-		return;
+	bool needDetach = false;
+	if (jvm->GetEnv((void**)&env, JNI_VERSION_1_6) != JNI_OK) {
+		if (jvm->AttachCurrentThread(&env, nullptr) != JNI_OK)
+			return;
+		needDetach = true;
+	}
 	jstring jFeatureID = env->NewStringUTF(featureID);
 	jmethodID jChangeFeatureString = env->GetStaticMethodID(preferencesClass, "changeFeatureString", "(Ljava/lang/String;ILjava/lang/String;)V");
 	jstring jValue = env->NewStringUTF(value);
 	env->CallStaticVoidMethod(preferencesClass, jChangeFeatureString, jFeatureID, featureNum, jValue);
-	jvm->DetachCurrentThread();
+	if (needDetach)
+		jvm->DetachCurrentThread();
 }
 
 static void ChangeFeatureBool(const char* featureID, int featureNum, bool value) {
 	JNIEnv* env;
-	if (jvm->AttachCurrentThread(&env, nullptr) != JNI_OK)
-		return;
+	bool needDetach = false;
+	if (jvm->GetEnv((void**)&env, JNI_VERSION_1_6) != JNI_OK) {
+		if (jvm->AttachCurrentThread(&env, nullptr) != JNI_OK)
+			return;
+		needDetach = true;
+	}
 	jstring jFeatureID = env->NewStringUTF(featureID);
 	jmethodID jChangeFeatureBool = env->GetStaticMethodID(preferencesClass, "changeFeatureBool", "(Ljava/lang/String;IZ)V");
 	env->CallStaticVoidMethod(preferencesClass, jChangeFeatureBool, jFeatureID, featureNum, value);
-	jvm->DetachCurrentThread();
+	if (needDetach)
+		jvm->DetachCurrentThread();
 }
 
 static int ReadFeatureInt(int featureNum) {
 	JNIEnv* env;
-	if (jvm->AttachCurrentThread(&env, nullptr) != JNI_OK)
-		return 0;
+	bool needDetach = false;
+	if (jvm->GetEnv((void**)&env, JNI_VERSION_1_6) != JNI_OK) {
+		if (jvm->AttachCurrentThread(&env, nullptr) != JNI_OK)
+			return 0;
+		needDetach = true;
+	}
 	jmethodID jReadFeatureInt = env->GetStaticMethodID(preferencesClass, "readFeatureInt", "(I)I");
 	int ret = env->CallStaticIntMethod(preferencesClass, jReadFeatureInt, featureNum);
-	jvm->DetachCurrentThread();
+	if (needDetach)
+		jvm->DetachCurrentThread();
 	return ret;
 }
 
 static long ReadFeatureLong(int featureNum) {
 	JNIEnv* env;
-	if (jvm->AttachCurrentThread(&env, nullptr) != JNI_OK)
-		return 0;
+	bool needDetach = false;
+	if (jvm->GetEnv((void**)&env, JNI_VERSION_1_6) != JNI_OK) {
+		if (jvm->AttachCurrentThread(&env, nullptr) != JNI_OK)
+			return 0L;
+		needDetach = true;
+	}
 	jmethodID jReadFeatureLong = env->GetStaticMethodID(preferencesClass, "readFeatureLong", "(I)J");
 	long ret = env->CallStaticLongMethod(preferencesClass, jReadFeatureLong, featureNum);
-	jvm->DetachCurrentThread();
+	if (needDetach)
+		jvm->DetachCurrentThread();
 	return ret;
 }
 
 static std::string ReadFeatureString(int featureNum) {
 	JNIEnv* env;
-	if (jvm->AttachCurrentThread(&env, nullptr) != JNI_OK)
-		return "";
+	bool needDetach = false;
+	if (jvm->GetEnv((void**)&env, JNI_VERSION_1_6) != JNI_OK) {
+		if (jvm->AttachCurrentThread(&env, nullptr) != JNI_OK)
+			return "";
+		needDetach = true;
+	}
 	jmethodID jReadFeatureString = env->GetStaticMethodID(preferencesClass, "readFeatureString", "(I)Ljava/lang/String;");
 	jstring ret = (jstring)env->CallStaticObjectMethod(preferencesClass, jReadFeatureString, featureNum);
-	return ToStdString(env, ret);
+	std::string str = ToStdString(env, ret);
+	if (needDetach)
+		jvm->DetachCurrentThread();
+	return str;
 }
 
 static bool ReadFeatureBool(int featureNum) {
 	JNIEnv* env;
-	if (jvm->AttachCurrentThread(&env, nullptr) != JNI_OK)
-		return false;
+	bool needDetach = false;
+	if (jvm->GetEnv((void**)&env, JNI_VERSION_1_6) != JNI_OK) {
+		if (jvm->AttachCurrentThread(&env, nullptr) != JNI_OK)
+			return false;
+		needDetach = true;
+	}
 	jmethodID jReadFeatureBool = env->GetStaticMethodID(preferencesClass, "readFeatureBool", "(I)Z");
 	bool ret = env->CallStaticBooleanMethod(preferencesClass, jReadFeatureBool, featureNum);
-	jvm->DetachCurrentThread();
+	if (needDetach)
+		jvm->DetachCurrentThread();
 	return ret;
 }
 

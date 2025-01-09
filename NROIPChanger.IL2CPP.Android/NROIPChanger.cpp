@@ -227,6 +227,9 @@ static void LoadHookAddressesFromResource(JNIEnv* env, jobject ctx)
 	string defaultRVAs;
 	bool isLoadRVAFromResource = false;
 	for (int i = 0; getline(ss, hookAddr, '|'); i++) {
+		DWORD addr = stoul(hookAddr, nullptr, 16);
+		if (addr == 0)
+			break;
 		defaultRVAs += hookAddr + ", ";
 		if (i == 0) {
 			if (ReadFeatureString(5).empty()) {
