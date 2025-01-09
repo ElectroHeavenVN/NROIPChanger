@@ -73,7 +73,7 @@ static std::string GetStringValue(const char* key) {
 		return key;
 	jstring jValue = (jstring)env->CallStaticObjectMethod(stringsClass, jKeyMethod);
 	std::string ret = ToStdString(env, jValue);
-	jvm->DetachCurrentThread();
+	//jvm->DetachCurrentThread();
 	return ret;
 }
 

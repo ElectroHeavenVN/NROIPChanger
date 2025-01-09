@@ -7,8 +7,12 @@ public final class Strings {
 
     static HashMap<String, String[]> features = new HashMap<String, String[]>();
 
-    Strings()
+    static bool initialized = false;
+
+    static void Initialize()
     {
+        if (initialized)
+            return;
         features.put("activate", new String[] {"Kích hoạt", "Activate"});
         features.put("showNoti", new String[] {"Hiện thông báo", "Show notification"});
         features.put("newIPAddr", new String[] {"Địa chỉ IP mới", "New IP address"});
@@ -44,10 +48,13 @@ public final class Strings {
         features.put("installFromOtherSourcesWarning", new String[] {"Không cài từ các nguồn không rõ!", "Do not install from other sources!"});
         features.put("defaultIPAddress", new String[] {"Địa chỉ máy chủ mặc định", "Default server address"});
         features.put("defaultRVAs", new String[] {"RVA mặc định", "Default RVAs"});
+
+        initialized = true;
     }
 
     public static String fromFeature(String feature)
     {
+        Initialize();
         if (features.get(feature) == null)
             return feature;
         if (Utils.GetCurrentLanguage().equals("vi"))
