@@ -67,8 +67,10 @@ static void ShowToastOnUIThread(std::string content, int duration)
 static std::string GetStringValue(const char* key) {
 	JNIEnv* env;
 	if (jvm->AttachCurrentThread(&env, nullptr) != JNI_OK)
-		return "";
+		return key;
 	jmethodID jKeyMethod = env->GetStaticMethodID(stringsClass, key, "()Ljava/lang/String;");
+	if (!jKeyMethod)
+		return key;
 	jstring jValue = (jstring)env->CallStaticObjectMethod(stringsClass, jKeyMethod);
 	std::string ret = ToStdString(env, jValue);
 	jvm->DetachCurrentThread();
