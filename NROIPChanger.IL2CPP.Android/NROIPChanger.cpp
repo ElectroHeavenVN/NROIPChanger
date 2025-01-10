@@ -220,8 +220,9 @@ static void LoadHookAddressesFromResource(JNIEnv* env, jobject ctx)
 	if (nullptr == asset)
 		return;
 	long size = AAsset_getLength(asset);
-	char* buffer = (char*)malloc(sizeof(char) * size);
+	char* buffer = (char*)malloc(sizeof(char) * (size + 1));
 	AAsset_read(asset, buffer, size);
+	buffer[size] = '\0';
 	stringstream ss(buffer);
 	string hookAddr;
 	string defaultRVAs;
