@@ -2,20 +2,34 @@
 #ifndef ANDROID_MOD_MENU_MACROS_H
 #define ANDROID_MOD_MENU_MACROS_H
 
-#if defined(__aarch64__) //Compile for arm64 lib only
-#include "../And64InlineHook/And64InlineHook.hpp"
-#else //Compile for armv7 lib only.
+#if defined(__arm__)
 #include "../Substrate/SubstrateHook.h"
 #include "../Substrate/CydiaSubstrate.h"
 #include "../Includes/Logger.h"
+#elif defined(__aarch64__)
+#include "../And64InlineHook/And64InlineHook.hpp"
+#elif defined(__i386__)
+	//TODO: x86 support
+#error x86 is not supported yet
+#elif defined(__x86_64__)
+	//TODO: x86_64 support
+#error x86_64 is not supported yet
+#else
+#error Unsupported architecture
 #endif
 
-void hook(void *offset, void* ptr, void **orig)
+void hook(void* offset, void* ptr, void** orig)
 {
 #if defined(__aarch64__)
-    A64HookFunction(offset, ptr, orig);
-#else
-    MSHookFunction(offset, ptr, orig);
+	A64HookFunction(offset, ptr, orig);
+#elif defined(__arm__)
+	MSHookFunction(offset, ptr, orig);
+#elif defined(__i386__)
+	//TODO: x86 support
+#elif defined(__x86_64__)
+	//TODO: x86_64 support
+#else 
+#error Unsupported architecture
 #endif
 }
 
