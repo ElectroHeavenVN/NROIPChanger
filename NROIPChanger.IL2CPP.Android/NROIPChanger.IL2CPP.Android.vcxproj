@@ -277,9 +277,6 @@
     <ClCompile Include="And64InlineHook\And64InlineHook.cpp" />
     <ClCompile Include="Includes\Utils.cpp" />
     <ClCompile Include="KittyMemory\KittyMemory.cpp" />
-    <ClCompile Include="KittyMemory\KittyUtils.cpp" />
-    <ClCompile Include="KittyMemory\MemoryBackup.cpp" />
-    <ClCompile Include="KittyMemory\MemoryPatch.cpp" />
     <ClCompile Include="Menu\Jni.cpp" />
     <ClCompile Include="Menu\Menu.cpp" />
     <ClCompile Include="Menu\Setup.cpp" />
@@ -300,9 +297,6 @@
     <ClInclude Include="Includes\Macros.h" />
     <ClInclude Include="Includes\Utils.hpp" />
     <ClInclude Include="KittyMemory\KittyMemory.h" />
-    <ClInclude Include="KittyMemory\KittyUtils.h" />
-    <ClInclude Include="KittyMemory\MemoryBackup.h" />
-    <ClInclude Include="KittyMemory\MemoryPatch.h" />
     <ClInclude Include="Menu\Jni.hpp" />
     <ClInclude Include="Menu\Menu.hpp" />
     <ClInclude Include="Menu\Setup.hpp" />

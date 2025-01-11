@@ -260,9 +260,6 @@
   <ItemGroup>
     <ClCompile Include="And64InlineHook\And64InlineHook.cpp" />
     <ClCompile Include="KittyMemory\KittyMemory.cpp" />
-    <ClCompile Include="KittyMemory\KittyUtils.cpp" />
-    <ClCompile Include="KittyMemory\MemoryBackup.cpp" />
-    <ClCompile Include="KittyMemory\MemoryPatch.cpp" />
     <ClCompile Include="NROIPChanger.cpp" />
     <ClCompile Include="Substrate\hde64.c" />
     <ClCompile Include="Substrate\SubstrateDebug.cpp" />
@@ -280,9 +277,6 @@
     <ClInclude Include="Includes\Macros.h" />
     <ClInclude Include="Includes\Utils.h" />
     <ClInclude Include="KittyMemory\KittyMemory.h" />
-    <ClInclude Include="KittyMemory\KittyUtils.h" />
-    <ClInclude Include="KittyMemory\MemoryBackup.h" />
-    <ClInclude Include="KittyMemory\MemoryPatch.h" />
     <ClInclude Include="NROIPChanger.h" />
     <ClInclude Include="Substrate\Buffer.hpp" />
     <ClInclude Include="Substrate\CydiaSubstrate.h" />

@@ -8,15 +8,6 @@
     <ClCompile Include="KittyMemory\KittyMemory.cpp">
       <Filter>KittyMemory</Filter>
     </ClCompile>
-    <ClCompile Include="KittyMemory\KittyUtils.cpp">
-      <Filter>KittyMemory</Filter>
-    </ClCompile>
-    <ClCompile Include="KittyMemory\MemoryBackup.cpp">
-      <Filter>KittyMemory</Filter>
-    </ClCompile>
-    <ClCompile Include="KittyMemory\MemoryPatch.cpp">
-      <Filter>KittyMemory</Filter>
-    </ClCompile>
     <ClCompile Include="Substrate\hde64.c">
       <Filter>Substrate</Filter>
     </ClCompile>
@@ -56,15 +47,6 @@
       <Filter>Includes</Filter>
     </ClInclude>
     <ClInclude Include="KittyMemory\KittyMemory.h">
-      <Filter>KittyMemory</Filter>
-    </ClInclude>
-    <ClInclude Include="KittyMemory\KittyUtils.h">
-      <Filter>KittyMemory</Filter>
-    </ClInclude>
-    <ClInclude Include="KittyMemory\MemoryBackup.h">
-      <Filter>KittyMemory</Filter>
-    </ClInclude>
-    <ClInclude Include="KittyMemory\MemoryPatch.h">
       <Filter>KittyMemory</Filter>
     </ClInclude>
     <ClInclude Include="utfcpp\utf8.h">
