@@ -108,7 +108,7 @@
     <TargetName>lib$(SolutionName)MIN_$(Platform)</TargetName>
     <IntDir>.temp\$(Platform)\$(Configuration)\</IntDir>
     <UseMultiToolTask>true</UseMultiToolTask>
-    <PackageDebugSymbols>true</PackageDebugSymbols>
+    <PackageDebugSymbols>false</PackageDebugSymbols>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x86'">
     <OutDir>$(SolutionDir)Output\$(Configuration)\Android\</OutDir>
@@ -121,7 +121,7 @@
     <TargetName>lib$(SolutionName)MIN_$(Platform)</TargetName>
     <IntDir>.temp\$(Platform)\$(Configuration)\</IntDir>
     <UseMultiToolTask>true</UseMultiToolTask>
-    <PackageDebugSymbols>true</PackageDebugSymbols>
+    <PackageDebugSymbols>false</PackageDebugSymbols>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM64'">
     <OutDir>$(SolutionDir)Output\$(Configuration)\Android\</OutDir>
@@ -134,7 +134,7 @@
     <TargetName>lib$(SolutionName)MIN_$(Platform)</TargetName>
     <IntDir>.temp\$(Platform)\$(Configuration)\</IntDir>
     <UseMultiToolTask>true</UseMultiToolTask>
-    <PackageDebugSymbols>true</PackageDebugSymbols>
+    <PackageDebugSymbols>false</PackageDebugSymbols>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">
     <OutDir>$(SolutionDir)Output\$(Configuration)\Android\</OutDir>
@@ -147,7 +147,7 @@
     <TargetName>lib$(SolutionName)MIN_$(Platform)</TargetName>
     <IntDir>.temp\$(Platform)\$(Configuration)\</IntDir>
     <UseMultiToolTask>true</UseMultiToolTask>
-    <PackageDebugSymbols>true</PackageDebugSymbols>
+    <PackageDebugSymbols>false</PackageDebugSymbols>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
