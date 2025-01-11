@@ -938,7 +938,7 @@ SubstrateHookFunction(SubstrateProcessRef process, void *symbol, void *replace, 
 #endif
 
 void MSHookFunction(void *symbol, void *replace, void **result) {
-#if defined(__i386__) || defined(__arm__)
+#if defined(__i386__) || defined(__arm__) || defined(__x86_64__)
     SubstrateHookFunction(NULL, symbol, replace, result);
 #endif
 }

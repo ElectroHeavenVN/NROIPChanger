@@ -22,10 +22,10 @@
 #ifndef SUBSTRATE_LOG_HPP
 #define SUBSTRATE_LOG_HPP
 
-#if 0
+#if 1
 #include <android/log.h>
 
-#define MSLog(level, format, ...) ((void)__android_log_print(level, "NNNN", format, __VA_ARGS__))
+#define MSLog(level, format, ...) ((void)__android_log_print(level, "NROIPChanger", format, __VA_ARGS__))
 
 #define MSLogLevelNotice ANDROID_LOG_INFO
 #define MSLogLevelWarning ANDROID_LOG_WARN
