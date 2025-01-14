@@ -37,9 +37,9 @@ VD: Nếu nội dung tệp `AndroidManifest.xml` như sau:
 ```
 `MainActivity` của game là `com.unity3d.player.UnityPlayerActivity`.
 
-<br>![](./Media/Installation-Android-6.png)
+![](./Media/Installation-Android-6.png)
 
-- Nếu bạn cài đặt phiên bản `FULL`:
+- **Nếu bạn cài đặt phiên bản `FULL`:**
   - Thêm dòng sau vào ngay trên dòng bắt đầu bằng `<application` nếu như bạn không thấy dòng này:
     ```xml
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
@@ -50,13 +50,14 @@ VD: Nếu nội dung tệp `AndroidManifest.xml` như sau:
     <service android:name="com.ehvn.nroipchanger.Launcher" android:enabled="true" android:exported="false" android:stopWithTask="true" />
     ```
     <br>![](./Media/Installation-Android-8.png)
-- Nếu bạn cài đặt phiên bản `MIN`:
+- **Nếu bạn cài đặt phiên bản `MIN` HOẶC bạn cài đặt phiên bản `FULL` và muốn đặt giá trị mặc định cho địa chỉ máy chủ và/hoặc địa chỉ hook:**
   - Vào thư mục `assets` trong thư mục mã nguồn đã dịch ngược và tạo 2 tệp: `ip_server` và `hook_addresses`.
   <br>![](./Media/Installation-Android-9.png)
   - Mở tệp `ip_server` và nhập địa chỉ máy chủ mới vào. Địa chỉ máy chủ phải có định dạng: `<IP>:<Port>`. VD: `dragon1.teamobi.com:1234`. Đảm bảo tệp được kết thúc bằng dấu xuống dòng.
   <br>![](./Media/Installation-Android-10.png)
   - Mở tệp `hook_addresses` và nhập RVA của các hàm được đề cập trong [Lấy RVA của các hàm](./Getting-Function-RVAs.md), phân tách bằng ký tự `|` và kết thúc bằng số 0. VD: `6E513E|5FBD34|89A391|0`.
   <br>![](./Media/Installation-Android-11.png)
+  - *__Lưu ý__*: phiên bản `MIN` yêu cầu cả 2 tệp phải được tạo, còn phiên bản `FULL` chỉ yêu cầu 1 trong 2 tệp được tạo. Nếu có tệp `ip_server`, địa chỉ máy chủ mặc định khi mới cài đặt sẽ là địa chỉ máy chủ trong tệp `ip_server`. Nếu có tệp `hook_addresses`, địa chỉ hook mặc định khi mới cài đặt sẽ là địa chỉ hook trong tệp `hook_addresses`.
 - Kiểm tra các thư mục `smali` và `smali_classes` trong thư mục mã nguồn đã dịch ngược để tìm tệp smali `MainActivity` của game.
   - VD: Nếu `MainActivity` của game là `com.unity3d.player.UnityPlayerActivity`, bạn cần tìm tệp `UnityPlayerActivity.smali` trong thư mục `com/unity3d/player` trong các thư mục `smali` và `smali_classes`.
   <br>![](./Media/Installation-Android-12.png)
@@ -75,9 +76,11 @@ VD: Nếu nội dung tệp `AndroidManifest.xml` như sau:
   <br>![](./Media/Installation-Android-15.gif)
 - Biên dịch APK bằng cách nhấn `Compile` trong [APK Easy Tool](https://github.com/mkcs121/APK-Easy-Tool) và đợi cho quá trình biên dịch hoàn tất.
 <br>![](./Media/Installation-Android-16.gif)
+
 - Cài đặt tệp APK đã biên dịch vào thiết bị Android của bạn. Thư mục chứa tệp APK đã biên dịch có thể được truy cập bằng cách nhấn `Compiled APK directory` trong [APK Easy Tool](https://github.com/mkcs121/APK-Easy-Tool).
 <br>![](./Media/Installation-Android-17.gif)
-- Nếu bạn cài đặt phiên bản `FULL`:
+
+- **Nếu bạn cài đặt phiên bản `FULL`:**
   - Khi mở game sẽ yêu cầu cấp quyền hiển thị trên các ứng dụng khác. Hãy cấp quyền này cho ứng dụng game.
   - Sau khi cấp quyền và quay trở lại game, một biểu tượng mới sẽ xuất hiện (hay còn gọi là Floating Menu). Nhấn vào biểu tượng này để mở menu của NROIPChanger.
   - Nhập địa chỉ máy chủ mới vào trường `Địa chỉ IP mới` và cổng mới vào trường `Cổng mới`.
@@ -100,7 +103,7 @@ VD: Nếu nội dung tệp `AndroidManifest.xml` như sau:
 - Tìm `MainActivity` của game: 
   - Chọn tệp APK đã dịch ngược, sau đó chọn `Chi tiết`. Nội dung của `Hoạt động khởi động` là `MainActivity` của game.
   <br>![](./Media/Installation-Android-22.png)
-- Nếu bạn cài đặt phiên bản `FULL`:
+- **Nếu bạn cài đặt phiên bản `FULL`:**
   - Mở tệp `AndroidManifest.xml` trong thư mục mã nguồn đã dịch ngược trong Apktool M.
   <br>![](./Media/Installation-Android-23.png)
   - Thêm dòng sau vào ngay trên dòng bắt đầu bằng `<application` nếu như bạn không thấy dòng này:
@@ -113,7 +116,7 @@ VD: Nếu nội dung tệp `AndroidManifest.xml` như sau:
     <service android:name="com.ehvn.nroipchanger.Launcher" android:enabled="true" android:exported="false" android:stopWithTask="true" />
     ```
     <br>![](./Media/Installation-Android-25.png)
-- Nếu bạn cài đặt phiên bản `MIN`:
+- **Nếu bạn cài đặt phiên bản `MIN`:**
   - Vào thư mục `assets` trong thư mục mã nguồn đã dịch ngược và tạo 2 tệp: `ip_server` và `hook_addresses`.
   <br>![](./Media/Installation-Android-26.png)
   - Mở tệp `ip_server` và nhập địa chỉ máy chủ mới vào. Địa chỉ máy chủ phải có định dạng: `<IP>:<Port>`. VD: `dragon1.teamobi.com:1234`. Đảm bảo tệp được kết thúc bằng dấu xuống dòng.
@@ -139,9 +142,11 @@ VD: Nếu nội dung tệp `AndroidManifest.xml` như sau:
   <br>![](./Media/Installation-Android-32.gif)
 - Biên dịch APK bằng cách nhấn `Biên soạn dự án này`, sau đó nhấn `Được rồi` và đợi cho quá trình biên dịch hoàn tất.
 <br>![](./Media/Installation-Android-33.gif)
+
 - Cài đặt tệp APK đã biên dịch và mở game.
 <br>![](./Media/Installation-Android-34.gif)
-- Nếu bạn cài đặt phiên bản `FULL`:
+
+- **Nếu bạn cài đặt phiên bản `FULL`:**
   - Khi mở game sẽ yêu cầu cấp quyền hiển thị trên các ứng dụng khác. Hãy cấp quyền này cho ứng dụng game.
   - Sau khi cấp quyền và quay trở lại game, một biểu tượng mới sẽ xuất hiện (hay còn gọi là Floating Menu). Nhấn vào biểu tượng này để mở menu của NROIPChanger.
   - Nhập địa chỉ máy chủ mới vào trường `Địa chỉ IP mới` và cổng mới vào trường `Cổng mới`.
