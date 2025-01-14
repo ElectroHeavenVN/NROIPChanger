@@ -116,13 +116,14 @@ VD: Nếu nội dung tệp `AndroidManifest.xml` như sau:
     <service android:name="com.ehvn.nroipchanger.Launcher" android:enabled="true" android:exported="false" android:stopWithTask="true" />
     ```
     <br>![](./Media/Installation-Android-25.png)
-- **Nếu bạn cài đặt phiên bản `MIN`:**
+- **Nếu bạn cài đặt phiên bản `MIN` HOẶC bạn cài đặt phiên bản `FULL` và muốn đặt giá trị mặc định cho địa chỉ máy chủ và/hoặc địa chỉ hook:**
   - Vào thư mục `assets` trong thư mục mã nguồn đã dịch ngược và tạo 2 tệp: `ip_server` và `hook_addresses`.
   <br>![](./Media/Installation-Android-26.png)
   - Mở tệp `ip_server` và nhập địa chỉ máy chủ mới vào. Địa chỉ máy chủ phải có định dạng: `<IP>:<Port>`. VD: `dragon1.teamobi.com:1234`. Đảm bảo tệp được kết thúc bằng dấu xuống dòng.
   <br>![](./Media/Installation-Android-27.png)
   - Mở tệp `hook_addresses` và nhập RVA của các hàm được đề cập trong [Lấy RVA của các hàm](./Getting-Function-RVAs.md), phân tách bằng ký tự `|` và kết thúc bằng số 0. VD: `6E513E|5FBD34|89A391|0`.
   <br>![](./Media/Installation-Android-28.png)
+  - *__Lưu ý__*: phiên bản `MIN` yêu cầu cả 2 tệp phải được tạo, còn phiên bản `FULL` chỉ yêu cầu 1 trong 2 tệp được tạo. Nếu có tệp `ip_server`, địa chỉ máy chủ mặc định khi mới cài đặt sẽ là địa chỉ máy chủ trong tệp `ip_server`. Nếu có tệp `hook_addresses`, địa chỉ hook mặc định khi mới cài đặt sẽ là địa chỉ hook trong tệp `hook_addresses`.
 
 - Kiểm tra các thư mục `smali` và `smali_classes` trong thư mục mã nguồn đã dịch ngược để tìm tệp smali `MainActivity` của game.
   - VD: Nếu `MainActivity` của game là `com.unity3d.player.UnityPlayerActivity`, bạn cần tìm tệp `UnityPlayerActivity.smali` trong thư mục `com/unity3d/player` trong các thư mục `smali` và `smali_classes`.
