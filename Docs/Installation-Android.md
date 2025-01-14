@@ -64,7 +64,7 @@ VD: Nếu nội dung tệp `AndroidManifest.xml` như sau:
 - Mở tệp smali `MainActivity` và tìm `.method protected onCreate(`.
 - Dán đoạn mã sau vào 2 dòng dưới dòng vừa tìm được:
   ```smali
-    invoke-static {p0}, Lcom/ehvn/nroipchanger/Main;->Start(Landroid/content/Context;)V
+  invoke-static {p0}, Lcom/ehvn/nroipchanger/Main;->Start(Landroid/content/Context;)V
   ```
   <br>![](./Media/Installation-Android-13.png)
 - Mở thư mục mà bạn đã giải nén [NROIPChanger Android](../../../releases/latest/download/NROIPChanger.Android.zip) trước đó, sau đó sao chép thư mục `com` bên trong thư mục `Smali` `MIN`/`FULL` vào thư mục `smali` trong thư mục mã nguồn đã dịch ngược.
