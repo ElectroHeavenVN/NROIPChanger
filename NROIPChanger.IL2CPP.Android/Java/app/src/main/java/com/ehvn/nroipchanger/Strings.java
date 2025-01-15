@@ -49,6 +49,8 @@ public final class Strings {
         features.put("defaultIPAddress", new String[] {"Địa chỉ máy chủ mặc định", "Default server address"});
         features.put("defaultRVAs", new String[] {"RVA mặc định", "Default RVAs"});
 
+        features.put("pirateServerWarning", new String[] {"Đừng để bị lùa như 1 con gà khi chơi server lậu!", "Protect your server from being scammed when playing on pirate servers!"});
+
         initialized = true;
     }
 
@@ -161,5 +163,10 @@ public final class Strings {
     public static String installFromOtherSourcesWarning()
     {
         return fromFeature("installFromOtherSourcesWarning");
+    }
+
+    public static String pirateServerWarning()
+    {
+        return fromFeature("pirateServerWarning");
     }
 }

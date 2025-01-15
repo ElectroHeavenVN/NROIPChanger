@@ -80,6 +80,9 @@ static bool enabled = false;
 static bool showNotification = false;
 static string customIP = "";
 static int customPort = -1;
+static bool warningShown = false;
+static string lastToast = "";
+static long lastTimeShowToast = 0;
 
 DWORD System_Net_Sockets_TcpClient__Connect_address = 0;
 
@@ -108,12 +111,30 @@ static void ShowToast(char* content, int duration, bool forceShow = false)
 	LOGI("ShowToast: %s", content);
 	if (!forceShow && !showNotification)
 		return;
+	struct timespec ts;
+	clock_gettime(CLOCK_MONOTONIC, &ts);
+	long currentTime = ts.tv_sec * 1000 + ts.tv_nsec / 1000000;
+	if ((lastToast == content && currentTime - lastTimeShowToast <= 2000) && !forceShow)
+		return;
 	ShowToastOnUIThread(content, duration);
+	lastToast = content;
+	lastTimeShowToast = currentTime;
 }
 
 static void ShowToast(string content, int duration, bool forceShow = false)
 {
 	ShowToast((char*)content.c_str(), duration, forceShow);
+}
+
+static void ShowPirateServerWarning()
+{ 
+	if (warningShown)
+		return;
+	string str = GetStringValue("pirateServerWarning");
+	if (str != "Protect your server from being scammed when playing on pirate servers!" && str != utf8::utf16to8(std::u16string(u"Đừng để bị lùa như 1 con gà khi chơi server lậu!")))
+		str = "Protect your server from being scammed when playing on pirate servers!";
+	ShowToast(str, ToastLength::LENGTH_LONG, true);
+	warningShown = true;
 }
 
 static bool ChangeIP(System_Net_Sockets_TcpClient_o* _this, System_String_o* hostname, int32_t port, void (HOOKCCV* original)(System_Net_Sockets_TcpClient_o*, System_String_o*, int32_t, const MethodInfo*))
@@ -131,7 +152,10 @@ static bool ChangeIP(System_Net_Sockets_TcpClient_o* _this, System_String_o* hos
 		ShowToast(originalIPAddr, ToastLength::LENGTH_SHORT);
 		return false;
 	}
+	regex teaMobiIPPattern(R"(dragon.*?\.(teamobi|indonaga)\.com)");
 	string newIPAddr = customIP + ":" + to_string(customPort);
+	if (!regex_match(newIPAddr, teaMobiIPPattern))
+		ShowPirateServerWarning();
 	System_String_o* newHostname = CreateNetString(customIP);
 	ShowToast(originalIPAddr + " -> " + newIPAddr, ToastLength::LENGTH_SHORT);
 	original(_this, newHostname, customPort, nullptr);

@@ -61,15 +61,34 @@ static string customIP;
 static JavaVM* jvm;
 static jclass mainClass;
 
+static bool warningShown = false;
+static string lastToast = "";
+static long lastTimeShowToast = 0;
+
 static void ShowToast(char* content, int duration)
 {
     LOGI("ShowToast: %s", content);
+    struct timespec ts;
+    clock_gettime(CLOCK_MONOTONIC, &ts);
+    long currentTime = ts.tv_sec * 1000 + ts.tv_nsec / 1000000;
+    if (lastToast == content && currentTime - lastTimeShowToast <= 2000)
+        return;
     ShowToastOnUIThread(jvm, mainClass, content, duration);
+    lastToast = content;
+    lastTimeShowToast = currentTime;
 }
 
 static void ShowToast(string content, int duration)
 {
     ShowToast((char*)content.c_str(), duration);
+}
+
+static void ShowPirateServerWarning()
+{
+    if (warningShown)
+        return;
+    ShowToast("Protect your server from being scammed when playing on pirate servers!", ToastLength::LENGTH_LONG);
+    warningShown = true;
 }
 
 static bool ChangeIP(System_Net_Sockets_TcpClient_o* _this, System_String_o* hostname, int32_t port, void (HOOKCCV* original)(System_Net_Sockets_TcpClient_o*, System_String_o*, int32_t, const MethodInfo*))
@@ -87,6 +106,9 @@ static bool ChangeIP(System_Net_Sockets_TcpClient_o* _this, System_String_o* hos
         ShowToast(originalIPAddr, ToastLength::LENGTH_SHORT);
         return false;
     }
+    regex teaMobiIPPattern(R"(dragon.*?\.(teamobi|indonaga)\.com)");
+    if (!regex_match(customIP, teaMobiIPPattern))
+        ShowPirateServerWarning();
     string ip_s = customIP.substr(0, customIP.find(":"));
     string port_s = customIP.substr(customIP.find(":") + 1);
     string newIPAddr = ip_s + ":" + port_s;
