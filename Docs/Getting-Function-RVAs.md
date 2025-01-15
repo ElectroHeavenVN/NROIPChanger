@@ -1,4 +1,6 @@
-# Lấy RVA (Relative Virtual Address) của các hàm
+# Yes, the RVA (Relative Virtual Address) of functions is no longer relevant.
+You can go back to the previous page or change the `Code` page to read the commented-out documentations.
+<!-- # Lấy RVA (Relative Virtual Address) của các hàm
 ## Windows
 - Tải và giải nén bản phát hành mới nhất của [Il2CppDumper](https://github.com/Perfare/Il2CppDumper).
 - Làm theo [hướng dẫn của IL2CPPDumper](https://github.com/Perfare/Il2CppDumper?tab=readme-ov-file#usage) để tạo ra các tệp dll.
@@ -36,4 +38,4 @@
 Thứ tự RVA của các hàm trong NROIPChanger Android như sau:
 1. `System.String::CreateString(System.Sbyte* value, System.Int32 startIndex, System.Int32 length)` trong `mscorlib.dll`.
 2. `System.String::CreateString(System.Char* value, System.Int32 startIndex, System.Int32 length)` trong `mscorlib.dll`.
-3. `System.Net.Sockets.TcpClient::Connect(System.String hostname, System.Int32 port)` trong `System.dll`.
+3. `System.Net.Sockets.TcpClient::Connect(System.String hostname, System.Int32 port)` trong `System.dll`. -->

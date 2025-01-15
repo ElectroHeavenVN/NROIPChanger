@@ -19,7 +19,7 @@ NROIPChanger trên Android có 2 loại:
 - Mở tệp `AndroidManifest.xml` bằng trình soạn thảo văn bản ưa thích của bạn.
 - Tìm `MainActivity` của game: 
   - Tìm `<action android:name="android.intent.action.MAIN"/>` trong `AndroidManifest.xml`. 
-  - Tìm kiếm 2-3 dòng ở trên xem có dòng nào bắt đầu bằng `<activity` không.
+  - Tìm kiếm 2-3 dòng ở trên xem có dòng nào có nội dung giống như `<activity ...>` không.
   - Nếu có, nội dung trong dấu ngoặc kép sau `android:name=` trong dòng đó chính là `MainActivity` của game.
 
 VD: Nếu nội dung tệp `AndroidManifest.xml` như sau:
@@ -40,7 +40,7 @@ VD: Nếu nội dung tệp `AndroidManifest.xml` như sau:
 ![](./Media/Installation-Android-6.png)
 
 - **Nếu bạn cài đặt phiên bản `FULL`:**
-  - Thêm dòng sau vào ngay trên dòng bắt đầu bằng `<application` nếu như bạn không thấy dòng này:
+  - Thêm dòng sau vào ngay trên dòng có nội dung giống tương tự `<application ...>` nếu như bạn không thấy dòng này:
     ```xml
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
     ```
@@ -50,14 +50,20 @@ VD: Nếu nội dung tệp `AndroidManifest.xml` như sau:
     <service android:name="com.ehvn.nroipchanger.Launcher" android:enabled="true" android:exported="false" android:stopWithTask="true" />
     ```
     <br>![](./Media/Installation-Android-8.png)
-- **Nếu bạn cài đặt phiên bản `MIN` HOẶC bạn cài đặt phiên bản `FULL` và muốn đặt giá trị mặc định cho địa chỉ máy chủ và/hoặc địa chỉ hook:**
+<!-- - **Nếu bạn cài đặt phiên bản `MIN` HOẶC bạn cài đặt phiên bản `FULL` và muốn đặt giá trị mặc định cho địa chỉ máy chủ và/hoặc địa chỉ hook:**
   - Vào thư mục `assets` trong thư mục mã nguồn đã dịch ngược và tạo 2 tệp: `ip_server` và `hook_addresses`.
   <br>![](./Media/Installation-Android-9.png)
   - Mở tệp `ip_server` và nhập địa chỉ máy chủ mới vào. Địa chỉ máy chủ phải có định dạng: `<IP>:<Port>`. VD: `dragon1.teamobi.com:1234`. Đảm bảo tệp được kết thúc bằng dấu xuống dòng.
   <br>![](./Media/Installation-Android-10.png)
   - Mở tệp `hook_addresses` và nhập RVA của các hàm được đề cập trong [Lấy RVA của các hàm](./Getting-Function-RVAs.md), phân tách bằng ký tự `|` và kết thúc bằng số 0. VD: `6E513E|5FBD34|89A391|0`.
   <br>![](./Media/Installation-Android-11.png)
-  - *__Lưu ý__*: phiên bản `MIN` yêu cầu cả 2 tệp phải được tạo, còn phiên bản `FULL` chỉ yêu cầu 1 trong 2 tệp được tạo. Nếu có tệp `ip_server`, địa chỉ máy chủ mặc định khi mới cài đặt sẽ là địa chỉ máy chủ trong tệp `ip_server`. Nếu có tệp `hook_addresses`, địa chỉ hook mặc định khi mới cài đặt sẽ là địa chỉ hook trong tệp `hook_addresses`.
+  - *__Lưu ý__*: phiên bản `MIN` yêu cầu cả 2 tệp phải được tạo, còn phiên bản `FULL` chỉ yêu cầu 1 trong 2 tệp được tạo. Nếu có tệp `ip_server`, địa chỉ máy chủ mặc định khi mới cài đặt sẽ là địa chỉ máy chủ trong tệp `ip_server`. Nếu có tệp `hook_addresses`, địa chỉ hook mặc định khi mới cài đặt sẽ là địa chỉ hook trong tệp `hook_addresses`. -->
+- Nếu bạn muốn đặt giá trị mặc định cho địa chỉ máy chủ:
+  - Vào thư mục `assets` trong thư mục mã nguồn đã dịch ngược và tạo tệp `ip_server`.
+  <br>![](./Media/Installation-Android-9_2.png)
+  - Mở tệp `ip_server` và nhập địa chỉ máy chủ mới vào. Địa chỉ máy chủ phải có định dạng: `<IP>:<Port>`. VD: `dragon1.teamobi.com:1234`. Đảm bảo tệp được kết thúc bằng dấu xuống dòng.
+  <br>![](./Media/Installation-Android-10.png)
+  - Địa chỉ máy chủ mặc định khi mới cài đặt sẽ là địa chỉ máy chủ trong tệp `ip_server`.
 - Kiểm tra các thư mục `smali` và `smali_classes` trong thư mục mã nguồn đã dịch ngược để tìm tệp smali `MainActivity` của game.
   - VD: Nếu `MainActivity` của game là `com.unity3d.player.UnityPlayerActivity`, bạn cần tìm tệp `UnityPlayerActivity.smali` trong thư mục `com/unity3d/player` trong các thư mục `smali` và `smali_classes`.
   <br>![](./Media/Installation-Android-12.png)
@@ -84,12 +90,12 @@ VD: Nếu nội dung tệp `AndroidManifest.xml` như sau:
   - Khi mở game sẽ yêu cầu cấp quyền hiển thị trên các ứng dụng khác. Hãy cấp quyền này cho ứng dụng game.
   - Sau khi cấp quyền và quay trở lại game, một biểu tượng mới sẽ xuất hiện (hay còn gọi là Floating Menu). Nhấn vào biểu tượng này để mở menu của NROIPChanger.
   - Nhập địa chỉ máy chủ mới vào trường `Địa chỉ IP mới` và cổng mới vào trường `Cổng mới`.
-  - Mở rộng phần `Địa chỉ hook` và nhập RVA của các hàm được đề cập trong [Lấy RVA của các hàm](./Getting-Function-RVAs.md) vào các trường tương ứng.
+  <!-- - Mở rộng phần `Địa chỉ hook` và nhập RVA của các hàm được đề cập trong [Lấy RVA của các hàm](./Getting-Function-RVAs.md) vào các trường tương ứng. -->
   - Bật công tắc `Hiện thông báo` nếu bạn muốn xem địa chỉ máy chủ gốc.
   - Khởi động lại để thay đổi được áp dụng.
   - Mở menu và bật công tắc `Kích hoạt` để bật chức năng đổi IP.
   - Nhấn nút `Thu nhỏ` để thu nhỏ menu, `Ẩn/Đóng (giữ)` để ẩn menu và nhấn giữ nút `Ẩn/Đóng (giữ)` để đóng menu.<br>
-  <br>![](Media/Installation-Android-18.png)
+  <br>![](Media/Installation-Android-18_2.png)
 ## Sửa đổi và cài đặt tệp APK trên Android
 - Tải xuống và giải nén [NROIPChanger Android](../../../releases/latest/download/NROIPChanger.Android.zip).
 - Cài đặt [Apktool M](https://maximoff.su/apktool/?lang=en).
@@ -106,7 +112,7 @@ VD: Nếu nội dung tệp `AndroidManifest.xml` như sau:
 - **Nếu bạn cài đặt phiên bản `FULL`:**
   - Mở tệp `AndroidManifest.xml` trong thư mục mã nguồn đã dịch ngược trong Apktool M.
   <br>![](./Media/Installation-Android-23.png)
-  - Thêm dòng sau vào ngay trên dòng bắt đầu bằng `<application` nếu như bạn không thấy dòng này:
+  - Thêm dòng sau vào ngay trên dòng có nội dung tương tự `<application ...>` nếu như bạn không thấy dòng này:
     ```xml
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
     ```
@@ -116,15 +122,20 @@ VD: Nếu nội dung tệp `AndroidManifest.xml` như sau:
     <service android:name="com.ehvn.nroipchanger.Launcher" android:enabled="true" android:exported="false" android:stopWithTask="true" />
     ```
     <br>![](./Media/Installation-Android-25.png)
-- **Nếu bạn cài đặt phiên bản `MIN` HOẶC bạn cài đặt phiên bản `FULL` và muốn đặt giá trị mặc định cho địa chỉ máy chủ và/hoặc địa chỉ hook:**
+<!-- - **Nếu bạn cài đặt phiên bản `MIN` HOẶC bạn cài đặt phiên bản `FULL` và muốn đặt giá trị mặc định cho địa chỉ máy chủ và/hoặc địa chỉ hook:**
   - Vào thư mục `assets` trong thư mục mã nguồn đã dịch ngược và tạo 2 tệp: `ip_server` và `hook_addresses`.
   <br>![](./Media/Installation-Android-26.png)
   - Mở tệp `ip_server` và nhập địa chỉ máy chủ mới vào. Địa chỉ máy chủ phải có định dạng: `<IP>:<Port>`. VD: `dragon1.teamobi.com:1234`. Đảm bảo tệp được kết thúc bằng dấu xuống dòng.
   <br>![](./Media/Installation-Android-27.png)
   - Mở tệp `hook_addresses` và nhập RVA của các hàm được đề cập trong [Lấy RVA của các hàm](./Getting-Function-RVAs.md), phân tách bằng ký tự `|` và kết thúc bằng số 0. VD: `6E513E|5FBD34|89A391|0`.
   <br>![](./Media/Installation-Android-28.png)
-  - *__Lưu ý__*: phiên bản `MIN` yêu cầu cả 2 tệp phải được tạo, còn phiên bản `FULL` chỉ yêu cầu 1 trong 2 tệp được tạo. Nếu có tệp `ip_server`, địa chỉ máy chủ mặc định khi mới cài đặt sẽ là địa chỉ máy chủ trong tệp `ip_server`. Nếu có tệp `hook_addresses`, địa chỉ hook mặc định khi mới cài đặt sẽ là địa chỉ hook trong tệp `hook_addresses`.
-
+  - *__Lưu ý__*: phiên bản `MIN` yêu cầu cả 2 tệp phải được tạo, còn phiên bản `FULL` chỉ yêu cầu 1 trong 2 tệp được tạo. Nếu có tệp `ip_server`, địa chỉ máy chủ mặc định khi mới cài đặt sẽ là địa chỉ máy chủ trong tệp `ip_server`. Nếu có tệp `hook_addresses`, địa chỉ hook mặc định khi mới cài đặt sẽ là địa chỉ hook trong tệp `hook_addresses`. -->
+- Nếu bạn muốn đặt giá trị mặc định cho địa chỉ máy chủ:
+  - Vào thư mục `assets` trong thư mục mã nguồn đã dịch ngược và tạo tệp `ip_server`.
+  <br>![](./Media/Installation-Android-26_2.png)
+  - Mở tệp `ip_server` và nhập địa chỉ máy chủ mới vào. Địa chỉ máy chủ phải có định dạng: `<IP>:<Port>`. VD: `dragon1.teamobi.com:1234`. Đảm bảo tệp được kết thúc bằng dấu xuống dòng.
+  <br>![](./Media/Installation-Android-27.png)
+  - Địa chỉ máy chủ mặc định khi mới cài đặt sẽ là địa chỉ máy chủ trong tệp `ip_server`.
 - Kiểm tra các thư mục `smali` và `smali_classes` trong thư mục mã nguồn đã dịch ngược để tìm tệp smali `MainActivity` của game.
   - VD: Nếu `MainActivity` của game là `com.unity3d.player.UnityPlayerActivity`, bạn cần tìm tệp `UnityPlayerActivity.smali` trong thư mục `com/unity3d/player` trong các thư mục `smali` và `smali_classes`.
   <br>![](./Media/Installation-Android-29.png)
@@ -151,9 +162,9 @@ VD: Nếu nội dung tệp `AndroidManifest.xml` như sau:
   - Khi mở game sẽ yêu cầu cấp quyền hiển thị trên các ứng dụng khác. Hãy cấp quyền này cho ứng dụng game.
   - Sau khi cấp quyền và quay trở lại game, một biểu tượng mới sẽ xuất hiện (hay còn gọi là Floating Menu). Nhấn vào biểu tượng này để mở menu của NROIPChanger.
   - Nhập địa chỉ máy chủ mới vào trường `Địa chỉ IP mới` và cổng mới vào trường `Cổng mới`.
-  - Mở rộng phần `Địa chỉ hook` và nhập RVA của các hàm được đề cập trong [Lấy RVA của các hàm](./Getting-Function-RVAs.md) vào các trường tương ứng.
+  <!-- - Mở rộng phần `Địa chỉ hook` và nhập RVA của các hàm được đề cập trong [Lấy RVA của các hàm](./Getting-Function-RVAs.md) vào các trường tương ứng. -->
   - Bật công tắc `Hiện thông báo` nếu bạn muốn xem địa chỉ máy chủ gốc.
   - Khởi động lại để thay đổi được áp dụng.
   - Mở menu và bật công tắc `Kích hoạt` để bật chức năng đổi IP.
   - Nhấn nút `Thu nhỏ` để thu nhỏ menu, `Ẩn/Đóng (giữ)` để ẩn menu và nhấn giữ nút `Ẩn/Đóng (giữ)` để đóng menu.<br>
-  <br>![](Media/Installation-Android-18.png)
+  <br>![](Media/Installation-Android-18_2.png)

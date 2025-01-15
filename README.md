@@ -14,7 +14,7 @@ Phiên bản mới nhất luôn có thể được tải xuống trong phần [R
 ### Windows
 Cài đặt trên Windows tương đối đơn giản. [Nhấn vào đây](./Docs/Installation-Windows.md) để xem hướng dẫn chi tiết.
 ### Android
-Cài đặt trên Android yêu cầu bạn hiểu biết về cấu trúc tệp APK và cách sửa đổi tệp APK. [Nhấn vào đây](./Docs/Installation-Android.md) để xem hướng dẫn chi tiết.
+Cài đặt trên Android phức tạp hơn 1 chút và yêu cầu bạn hiểu biết về cấu trúc tệp APK cũng như cách sửa đổi tệp APK. [Nhấn vào đây](./Docs/Installation-Android.md) để xem hướng dẫn chi tiết.
 ## Biên dịch
 - Clone repo này bằng [git](https://git-scm.com/) hoặc [GitHub Desktop](https://github.com/apps/desktop).
 - Tạo 1 biến môi trường tên `envVersion` có giá trị là số phiên bản (VD: `1.0.0`) hoặc `nightly`.
