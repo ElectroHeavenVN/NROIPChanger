@@ -28,7 +28,7 @@
 #define DEF_ADDR( name, il2cpp_export, handle ) \
   name = reinterpret_cast<name##_t>( GetAddress( handle, il2cpp_export ) );
 
-#define targetLibName "GameAssembly.dll"
+#define targetLibName "libil2cpp.so"
 
 class Image;
 class Class;

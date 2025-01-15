@@ -17,11 +17,6 @@ public final class Strings {
         features.put("showNoti", new String[] {"Hiện thông báo", "Show notification"});
         features.put("newIPAddr", new String[] {"Địa chỉ IP mới", "New IP address"});
         features.put("newPort", new String[] {"Cổng mới", "New port"});
-        features.put("hookAddr", new String[] {"Địa chỉ hook", "Hook addresses"});
-        features.put("utf8CreateStringRVA", new String[] {"RVA của System.String::CreateString(System.Byte* value, System.Int32 startIndex, System.Int32 length)", "RVA of System.String::CreateString(System.Byte* value, System.Int32 startIndex, System.Int32 length)"});
-        features.put("utf16CreateStringRVA", new String[] {"RVA của System.String::CreateString(System.Char* value, System.Int32 startIndex, System.Int32 length)", "RVA of System.String::CreateString(System.Char* value, System.Int32 startIndex, System.Int32 length)"});
-        features.put("tcpClientConnectRVA", new String[] {"RVA của System.Net.Sockets.TcpClient::Connect(System.String hostname, System.Int32 port)", "RVA of System.Net.Sockets.TcpClient::Connect(System.String hostname, System.Int32 port)"});
-        features.put("hookAddrNotice", new String[] {"Sau khi thay đổi địa chỉ hook, bạn nên khởi động lại game để không gây ra lỗi.", "After changing hook addresses, you should restart the game to avoid crashes and errors."});
         features.put("settings", new String[] {"Cài đặt", "Settings"});
         features.put("saveData", new String[] {"Lưu dữ liệu", "Save data"});
         features.put("autoSize", new String[] {"Tự động điều chỉnh kích thước theo chiều cao", "Auto size vertically"});
@@ -47,9 +42,8 @@ public final class Strings {
 
         features.put("installFromOtherSourcesWarning", new String[] {"Không cài từ các nguồn không rõ!", "Do not install from other sources!"});
         features.put("defaultIPAddress", new String[] {"Địa chỉ máy chủ mặc định", "Default server address"});
-        features.put("defaultRVAs", new String[] {"RVA mặc định", "Default RVAs"});
 
-        features.put("pirateServerWarning", new String[] {"Đừng để bị lùa như 1 con gà khi chơi server lậu!", "Protect your server from being scammed when playing on pirate servers!"});
+        features.put("pirateServerWarning", new String[] {"Đừng để bị lùa như 1 con gà khi chơi server lậu!", "Protect yourself from being scammed when playing on pirate servers!"});
 
         initialized = true;
     }
@@ -153,11 +147,6 @@ public final class Strings {
     public static String defaultIPAddress()
     {
         return fromFeature("defaultIPAddress");
-    }
-
-    public static String defaultRVAs()
-    {
-        return fromFeature("defaultRVAs");
     }
 
     public static String installFromOtherSourcesWarning()

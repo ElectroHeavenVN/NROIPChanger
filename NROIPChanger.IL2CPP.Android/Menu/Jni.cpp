@@ -107,7 +107,6 @@ void CheckOverlayPermission(JNIEnv *env, jclass thiz, jobject ctx){
     jmethodID pack = env->GetMethodID(native_context, "getPackageName", "()Ljava/lang/String;");
     jstring packageName = static_cast<jstring>(env->CallObjectMethod(ctx, pack));
     const char* pkg = env->GetStringUTFChars(packageName, 0);
-    LOGI("Package name: %s", pkg);
 
     LOGI("Check overlay permission");
 

@@ -2,19 +2,15 @@
 #ifndef EHVNUTILS_H
 #define EHVNUTILS_H
 
+#include "AetherimMod/api.hpp"
 #include "IL2CPP/il2cpp.h"
 #include "Includes/Logger.h"
 #include "Includes/Macros.h"
 #include "Includes/Utils.hpp"
 #include "utfcpp/utf8.h"
-#include <cwchar>
 #include <jni.h>
 
-#define HOOK_BY_NAME(n) if (n##_address != 0) HOOK(targetLibName, n##_address, n##_hook, n##_original)
-#define targetLibName "libil2cpp.so"
-
-System_String_o* (*System_String__CreateString_utf16)(void* instance, const wchar_t* value, int startIndex, int length, const MethodInfo*);
-System_String_o* (*System_String__CreateString_utf8)(void* instance, const char* value, int startIndex, int length, const MethodInfo*);
+#define HOOK_BY_NAME(n) if (n##_address != 0) HOOK_ADDR(reinterpret_cast<DWORD>(n##_address), n##_hook, n##_original)
 
 static JavaVM* jvm;
 static jclass preferencesClass;
@@ -22,26 +18,6 @@ static jclass utilsClass;
 static jclass stringsClass;
 
 static std::string ToStdString(JNIEnv * env, jstring jStr);
-
-static bool AssignCreateStringUTF16(std::string addrStr) {
-	if (addrStr.empty())
-		return false;
-	int offset = stoul(addrStr, nullptr, 16);
-	if (offset == 0)
-		return false;
-    System_String__CreateString_utf16 = reinterpret_cast<System_String_o * (*)(void*, const wchar_t*, int, int, const MethodInfo*)>(getAbsoluteAddress(targetLibName, offset));
-	return true;
-}
-
-static bool AssignCreateStringUTF8(std::string addrStr) {
-	if (addrStr.empty())
-		return false;
-    int offset = stoul(addrStr, nullptr, 16);
-	if (offset == 0)
-		return false;
-    System_String__CreateString_utf8 = reinterpret_cast<System_String_o * (*)(void*, const char*, int, int, const MethodInfo*)>(getAbsoluteAddress(targetLibName, offset));
-	return true;
-}
 
 static void ShowToastOnUIThread(JNIEnv* env, jstring content, int duration)
 {
@@ -263,16 +239,14 @@ static bool Equals(System_String_o* str1, const wchar_t* str2) {
     return true;
 }
 
-static System_String_o* CreateNetString(const wchar_t* str)    //string.CreateString(char* value, int startIndex, int length)
+System_String_o* CreateNetString(const char* str)
 {
-    auto* managed_str = static_cast<System_String_o*>(malloc(sizeof(System_String_o)));
-    return System_String__CreateString_utf16(managed_str, str, 0, wcslen(str), nullptr);
+	return reinterpret_cast<System_String_o*>(Il2cpp::create_string_utf8(str));
 }
 
-static System_String_o* CreateNetString(const char* str)    //string.string CreateString(sbyte* value, int startIndex, int length)
+System_String_o* CreateNetString(const wchar_t* str)
 {
-    auto* managed_str = static_cast<System_String_o*>(malloc(sizeof(System_String_o)));
-    return System_String__CreateString_utf8(managed_str, str, 0, strlen(str), nullptr);
+	return reinterpret_cast<System_String_o*>(Il2cpp::create_string_utf16(str, wcslen(str)));
 }
 
 static std::wstring GetStdWStr(System_String_o* str)

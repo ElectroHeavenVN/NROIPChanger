@@ -23,6 +23,7 @@ void hook(void* offset, void* ptr, void** orig)
 #endif
 }
 
+#define HOOK_ADDR(offset, ptr, orig) hook((void *)offset, (void *)ptr, (void **)&orig)
 #define HOOK(lib, offset, ptr, orig) hook((void *)getAbsoluteAddress(lib, offset), (void *)ptr, (void **)&orig)
 #define HOOK_NO_ORIG(lib, offset, ptr) hook((void *)getAbsoluteAddress(lib, offset), (void *)ptr, NULL)
 #define HOOKSYM(lib, sym, ptr, org) hook(dlsym(dlopen(lib, 4), sym), (void *)ptr, (void **)&org)

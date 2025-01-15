@@ -26,7 +26,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EHVNUtils.h" />
-    <ClInclude Include="hookAddresses.h" />
     <ClInclude Include="NROIPChanger.h" />
     <ClInclude Include="And64InlineHook\And64InlineHook.hpp">
       <Filter>And64InlineHook</Filter>
@@ -100,6 +99,33 @@
     <ClInclude Include="Substrate\table64.h">
       <Filter>Substrate</Filter>
     </ClInclude>
+    <ClInclude Include="AetherimMod\api.hpp">
+      <Filter>AetherimMod</Filter>
+    </ClInclude>
+    <ClInclude Include="AetherimMod\class.hpp">
+      <Filter>AetherimMod</Filter>
+    </ClInclude>
+    <ClInclude Include="AetherimMod\field.hpp">
+      <Filter>AetherimMod</Filter>
+    </ClInclude>
+    <ClInclude Include="AetherimMod\il2cpp_internals.h">
+      <Filter>AetherimMod</Filter>
+    </ClInclude>
+    <ClInclude Include="AetherimMod\image.hpp">
+      <Filter>AetherimMod</Filter>
+    </ClInclude>
+    <ClInclude Include="AetherimMod\method.hpp">
+      <Filter>AetherimMod</Filter>
+    </ClInclude>
+    <ClInclude Include="AetherimMod\table_defs.h">
+      <Filter>AetherimMod</Filter>
+    </ClInclude>
+    <ClInclude Include="AetherimMod\type.hpp">
+      <Filter>AetherimMod</Filter>
+    </ClInclude>
+    <ClInclude Include="AetherimMod\wrapper.hpp">
+      <Filter>AetherimMod</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="And64InlineHook">
@@ -128,6 +154,9 @@
     </Filter>
     <Filter Include="Smali\com.ehvn.nroipchanger">
       <UniqueIdentifier>{15de9be0-4aa7-4398-b1f4-2788ff11a5b1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="AetherimMod">
+      <UniqueIdentifier>{7c044922-c48b-4ac1-a3d4-484449c20b82}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

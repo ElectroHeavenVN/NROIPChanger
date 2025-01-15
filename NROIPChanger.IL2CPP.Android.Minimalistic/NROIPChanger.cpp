@@ -1,3 +1,5 @@
+#include "AetherimMod/api.hpp"
+#include "AetherimMod/wrapper.hpp"
 #include "EHVNUtils.h"
 #include "Includes/Logger.h"
 #include "jni.h"
@@ -9,7 +11,6 @@
 #include <regex>
 #include <sstream>
 #include <string>
-#include <string.h>
 #include <sys/resource.h>
 #include <unistd.h>
 
@@ -65,6 +66,8 @@ static bool warningShown = false;
 static string lastToast = "";
 static long lastTimeShowToast = 0;
 
+Il2CppMethodPointer System_Net_Sockets_TcpClient__Connect_address = 0;
+
 static void ShowToast(char* content, int duration)
 {
     LOGI("ShowToast: %s", content);
@@ -87,7 +90,7 @@ static void ShowPirateServerWarning()
 {
     if (warningShown)
         return;
-    ShowToast("Protect your server from being scammed when playing on pirate servers!", ToastLength::LENGTH_LONG);
+    ShowToast("Protect yourself from being scammed when playing on pirate servers!", ToastLength::LENGTH_LONG);
     warningShown = true;
 }
 
@@ -130,11 +133,19 @@ void HOOKCCV System_Net_Sockets_TcpClient__Connect_hook(System_Net_Sockets_TcpCl
 
 static void InstallHooks()
 {
-	if (!InstallCreateStrings())
-        ShowToast("wrong String.CreateString addresses!", ToastLength::LENGTH_SHORT);
+    Il2cpp::initialize();
+    const auto il2cppImages = std::make_unique<Wrapper>();
+    const auto system = il2cppImages->get_image("System.dll");
+    Class* tcpClient = system->get_class("TcpClient", "System.Net.Sockets");
+    void* iter = NULL;
+    while (Method* method = tcpClient->get_methods(&iter))
+    {
+        if (!strcmp("Connect", method->get_name()) && method->get_param_count() == 2 && !strcmp(method->get_param_name(0), "hostname")) {
+            System_Net_Sockets_TcpClient__Connect_address = method->methodPointer;
+            break;
+        }
+    }
     HOOK_BY_NAME(System_Net_Sockets_TcpClient__Connect);
-    else 
-        ShowToast("Failed to install hooks.", ToastLength::LENGTH_SHORT);
 }
 
 static void* Initialize(void*) {
@@ -154,33 +165,6 @@ static void* Initialize(void*) {
     InstallHooks();
     LOGI("Initialization complete.");
     return nullptr;
-}
-
-static void LoadHookAddressesFromResource(JNIEnv* env, jobject ctx)
-{
-    jclass context = env->GetObjectClass(ctx);
-    jmethodID getResources = env->GetMethodID(context, "getResources", "()Landroid/content/res/Resources;");
-    jobject resourcesInstance = env->CallObjectMethod(ctx, getResources);
-    jclass resources = env->GetObjectClass(resourcesInstance);
-    jmethodID getAssets = env->GetMethodID(resources, "getAssets", "()Landroid/content/res/AssetManager;");
-    jobject assetManager = env->CallObjectMethod(resourcesInstance, getAssets);
-    AAssetManager* mgr = AAssetManager_fromJava(env, assetManager);
-    AAsset* asset = AAssetManager_open(mgr, "hook_addresses", AASSET_MODE_BUFFER);
-    if (nullptr == asset)
-        return;
-    long size = AAsset_getLength(asset);
-    char* buffer = (char*)malloc(sizeof(char) * (size + 1));
-    AAsset_read(asset, buffer, size);
-    buffer[size] = '\0';
-    stringstream ss(buffer);
-    string hookAddr;
-    while (getline(ss, hookAddr, '|')) {
-        DWORD addr = stoul(hookAddr, nullptr, 16);
-        hookAddresses.push_back(addr);
-        hookAddr = "";
-    }
-    delete buffer;
-    AAsset_close(asset);
 }
 
 static void LoadCustomIPFromResource(JNIEnv* env, jobject ctx)
@@ -224,7 +208,6 @@ void Init(JNIEnv* env, jobject ctx)
 	else
 		ShowToast("NROIPChanger v" ENV_VERSION " (" ABI ")\n" REPO, ToastLength::LENGTH_LONG);
     ShowToast("Do not install from other sources!", ToastLength::LENGTH_SHORT);
-    LoadHookAddressesFromResource(env, ctx);
     LoadCustomIPFromResource(env, ctx);
     pthread_t ptid;
     pthread_create(&ptid, nullptr, Initialize, nullptr);

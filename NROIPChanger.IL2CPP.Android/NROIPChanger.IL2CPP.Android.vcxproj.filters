@@ -123,6 +123,33 @@
     <ClInclude Include="KittyMemory\KittyMemory.h">
       <Filter>KittyMemory</Filter>
     </ClInclude>
+    <ClInclude Include="AetherimMod\api.hpp">
+      <Filter>AetherimMod</Filter>
+    </ClInclude>
+    <ClInclude Include="AetherimMod\class.hpp">
+      <Filter>AetherimMod</Filter>
+    </ClInclude>
+    <ClInclude Include="AetherimMod\field.hpp">
+      <Filter>AetherimMod</Filter>
+    </ClInclude>
+    <ClInclude Include="AetherimMod\il2cpp_internals.h">
+      <Filter>AetherimMod</Filter>
+    </ClInclude>
+    <ClInclude Include="AetherimMod\image.hpp">
+      <Filter>AetherimMod</Filter>
+    </ClInclude>
+    <ClInclude Include="AetherimMod\method.hpp">
+      <Filter>AetherimMod</Filter>
+    </ClInclude>
+    <ClInclude Include="AetherimMod\table_defs.h">
+      <Filter>AetherimMod</Filter>
+    </ClInclude>
+    <ClInclude Include="AetherimMod\type.hpp">
+      <Filter>AetherimMod</Filter>
+    </ClInclude>
+    <ClInclude Include="AetherimMod\wrapper.hpp">
+      <Filter>AetherimMod</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="And64InlineHook">
@@ -154,6 +181,9 @@
     </Filter>
     <Filter Include="IL2CPP">
       <UniqueIdentifier>{804fdaef-6b67-4719-853b-5604be9e5297}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="AetherimMod">
+      <UniqueIdentifier>{a157f39f-3a0d-4190-b4e8-fc4a20c99492}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

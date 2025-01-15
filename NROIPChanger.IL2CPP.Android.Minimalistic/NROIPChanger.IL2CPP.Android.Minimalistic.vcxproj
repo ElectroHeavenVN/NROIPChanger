@@ -268,9 +268,17 @@
     <ClCompile Include="Substrate\SymbolFinder.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AetherimMod\api.hpp" />
+    <ClInclude Include="AetherimMod\class.hpp" />
+    <ClInclude Include="AetherimMod\field.hpp" />
+    <ClInclude Include="AetherimMod\il2cpp_internals.h" />
+    <ClInclude Include="AetherimMod\image.hpp" />
+    <ClInclude Include="AetherimMod\method.hpp" />
+    <ClInclude Include="AetherimMod\table_defs.h" />
+    <ClInclude Include="AetherimMod\type.hpp" />
+    <ClInclude Include="AetherimMod\wrapper.hpp" />
     <ClInclude Include="And64InlineHook\And64InlineHook.hpp" />
     <ClInclude Include="EHVNUtils.h" />
-    <ClInclude Include="hookAddresses.h" />
     <ClInclude Include="IL2CPP\il2cpp.h" />
     <ClInclude Include="IL2CPP\il2cpp_internals.h" />
     <ClInclude Include="Includes\Logger.h" />
