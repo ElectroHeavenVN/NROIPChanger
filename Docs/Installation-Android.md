@@ -91,9 +91,10 @@ VD: Nếu nội dung tệp `AndroidManifest.xml` như sau:
   - Sau khi cấp quyền và quay trở lại game, một biểu tượng mới sẽ xuất hiện (hay còn gọi là Floating Menu). Nhấn vào biểu tượng này để mở menu của NROIPChanger.
   - Nhập địa chỉ máy chủ mới vào trường `Địa chỉ IP mới` và cổng mới vào trường `Cổng mới`.
   <!-- - Mở rộng phần `Địa chỉ hook` và nhập RVA của các hàm được đề cập trong [Lấy RVA của các hàm](./Getting-Function-RVAs.md) vào các trường tương ứng. -->
+  <!-- - Khởi động lại để thay đổi được áp dụng. -->
+  <!-- - Mở menu và bật công tắc `Kích hoạt` để bật chức năng đổi IP. -->
   - Bật công tắc `Hiện thông báo` nếu bạn muốn xem địa chỉ máy chủ gốc.
-  - Khởi động lại để thay đổi được áp dụng.
-  - Mở menu và bật công tắc `Kích hoạt` để bật chức năng đổi IP.
+  - Bật công tắc `Kích hoạt` để bật chức năng đổi IP.
   - Nhấn nút `Thu nhỏ` để thu nhỏ menu, `Ẩn/Đóng (giữ)` để ẩn menu và nhấn giữ nút `Ẩn/Đóng (giữ)` để đóng menu.<br>
   <br>![](Media/Installation-Android-18_2.png)
 ## Sửa đổi và cài đặt tệp APK trên Android
@@ -163,8 +164,9 @@ VD: Nếu nội dung tệp `AndroidManifest.xml` như sau:
   - Sau khi cấp quyền và quay trở lại game, một biểu tượng mới sẽ xuất hiện (hay còn gọi là Floating Menu). Nhấn vào biểu tượng này để mở menu của NROIPChanger.
   - Nhập địa chỉ máy chủ mới vào trường `Địa chỉ IP mới` và cổng mới vào trường `Cổng mới`.
   <!-- - Mở rộng phần `Địa chỉ hook` và nhập RVA của các hàm được đề cập trong [Lấy RVA của các hàm](./Getting-Function-RVAs.md) vào các trường tương ứng. -->
+  <!-- - Khởi động lại để thay đổi được áp dụng. -->
+  <!-- - Mở menu và bật công tắc `Kích hoạt` để bật chức năng đổi IP. -->
   - Bật công tắc `Hiện thông báo` nếu bạn muốn xem địa chỉ máy chủ gốc.
-  - Khởi động lại để thay đổi được áp dụng.
-  - Mở menu và bật công tắc `Kích hoạt` để bật chức năng đổi IP.
+  - Bật công tắc `Kích hoạt` để bật chức năng đổi IP.
   - Nhấn nút `Thu nhỏ` để thu nhỏ menu, `Ẩn/Đóng (giữ)` để ẩn menu và nhấn giữ nút `Ẩn/Đóng (giữ)` để đóng menu.<br>
   <br>![](Media/Installation-Android-18_2.png)
