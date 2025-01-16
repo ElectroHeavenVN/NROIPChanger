@@ -59,8 +59,6 @@ extern "C" {
 #define REPO "https://github.com/ElectroHeavenVN/NROIPChanger"
 
 static string customIP;
-static JavaVM* jvm;
-static jclass mainClass;
 
 static bool warningShown = false;
 static string lastToast = "";
@@ -76,7 +74,7 @@ static void ShowToast(char* content, int duration)
     long currentTime = ts.tv_sec * 1000 + ts.tv_nsec / 1000000;
     if (lastToast == content && currentTime - lastTimeShowToast <= 2000)
         return;
-    ShowToastOnUIThread(jvm, mainClass, content, duration);
+    ShowToastOnUIThread(content, duration);
     lastToast = content;
     lastTimeShowToast = currentTime;
 }

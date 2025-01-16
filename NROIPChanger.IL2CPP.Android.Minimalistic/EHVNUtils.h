@@ -13,6 +13,9 @@
 #define HOOK_BY_NAME(n) if (n##_address != 0) HOOK_ADDR(reinterpret_cast<DWORD>(n##_address), n##_hook, n##_original)
 #define targetLibName "libil2cpp.so"
 
+static JavaVM* jvm;
+static jclass mainClass;
+
 static jstring GetPackageName(JNIEnv *env, jobject activity) {
     jclass activityClass = env->GetObjectClass(activity);
     jmethodID getPackageName = env->GetMethodID(activityClass, "getPackageName", "()Ljava/lang/String;");
@@ -20,25 +23,30 @@ static jstring GetPackageName(JNIEnv *env, jobject activity) {
     return packageName;
 }
 
-static void ShowToastOnUIThread(JNIEnv* env, jclass declaringType, jstring content, int duration)
+static void ShowToastOnUIThread(JNIEnv* env, jstring content, int duration)
 {
-    jmethodID showToastOnUIThread = env->GetStaticMethodID(declaringType, "ShowToastOnUIThread", "(Ljava/lang/String;I)V");
-    env->CallStaticVoidMethod(declaringType, showToastOnUIThread, content, duration);
+    jmethodID showToastOnUIThread = env->GetStaticMethodID(mainClass, "ShowToastOnUIThread", "(Ljava/lang/String;I)V");
+    env->CallStaticVoidMethod(mainClass, showToastOnUIThread, content, duration);
 }
 
-static void ShowToastOnUIThread(JavaVM* jvm, jclass declaringType, const char* content, int duration)
+static void ShowToastOnUIThread(const char* content, int duration)
 {
     JNIEnv* env;
-    if (jvm->AttachCurrentThread(&env, nullptr) != JNI_OK)
-        return;
+    bool needDetach = false;
+    if (jvm->GetEnv((void**)&env, JNI_VERSION_1_6) != JNI_OK) {
+        if (jvm->AttachCurrentThread(&env, nullptr) != JNI_OK)
+            return;
+        needDetach = true;
+    }
     jstring jstr = env->NewStringUTF(content);
-    ShowToastOnUIThread(env, declaringType, jstr, duration);
-    jvm->DetachCurrentThread();
+    ShowToastOnUIThread(env, jstr, duration);
+    if (needDetach)
+        jvm->DetachCurrentThread();
 }
 
-static void ShowToastOnUIThread(JavaVM* jvm, jclass declaringType, std::string content, int duration)
+static void ShowToastOnUIThread(std::string content, int duration)
 {
-    ShowToastOnUIThread(jvm, declaringType, content.c_str(), duration);
+    ShowToastOnUIThread(content.c_str(), duration);
 }
 
 static std::string ToStdString(JNIEnv *env, jstring jStr) {
