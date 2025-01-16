@@ -98,7 +98,7 @@ System_String_o* CreateNetString(const char* str)
 
 System_String_o* CreateNetString(const wchar_t* str)
 {
-    return reinterpret_cast<System_String_o*>(Il2cpp::create_string_utf16(str, wcslen(str)));
+    return reinterpret_cast<System_String_o*>(Il2cpp::create_string_utf16(str, wcslen(str) * sizeof(wchar_t)));
 }
 
 static std::wstring GetStdWStr(System_String_o* str)

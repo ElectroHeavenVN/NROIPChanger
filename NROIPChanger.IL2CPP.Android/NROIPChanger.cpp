@@ -133,10 +133,10 @@ static bool ChangeIP(System_Net_Sockets_TcpClient_o* _this, System_String_o* hos
 		ShowToast(originalIPAddr, ToastLength::LENGTH_SHORT);
 		return false;
 	}
-	regex teaMobiIPPattern(R"(dragon.*?\.(teamobi|indonaga)\.com)");
-	string newIPAddr = customIP + ":" + to_string(customPort);
-	if (!regex_match(newIPAddr, teaMobiIPPattern))
+	regex teaMobiIPPattern(R"(dragon[\w]*\.(teamobi|indonaga)\.com)");
+	if (!regex_match(customIP, teaMobiIPPattern))
 		ShowPirateServerWarning();
+	string newIPAddr = customIP + ":" + to_string(customPort);
 	System_String_o* newHostname = CreateNetString(customIP);
 	ShowToast(originalIPAddr + " -> " + newIPAddr, ToastLength::LENGTH_SHORT);
 	original(_this, newHostname, customPort, nullptr);
@@ -205,6 +205,15 @@ static void* Initialize(void*)
 			return nullptr;
 		}
 	}
+	//count = 0;
+	//while (!isLibraryLoaded("libEHVNUtils.so")) {
+	//	sleep(1);
+	//	count++;
+	//	if (count > 15) {
+	//		exit(0);
+	//		return nullptr;
+	//	}
+	//}
 	InstallHooks();
 	LOGI("Initialization complete.");
 	return nullptr;

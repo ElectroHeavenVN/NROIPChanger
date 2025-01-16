@@ -107,7 +107,7 @@ static bool ChangeIP(System_Net_Sockets_TcpClient_o* _this, System_String_o* hos
         ShowToast(originalIPAddr, ToastLength::LENGTH_SHORT);
         return false;
     }
-    regex teaMobiIPPattern(R"(dragon.*?\.(teamobi|indonaga)\.com)");
+    regex teaMobiIPPattern(R"(dragon[\w]*\.(teamobi|indonaga)\.com)");
     if (!regex_match(customIP, teaMobiIPPattern))
         ShowPirateServerWarning();
     string ip_s = customIP.substr(0, customIP.find(":"));
