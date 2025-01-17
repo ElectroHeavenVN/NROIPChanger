@@ -1,11 +1,11 @@
 package com.ehvn.nroipchanger;
 
-import java.util.Dictionary;
 import java.util.HashMap;
+import java.util.Objects;
 
 public final class Strings {
 
-    static HashMap<String, String[]> features = new HashMap<String, String[]>();
+    static HashMap<String, String[]> features = new HashMap<>();
 
     static boolean initialized = false;
 
@@ -42,7 +42,6 @@ public final class Strings {
 
         features.put("installFromOtherSourcesWarning", new String[] {"Không cài từ các nguồn không rõ!", "Do not install from other sources!"});
         features.put("defaultIPAddress", new String[] {"Địa chỉ máy chủ mặc định", "Default server address"});
-
         features.put("pirateServerWarning", new String[] {"Đừng để bị lùa như 1 con gà khi chơi server lậu!", "Protect yourself from being scammed when playing on pirate servers!"});
 
         initialized = true;
@@ -54,9 +53,9 @@ public final class Strings {
         if (features.get(feature) == null)
             return feature;
         if (Utils.GetCurrentLanguage().equals("vi"))
-            return features.get(feature)[0];
+            return Objects.requireNonNull(features.get(feature))[0];
         else
-            return features.get(feature)[1];
+            return Objects.requireNonNull(features.get(feature))[1];
     }
 
     public static String hideOrKill()
@@ -149,12 +148,12 @@ public final class Strings {
         return fromFeature("defaultIPAddress");
     }
 
-    public static String installFromOtherSourcesWarning()
+    public static String installFromOtherSourcesWarning() //Will be called from native code
     {
         return fromFeature("installFromOtherSourcesWarning");
     }
 
-    public static String pirateServerWarning()
+    public static String pirateServerWarning() //Will be called from native code
     {
         return fromFeature("pirateServerWarning");
     }
