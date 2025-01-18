@@ -82,10 +82,10 @@ public:
     /**
      * @brief Get the data type of a parameter.
      */
-    auto get_param_type(int index) const -> const char*
+    auto get_param_type(int index) const -> Class*
     {
         if (Il2cpp::get_method_param_type == nullptr || this == nullptr)
-            return "Method->get_param_type() is nullptr";
+            return nullptr;
 
         return Il2cpp::get_method_param_type(this, index);
     }

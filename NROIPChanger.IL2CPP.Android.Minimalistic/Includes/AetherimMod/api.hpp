@@ -110,7 +110,7 @@ namespace Il2cpp
     DEF_API(get_method_is_instance, bool, (const Method* method));
     DEF_API(get_method_param_count, int, (const Method* method));
     DEF_API(get_method_param_name, const char*, (const Method* method, int index));
-    DEF_API(get_method_param_type, const char*, (const Method* method, int index));
+    DEF_API(get_method_param_type, Class*, (const Method* method, int index));
     DEF_API(get_method_return_type, void*, (const Method* method));
 
     // fields
@@ -211,7 +211,7 @@ namespace Il2cpp
         DEF_ADDR(get_method_is_instance, "il2cpp_method_is_instance", GameAssemblyHandle);
         DEF_ADDR(get_method_param_count, "il2cpp_method_get_param_count", GameAssemblyHandle);
         DEF_ADDR(get_method_param_name, "il2cpp_method_get_param_name", GameAssemblyHandle);
-        DEF_ADDR(get_method_param_type, "il2cpp_get_param", GameAssemblyHandle);
+        DEF_ADDR(get_method_param_type, "il2cpp_method_get_param", GameAssemblyHandle);
         DEF_ADDR(get_method_return_type, "il2cpp_method_get_return_type", GameAssemblyHandle);
 
         // fields
