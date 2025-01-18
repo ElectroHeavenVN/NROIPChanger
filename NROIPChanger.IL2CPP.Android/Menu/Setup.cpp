@@ -11,11 +11,24 @@ void InitMenu(JNIEnv *env, jobject thiz, jobject ctx, jobject title, jobject sub
         setText(env, title, "<b>NROIPChanger v" ENV_VERSION "</b>");
 
     //Set sub title
-    setText(env, subtitle, "<b><marquee><p style=\"font-size:30\">"
-        "<p style=\"color:green;\">Created by ElectroHeavenVN - Template from LGL</p> | "
-        "https://github.com/ElectroHeavenVN/NROIPChanger</p> | "
-        "<p style=\"color:red;\">Do not install from other sources!</p>"
-        "</marquee></b>");
+    setText(env, subtitle, 
+        "<b>"
+            "<marquee>"
+                "<p style=\"font-size:30\">"
+                    "<p style=\"color:green;\">"
+                        "Created by ElectroHeavenVN - Template from LGL"
+                    "</p>"
+                    " | "
+                    "<p style=\"color:blue;\">"
+                        "https://github.com/ElectroHeavenVN/NROIPChanger"
+                    "</p>"
+                    " | "
+                    "<p style=\"color:red;\">"
+                        "Do not install from other sources!"
+                    "</p>"
+                "</p>"  
+            "</marquee>"
+        "</b>");
 
     //Dialog Example
     //setDialog(ctx,env,"Title","Message Example");
