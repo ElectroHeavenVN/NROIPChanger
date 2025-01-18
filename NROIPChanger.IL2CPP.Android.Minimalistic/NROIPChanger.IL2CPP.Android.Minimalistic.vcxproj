@@ -159,6 +159,7 @@
       <AdditionalOptions>-fshort-wchar %(AdditionalOptions)</AdditionalOptions>
       <ExceptionHandling>Enabled</ExceptionHandling>
       <PreprocessorDefinitions>__ANDROID_MIN_SDK_VERSION__=$(AndroidAPILevelNumber);ENV_VERSION="$(envVersion)";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(StlIncludeDirectories);$(Sysroot)\usr\include;$(Sysroot)\usr\include\$(AndroidHeaderTriple);$(VS_NdkRoot)\sources\android\support\include;$(ProjectDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -171,6 +172,7 @@
       <AdditionalOptions>-fshort-wchar %(AdditionalOptions)</AdditionalOptions>
       <ExceptionHandling>Enabled</ExceptionHandling>
       <PreprocessorDefinitions>__ANDROID_MIN_SDK_VERSION__=$(AndroidAPILevelNumber);ENV_VERSION="$(envVersion)";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(StlIncludeDirectories);$(Sysroot)\usr\include;$(Sysroot)\usr\include\$(AndroidHeaderTriple);$(VS_NdkRoot)\sources\android\support\include;$(ProjectDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <DebuggerSymbolInformation>OmitAllSymbolInformation</DebuggerSymbolInformation>
@@ -186,6 +188,7 @@
       <AdditionalOptions>-fshort-wchar %(AdditionalOptions)</AdditionalOptions>
       <ExceptionHandling>Enabled</ExceptionHandling>
       <PreprocessorDefinitions>__ANDROID_MIN_SDK_VERSION__=$(AndroidAPILevelNumber);ENV_VERSION="$(envVersion)";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(StlIncludeDirectories);$(Sysroot)\usr\include;$(Sysroot)\usr\include\$(AndroidHeaderTriple);$(VS_NdkRoot)\sources\android\support\include;$(ProjectDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x86'">
@@ -198,6 +201,7 @@
       <AdditionalOptions>-fshort-wchar %(AdditionalOptions)</AdditionalOptions>
       <ExceptionHandling>Enabled</ExceptionHandling>
       <PreprocessorDefinitions>__ANDROID_MIN_SDK_VERSION__=$(AndroidAPILevelNumber);ENV_VERSION="$(envVersion)";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(StlIncludeDirectories);$(Sysroot)\usr\include;$(Sysroot)\usr\include\$(AndroidHeaderTriple);$(VS_NdkRoot)\sources\android\support\include;$(ProjectDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <DebuggerSymbolInformation>OmitAllSymbolInformation</DebuggerSymbolInformation>
@@ -213,6 +217,7 @@
       <AdditionalOptions>-fshort-wchar %(AdditionalOptions)</AdditionalOptions>
       <ExceptionHandling>Enabled</ExceptionHandling>
       <PreprocessorDefinitions>__ANDROID_MIN_SDK_VERSION__=$(AndroidAPILevelNumber);ENV_VERSION="$(envVersion)";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(StlIncludeDirectories);$(Sysroot)\usr\include;$(Sysroot)\usr\include\$(AndroidHeaderTriple);$(VS_NdkRoot)\sources\android\support\include;$(ProjectDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM64'">
@@ -225,6 +230,7 @@
       <AdditionalOptions>-fshort-wchar %(AdditionalOptions)</AdditionalOptions>
       <ExceptionHandling>Enabled</ExceptionHandling>
       <PreprocessorDefinitions>__ANDROID_MIN_SDK_VERSION__=$(AndroidAPILevelNumber);ENV_VERSION="$(envVersion)";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(StlIncludeDirectories);$(Sysroot)\usr\include;$(Sysroot)\usr\include\$(AndroidHeaderTriple);$(VS_NdkRoot)\sources\android\support\include;$(ProjectDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <DebuggerSymbolInformation>OmitAllSymbolInformation</DebuggerSymbolInformation>
@@ -240,6 +246,7 @@
       <ExceptionHandling>Enabled</ExceptionHandling>
       <AdditionalOptions>-fshort-wchar %(AdditionalOptions)</AdditionalOptions>
       <PreprocessorDefinitions>__ANDROID_MIN_SDK_VERSION__=$(AndroidAPILevelNumber);ENV_VERSION="$(envVersion)";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(StlIncludeDirectories);$(Sysroot)\usr\include;$(Sysroot)\usr\include\$(AndroidHeaderTriple);$(VS_NdkRoot)\sources\android\support\include;$(ProjectDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">
@@ -252,57 +259,58 @@
       <AdditionalOptions>-fshort-wchar %(AdditionalOptions)</AdditionalOptions>
       <ExceptionHandling>Enabled</ExceptionHandling>
       <PreprocessorDefinitions>__ANDROID_MIN_SDK_VERSION__=$(AndroidAPILevelNumber);ENV_VERSION="$(envVersion)";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(StlIncludeDirectories);$(Sysroot)\usr\include;$(Sysroot)\usr\include\$(AndroidHeaderTriple);$(VS_NdkRoot)\sources\android\support\include;$(ProjectDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <DebuggerSymbolInformation>OmitAllSymbolInformation</DebuggerSymbolInformation>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="And64InlineHook\And64InlineHook.cpp" />
-    <ClCompile Include="KittyMemory\KittyMemory.cpp" />
+    <ClCompile Include="Includes\And64InlineHook\And64InlineHook.cpp" />
+    <ClCompile Include="Includes\KittyMemory\KittyMemory.cpp" />
+    <ClCompile Include="Includes\Substrate\hde64.c" />
+    <ClCompile Include="Includes\Substrate\SubstrateDebug.cpp" />
+    <ClCompile Include="Includes\Substrate\SubstrateHook.cpp" />
+    <ClCompile Include="Includes\Substrate\SubstratePosixMemory.cpp" />
+    <ClCompile Include="Includes\Substrate\SymbolFinder.cpp" />
     <ClCompile Include="NROIPChanger.cpp" />
-    <ClCompile Include="Substrate\hde64.c" />
-    <ClCompile Include="Substrate\SubstrateDebug.cpp" />
-    <ClCompile Include="Substrate\SubstrateHook.cpp" />
-    <ClCompile Include="Substrate\SubstratePosixMemory.cpp" />
-    <ClCompile Include="Substrate\SymbolFinder.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="AetherimMod\api.hpp" />
-    <ClInclude Include="AetherimMod\class.hpp" />
-    <ClInclude Include="AetherimMod\field.hpp" />
-    <ClInclude Include="AetherimMod\il2cpp_internals.h" />
-    <ClInclude Include="AetherimMod\image.hpp" />
-    <ClInclude Include="AetherimMod\method.hpp" />
-    <ClInclude Include="AetherimMod\table_defs.h" />
-    <ClInclude Include="AetherimMod\type.hpp" />
-    <ClInclude Include="AetherimMod\wrapper.hpp" />
-    <ClInclude Include="And64InlineHook\And64InlineHook.hpp" />
-    <ClInclude Include="EHVNUtils.h" />
     <ClInclude Include="IL2CPP\il2cpp.h" />
     <ClInclude Include="IL2CPP\il2cpp_internals.h" />
+    <ClInclude Include="Includes\AetherimMod\api.hpp" />
+    <ClInclude Include="Includes\AetherimMod\class.hpp" />
+    <ClInclude Include="Includes\AetherimMod\field.hpp" />
+    <ClInclude Include="Includes\AetherimMod\il2cpp_internals.h" />
+    <ClInclude Include="Includes\AetherimMod\image.hpp" />
+    <ClInclude Include="Includes\AetherimMod\method.hpp" />
+    <ClInclude Include="Includes\AetherimMod\table_defs.h" />
+    <ClInclude Include="Includes\AetherimMod\type.hpp" />
+    <ClInclude Include="Includes\AetherimMod\wrapper.hpp" />
+    <ClInclude Include="Includes\And64InlineHook\And64InlineHook.hpp" />
+    <ClInclude Include="Includes\KittyMemory\KittyMemory.h" />
     <ClInclude Include="Includes\Logger.h" />
     <ClInclude Include="Includes\Macros.h" />
+    <ClInclude Include="Includes\Substrate\Buffer.hpp" />
+    <ClInclude Include="Includes\Substrate\CydiaSubstrate.h" />
+    <ClInclude Include="Includes\Substrate\hde64.h" />
+    <ClInclude Include="Includes\Substrate\SubstrateARM.hpp" />
+    <ClInclude Include="Includes\Substrate\SubstrateDebug.hpp" />
+    <ClInclude Include="Includes\Substrate\SubstrateHook.h" />
+    <ClInclude Include="Includes\Substrate\SubstrateLog.hpp" />
+    <ClInclude Include="Includes\Substrate\SubstrateX86.hpp" />
+    <ClInclude Include="Includes\Substrate\SymbolFinder.h" />
+    <ClInclude Include="Includes\Substrate\table64.h" />
+    <ClInclude Include="Includes\utfcpp\utf8.h" />
+    <ClInclude Include="Includes\utfcpp\utf8\checked.h" />
+    <ClInclude Include="Includes\utfcpp\utf8\core.h" />
+    <ClInclude Include="Includes\utfcpp\utf8\cpp11.h" />
+    <ClInclude Include="Includes\utfcpp\utf8\cpp17.h" />
+    <ClInclude Include="Includes\utfcpp\utf8\cpp20.h" />
+    <ClInclude Include="Includes\utfcpp\utf8\unchecked.h" />
     <ClInclude Include="Includes\Utils.h" />
-    <ClInclude Include="KittyMemory\KittyMemory.h" />
     <ClInclude Include="NROIPChanger.h" />
-    <ClInclude Include="Substrate\Buffer.hpp" />
-    <ClInclude Include="Substrate\CydiaSubstrate.h" />
-    <ClInclude Include="Substrate\hde64.h" />
-    <ClInclude Include="Substrate\SubstrateARM.hpp" />
-    <ClInclude Include="Substrate\SubstrateDebug.hpp" />
-    <ClInclude Include="Substrate\SubstrateHook.h" />
-    <ClInclude Include="Substrate\SubstrateLog.hpp" />
-    <ClInclude Include="Substrate\SubstrateX86.hpp" />
-    <ClInclude Include="Substrate\SymbolFinder.h" />
-    <ClInclude Include="Substrate\table64.h" />
-    <ClInclude Include="utfcpp\utf8.h" />
-    <ClInclude Include="utfcpp\utf8\checked.h" />
-    <ClInclude Include="utfcpp\utf8\core.h" />
-    <ClInclude Include="utfcpp\utf8\cpp11.h" />
-    <ClInclude Include="utfcpp\utf8\cpp17.h" />
-    <ClInclude Include="utfcpp\utf8\cpp20.h" />
-    <ClInclude Include="utfcpp\utf8\unchecked.h" />
+    <ClInclude Include="Utils\EHVNUtils.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Smali\com\ehvn\nroipchanger\Main$1.smali" />

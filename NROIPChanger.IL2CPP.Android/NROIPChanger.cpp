@@ -1,6 +1,6 @@
-﻿#include "AetherimMod/api.hpp"
-#include "AetherimMod/wrapper.hpp"
-#include "EHVNUtils.h"
+﻿#include "Includes/AetherimMod/api.hpp"
+#include "Includes/AetherimMod/wrapper.hpp"
+#include "Utils/EHVNUtils.h"
 #include "Includes/Logger.h"
 #include "jni.h"
 #include "Menu/Jni.hpp"
@@ -205,15 +205,15 @@ static void* Initialize(void*)
 			return nullptr;
 		}
 	}
-	//count = 0;
-	//while (!isLibraryLoaded("libEHVNUtils.so")) {
-	//	sleep(1);
-	//	count++;
-	//	if (count > 15) {
-	//		exit(0);
-	//		return nullptr;
-	//	}
-	//}
+	count = 0;
+	while (!isLibraryLoaded("libEHVNUtils.so")) {
+		sleep(1);
+		count++;
+		if (count > 15) {
+			exit(0);
+			return nullptr;
+		}
+	}
 	InstallHooks();
 	LOGI("Initialization complete.");
 	return nullptr;

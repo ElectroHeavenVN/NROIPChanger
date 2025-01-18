@@ -11,8 +11,8 @@
 #include <iostream>
 #include <sstream>
 #include <dlfcn.h>
-#include "../Includes/get_device_api_level_inlines.h"
-#include "../Includes/Logger.h"
+#include "Includes/get_device_api_level_inlines.h"
+#include "Includes/Logger.h"
 
 //Jni stuff from MrDarkRX https://github.com/MrDarkRXx/DarkMod-Floating
 void setDialog(jobject ctx, JNIEnv *env, const char *title, const char *msg){

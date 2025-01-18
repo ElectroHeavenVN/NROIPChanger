@@ -2,12 +2,12 @@
 #ifndef EHVNUTILS_H
 #define EHVNUTILS_H
 
-#include "AetherimMod/api.hpp"
+#include "Includes/AetherimMod/api.hpp"
 #include "IL2CPP/il2cpp.h"
 #include "Includes/Logger.h"
 #include "Includes/Macros.h"
 #include "Includes/Utils.h"
-#include "utfcpp/utf8.h"
+#include "Includes/utfcpp/utf8.h"
 #include <jni.h>
 
 #define HOOK_BY_NAME(n) if (n##_address != 0) HOOK_ADDR(reinterpret_cast<DWORD>(n##_address), n##_hook, n##_original)

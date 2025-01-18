@@ -1,5 +1,5 @@
 ﻿
-#include "../Menu/Menu.hpp"
+#include "Menu/Menu.hpp"
 #include <string>
 
 bool iconValid = false;

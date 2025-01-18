@@ -3,11 +3,11 @@
 #define ANDROID_MOD_MENU_MACROS_H
 
 #if defined(__aarch64__)
-#include "../And64InlineHook/And64InlineHook.hpp"
+#include "And64InlineHook/And64InlineHook.hpp"
 #elif defined(__arm__) || defined(__i386__) || defined(__x86_64__)
-#include "../Substrate/SubstrateHook.h"
-#include "../Substrate/CydiaSubstrate.h"
-#include "../Includes/Logger.h"
+#include "Substrate/SubstrateHook.h"
+#include "Substrate/CydiaSubstrate.h"
+#include "Includes/Logger.h"
 #else
 #error Unsupported architecture
 #endif

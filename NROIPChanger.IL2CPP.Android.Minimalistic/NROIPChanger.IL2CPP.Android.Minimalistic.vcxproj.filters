@@ -2,34 +2,30 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <ClCompile Include="NROIPChanger.cpp" />
-    <ClCompile Include="And64InlineHook\And64InlineHook.cpp">
-      <Filter>And64InlineHook</Filter>
+    <ClCompile Include="Includes\And64InlineHook\And64InlineHook.cpp">
+      <Filter>Includes\And64InlineHook</Filter>
     </ClCompile>
-    <ClCompile Include="KittyMemory\KittyMemory.cpp">
-      <Filter>KittyMemory</Filter>
+    <ClCompile Include="Includes\KittyMemory\KittyMemory.cpp">
+      <Filter>Includes\KittyMemory</Filter>
     </ClCompile>
-    <ClCompile Include="Substrate\hde64.c">
-      <Filter>Substrate</Filter>
+    <ClCompile Include="Includes\Substrate\hde64.c">
+      <Filter>Includes\Substrate</Filter>
     </ClCompile>
-    <ClCompile Include="Substrate\SubstrateDebug.cpp">
-      <Filter>Substrate</Filter>
+    <ClCompile Include="Includes\Substrate\SubstrateDebug.cpp">
+      <Filter>Includes\Substrate</Filter>
     </ClCompile>
-    <ClCompile Include="Substrate\SubstrateHook.cpp">
-      <Filter>Substrate</Filter>
+    <ClCompile Include="Includes\Substrate\SubstrateHook.cpp">
+      <Filter>Includes\Substrate</Filter>
     </ClCompile>
-    <ClCompile Include="Substrate\SubstratePosixMemory.cpp">
-      <Filter>Substrate</Filter>
+    <ClCompile Include="Includes\Substrate\SubstratePosixMemory.cpp">
+      <Filter>Includes\Substrate</Filter>
     </ClCompile>
-    <ClCompile Include="Substrate\SymbolFinder.cpp">
-      <Filter>Substrate</Filter>
+    <ClCompile Include="Includes\Substrate\SymbolFinder.cpp">
+      <Filter>Includes\Substrate</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="EHVNUtils.h" />
     <ClInclude Include="NROIPChanger.h" />
-    <ClInclude Include="And64InlineHook\And64InlineHook.hpp">
-      <Filter>And64InlineHook</Filter>
-    </ClInclude>
     <ClInclude Include="IL2CPP\il2cpp.h">
       <Filter>IL2CPP</Filter>
     </ClInclude>
@@ -45,118 +41,124 @@
     <ClInclude Include="Includes\Utils.h">
       <Filter>Includes</Filter>
     </ClInclude>
-    <ClInclude Include="KittyMemory\KittyMemory.h">
-      <Filter>KittyMemory</Filter>
+    <ClInclude Include="Includes\AetherimMod\api.hpp">
+      <Filter>Includes\AetherimMod</Filter>
     </ClInclude>
-    <ClInclude Include="utfcpp\utf8.h">
-      <Filter>utfcpp</Filter>
+    <ClInclude Include="Includes\AetherimMod\class.hpp">
+      <Filter>Includes\AetherimMod</Filter>
     </ClInclude>
-    <ClInclude Include="utfcpp\utf8\core.h">
-      <Filter>utfcpp\utf8</Filter>
+    <ClInclude Include="Includes\AetherimMod\field.hpp">
+      <Filter>Includes\AetherimMod</Filter>
     </ClInclude>
-    <ClInclude Include="utfcpp\utf8\cpp11.h">
-      <Filter>utfcpp\utf8</Filter>
+    <ClInclude Include="Includes\AetherimMod\il2cpp_internals.h">
+      <Filter>Includes\AetherimMod</Filter>
     </ClInclude>
-    <ClInclude Include="utfcpp\utf8\cpp17.h">
-      <Filter>utfcpp\utf8</Filter>
+    <ClInclude Include="Includes\AetherimMod\image.hpp">
+      <Filter>Includes\AetherimMod</Filter>
     </ClInclude>
-    <ClInclude Include="utfcpp\utf8\cpp20.h">
-      <Filter>utfcpp\utf8</Filter>
+    <ClInclude Include="Includes\AetherimMod\method.hpp">
+      <Filter>Includes\AetherimMod</Filter>
     </ClInclude>
-    <ClInclude Include="utfcpp\utf8\checked.h">
-      <Filter>utfcpp\utf8</Filter>
+    <ClInclude Include="Includes\AetherimMod\table_defs.h">
+      <Filter>Includes\AetherimMod</Filter>
     </ClInclude>
-    <ClInclude Include="utfcpp\utf8\unchecked.h">
-      <Filter>utfcpp\utf8</Filter>
+    <ClInclude Include="Includes\AetherimMod\type.hpp">
+      <Filter>Includes\AetherimMod</Filter>
     </ClInclude>
-    <ClInclude Include="Substrate\Buffer.hpp">
-      <Filter>Substrate</Filter>
+    <ClInclude Include="Includes\AetherimMod\wrapper.hpp">
+      <Filter>Includes\AetherimMod</Filter>
     </ClInclude>
-    <ClInclude Include="Substrate\CydiaSubstrate.h">
-      <Filter>Substrate</Filter>
+    <ClInclude Include="Includes\And64InlineHook\And64InlineHook.hpp">
+      <Filter>Includes\And64InlineHook</Filter>
     </ClInclude>
-    <ClInclude Include="Substrate\hde64.h">
-      <Filter>Substrate</Filter>
+    <ClInclude Include="Includes\KittyMemory\KittyMemory.h">
+      <Filter>Includes\KittyMemory</Filter>
     </ClInclude>
-    <ClInclude Include="Substrate\SubstrateARM.hpp">
-      <Filter>Substrate</Filter>
+    <ClInclude Include="Includes\Substrate\Buffer.hpp">
+      <Filter>Includes\Substrate</Filter>
     </ClInclude>
-    <ClInclude Include="Substrate\SubstrateDebug.hpp">
-      <Filter>Substrate</Filter>
+    <ClInclude Include="Includes\Substrate\CydiaSubstrate.h">
+      <Filter>Includes\Substrate</Filter>
     </ClInclude>
-    <ClInclude Include="Substrate\SubstrateHook.h">
-      <Filter>Substrate</Filter>
+    <ClInclude Include="Includes\Substrate\hde64.h">
+      <Filter>Includes\Substrate</Filter>
     </ClInclude>
-    <ClInclude Include="Substrate\SubstrateLog.hpp">
-      <Filter>Substrate</Filter>
+    <ClInclude Include="Includes\Substrate\SubstrateARM.hpp">
+      <Filter>Includes\Substrate</Filter>
     </ClInclude>
-    <ClInclude Include="Substrate\SubstrateX86.hpp">
-      <Filter>Substrate</Filter>
+    <ClInclude Include="Includes\Substrate\SubstrateDebug.hpp">
+      <Filter>Includes\Substrate</Filter>
     </ClInclude>
-    <ClInclude Include="Substrate\SymbolFinder.h">
-      <Filter>Substrate</Filter>
+    <ClInclude Include="Includes\Substrate\SubstrateHook.h">
+      <Filter>Includes\Substrate</Filter>
     </ClInclude>
-    <ClInclude Include="Substrate\table64.h">
-      <Filter>Substrate</Filter>
+    <ClInclude Include="Includes\Substrate\SubstrateLog.hpp">
+      <Filter>Includes\Substrate</Filter>
     </ClInclude>
-    <ClInclude Include="AetherimMod\api.hpp">
-      <Filter>AetherimMod</Filter>
+    <ClInclude Include="Includes\Substrate\SubstrateX86.hpp">
+      <Filter>Includes\Substrate</Filter>
     </ClInclude>
-    <ClInclude Include="AetherimMod\class.hpp">
-      <Filter>AetherimMod</Filter>
+    <ClInclude Include="Includes\Substrate\SymbolFinder.h">
+      <Filter>Includes\Substrate</Filter>
     </ClInclude>
-    <ClInclude Include="AetherimMod\field.hpp">
-      <Filter>AetherimMod</Filter>
+    <ClInclude Include="Includes\Substrate\table64.h">
+      <Filter>Includes\Substrate</Filter>
     </ClInclude>
-    <ClInclude Include="AetherimMod\il2cpp_internals.h">
-      <Filter>AetherimMod</Filter>
+    <ClInclude Include="Includes\utfcpp\utf8\checked.h">
+      <Filter>Includes\utfcpp</Filter>
     </ClInclude>
-    <ClInclude Include="AetherimMod\image.hpp">
-      <Filter>AetherimMod</Filter>
+    <ClInclude Include="Includes\utfcpp\utf8\core.h">
+      <Filter>Includes\utfcpp</Filter>
     </ClInclude>
-    <ClInclude Include="AetherimMod\method.hpp">
-      <Filter>AetherimMod</Filter>
+    <ClInclude Include="Includes\utfcpp\utf8\cpp11.h">
+      <Filter>Includes\utfcpp</Filter>
     </ClInclude>
-    <ClInclude Include="AetherimMod\table_defs.h">
-      <Filter>AetherimMod</Filter>
+    <ClInclude Include="Includes\utfcpp\utf8\cpp17.h">
+      <Filter>Includes\utfcpp</Filter>
     </ClInclude>
-    <ClInclude Include="AetherimMod\type.hpp">
-      <Filter>AetherimMod</Filter>
+    <ClInclude Include="Includes\utfcpp\utf8\cpp20.h">
+      <Filter>Includes\utfcpp</Filter>
     </ClInclude>
-    <ClInclude Include="AetherimMod\wrapper.hpp">
-      <Filter>AetherimMod</Filter>
+    <ClInclude Include="Includes\utfcpp\utf8\unchecked.h">
+      <Filter>Includes\utfcpp</Filter>
+    </ClInclude>
+    <ClInclude Include="Includes\utfcpp\utf8.h">
+      <Filter>Includes\utfcpp</Filter>
+    </ClInclude>
+    <ClInclude Include="Utils\EHVNUtils.h">
+      <Filter>Utils</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Filter Include="And64InlineHook">
-      <UniqueIdentifier>{039f0666-de6f-4470-ac44-85e481a75a17}</UniqueIdentifier>
-    </Filter>
     <Filter Include="IL2CPP">
       <UniqueIdentifier>{696ce93a-659e-4baf-ad97-c6f7831a42d6}</UniqueIdentifier>
     </Filter>
     <Filter Include="Includes">
       <UniqueIdentifier>{2b95f83c-b405-4303-94fb-78c2725c165b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="KittyMemory">
-      <UniqueIdentifier>{dacbc545-a654-452c-9b91-8e2888498c4f}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Smali">
       <UniqueIdentifier>{0728554e-b026-42db-8636-885c06140e35}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Substrate">
-      <UniqueIdentifier>{73272d0c-6f04-4e71-b2b4-95096e0b4daa}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="utfcpp">
-      <UniqueIdentifier>{a207c7f7-7064-4dac-a9c0-d8040b8aa7bc}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="utfcpp\utf8">
-      <UniqueIdentifier>{fb850b89-12b5-459e-96a0-c7d1a7571a60}</UniqueIdentifier>
     </Filter>
     <Filter Include="Smali\com.ehvn.nroipchanger">
       <UniqueIdentifier>{15de9be0-4aa7-4398-b1f4-2788ff11a5b1}</UniqueIdentifier>
     </Filter>
-    <Filter Include="AetherimMod">
+    <Filter Include="Includes\AetherimMod">
       <UniqueIdentifier>{7c044922-c48b-4ac1-a3d4-484449c20b82}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Includes\And64InlineHook">
+      <UniqueIdentifier>{039f0666-de6f-4470-ac44-85e481a75a17}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Includes\KittyMemory">
+      <UniqueIdentifier>{dacbc545-a654-452c-9b91-8e2888498c4f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Includes\Substrate">
+      <UniqueIdentifier>{73272d0c-6f04-4e71-b2b4-95096e0b4daa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Includes\utfcpp">
+      <UniqueIdentifier>{a207c7f7-7064-4dac-a9c0-d8040b8aa7bc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Utils">
+      <UniqueIdentifier>{eb8c2524-f162-4014-93b7-e4b13da32d20}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

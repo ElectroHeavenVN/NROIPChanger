@@ -1,6 +1,6 @@
-#include "../Menu/Jni.hpp"
-#include "../Menu/Menu.hpp"
-#include "../Includes/Utils.hpp"
+#include "Menu/Jni.hpp"
+#include "Menu/Menu.hpp"
+#include "Includes/Utils.hpp"
 #include <jni.h>
 
 void InitMenu(JNIEnv *env, jobject thiz, jobject ctx, jobject title, jobject subtitle) {

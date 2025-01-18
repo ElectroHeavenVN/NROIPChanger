@@ -7,7 +7,7 @@
 #include <cstring>
 #include <string>
 #include <cstdlib>
-#include "../Includes/Logger.h"
+#include "Includes/Logger.h"
 
 typedef unsigned long DWORD;
 
