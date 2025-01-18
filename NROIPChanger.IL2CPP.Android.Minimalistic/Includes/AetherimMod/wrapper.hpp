@@ -5,7 +5,7 @@
 #include <string>
 #include <vector>
 
-#include "./image.hpp"
+#include "image.hpp"
 
 class Wrapper
 {

@@ -9,8 +9,8 @@
 #include <iostream>
 #include <vector>
 
-#include "./api.hpp"
-#include "./il2cpp_internals.h"
+#include "api.hpp"
+#include "il2cpp_internals.h"
 
 class Method : public MethodInfo
 {

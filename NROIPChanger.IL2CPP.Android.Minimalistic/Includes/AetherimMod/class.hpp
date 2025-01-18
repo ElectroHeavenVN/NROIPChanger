@@ -11,10 +11,10 @@
 #include <iostream>
 #include <vector>
 
-#include "./api.hpp"
-#include "./method.hpp"
-#include "./field.hpp"
-#include "./il2cpp_internals.h"
+#include "api.hpp"
+#include "method.hpp"
+#include "field.hpp"
+#include "il2cpp_internals.h"
 
 class Class : public Il2CppClass
 {

@@ -5,7 +5,7 @@
 #include <vector>
 #include <memory>
 
-#include "./class.hpp"
+#include "class.hpp"
 
 class Image
 {

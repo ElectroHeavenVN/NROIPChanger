@@ -10,7 +10,7 @@
 #include <iostream>
 #include <vector>
 
-#include "./api.hpp"
+#include "api.hpp"
 
 class Field
 {

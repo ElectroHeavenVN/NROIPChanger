@@ -18,8 +18,8 @@
 #endif
 
 #include <cstdint>
-#include "./table_defs.h"
-#include "./il2cpp_internals.h"
+#include "table_defs.h"
+#include "il2cpp_internals.h"
 
 #define DEF_API( name, ret_type, args )        \
   using name##_t = ret_type( APICALL * ) args; \
