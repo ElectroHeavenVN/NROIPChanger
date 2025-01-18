@@ -206,14 +206,14 @@ static void* Initialize(void*)
 		}
 	}
 	count = 0;
-	while (!isLibraryLoaded("libEHVNUtils.so")) {
-		sleep(1);
-		count++;
-		if (count > 15) {
-			exit(0);
-			return nullptr;
-		}
-	}
+	//while (!isLibraryLoaded("libEHVN.so")) {
+	//	sleep(1);
+	//	count++;
+	//	if (count > 15) {
+	//		exit(0);
+	//		return nullptr;
+	//	}
+	//}
 	InstallHooks();
 	LOGI("Initialization complete.");
 	return nullptr;
