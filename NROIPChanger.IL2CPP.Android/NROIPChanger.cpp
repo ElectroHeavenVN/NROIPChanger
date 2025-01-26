@@ -214,6 +214,7 @@ static void* Initialize(void*)
 	//		return nullptr;
 	//	}
 	//}
+	sleep(2);
 	InstallHooks();
 	LOGI("Initialization complete.");
 	return nullptr;
