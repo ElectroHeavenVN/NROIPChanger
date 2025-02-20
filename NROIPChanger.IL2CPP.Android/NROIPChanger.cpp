@@ -69,6 +69,7 @@ static int customPort = -1;
 static bool warningShown = false;
 static string lastToast = "";
 static long lastTimeShowToast = 0;
+static bool forceLocalhost = false;
 
 Il2CppMethodPointer System_Net_Sockets_TcpClient__Connect_address = 0;
 
@@ -77,8 +78,9 @@ jobjectArray GetFeatureList(JNIEnv* env, jobject context) {
 	vector<string> features = {
 		"1_Toggle_activate",
 		"2_Toggle_showNoti_True",
-		"3_InputText_newIPAddr",
-		"4_InputValue_newPort",
+		"3_Toggle_forceLocalhost",
+		"4_InputText_newIPAddr",
+		"5_InputValue_newPort",
 	};
 	int Total_Feature = features.size();
 	ret = (jobjectArray)env->NewObjectArray(Total_Feature, env->FindClass("java/lang/String"), env->NewStringUTF(""));
@@ -120,7 +122,7 @@ static void ShowPirateServerWarning()
 
 static bool ChangeIP(System_Net_Sockets_TcpClient_o* _this, System_String_o* hostname, int32_t port, void (HOOKCCV* original)(System_Net_Sockets_TcpClient_o*, System_String_o*, int32_t, const MethodInfo*))
 {
-	if (Equals(hostname, L"127.0.0.1") || Equals(hostname, L"localhost"))
+	if (!forceLocalhost && (Equals(hostname, L"127.0.0.1") || Equals(hostname, L"localhost")))
 	{
 		ShowToast("Localhost", ToastLength::LENGTH_SHORT);
 		return false;
@@ -162,10 +164,13 @@ void Changes(JNIEnv* env, jclass clazz, jobject obj, jint featNum, jstring featu
 		case 2: //  enable/disable notification
 			showNotification = boolean;
 			break;
-		case 3: //custom ip
+		case 3: //  force redirect localhost
+			forceLocalhost = boolean;
+			break;
+		case 4: //custom ip
 			customIP = ToStdString(env, text);
 			break;
-		case 4: //custom port
+		case 5: //custom port
 			if (value > 0)
 				customPort = value;
 			break;

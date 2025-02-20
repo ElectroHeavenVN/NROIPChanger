@@ -15,6 +15,7 @@ public final class Strings {
             return;
         features.put("activate", new String[] {"Kích hoạt", "Activate"});
         features.put("showNoti", new String[] {"Hiện thông báo", "Show notification"});
+        features.put("forceLocalhost", new String[] {"Buộc đổi IP từ Localhost", "Force IP change from Localhost"});
         features.put("newIPAddr", new String[] {"Địa chỉ IP mới", "New IP address"});
         features.put("newPort", new String[] {"Cổng mới", "New port"});
         features.put("settings", new String[] {"Cài đặt", "Settings"});
