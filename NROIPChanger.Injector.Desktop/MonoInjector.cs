@@ -29,7 +29,7 @@ namespace NROIPChanger.Injector.Desktop
             return monoAssembly != IntPtr.Zero;
         }
 
-        public bool SetIP(string hostname, ushort port, bool debugMode = false)
+        public bool SetIP(string hostname, ushort port, bool debugMode = false, bool forceLocalhost = false)
         {
             if (_process == null)
                 return false;
@@ -38,6 +38,7 @@ namespace NROIPChanger.Injector.Desktop
             StreamWriter writer = new StreamWriter(pipe);
             writer.WriteLine($"{hostname}:{port}");
             writer.WriteLine(debugMode);
+            writer.WriteLine(forceLocalhost);
             writer.Flush();
             writer.Close();
             pipe.Close();

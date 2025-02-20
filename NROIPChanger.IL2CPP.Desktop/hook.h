@@ -5,6 +5,7 @@
 
 extern std::wstring ipParameters;
 extern HWND mainWindowHandle;
+extern bool forceRedirectLocalhost;
 void SetupHooks();
 
 #endif

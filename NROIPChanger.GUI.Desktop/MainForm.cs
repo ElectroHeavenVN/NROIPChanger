@@ -88,9 +88,9 @@ namespace NROIPChanger.GUI.Desktop
                 return;
             }
             if (is32)
-                Process.Start("Injector/NROIPChanger.Injector.Desktop.x86.exe", $"{gameProcess.Id} {tbNewIP.Text}:{nudNewPort.Value} {cbDebugMode.Checked}");
+                Process.Start("Injector\\NROIPChanger.Injector.Desktop.x86.exe", $"{gameProcess.Id} {tbNewIP.Text}:{nudNewPort.Value} {cbDebugMode.Checked} {cbForceLocalhost.Checked}");
             else if (is64)
-                Process.Start("Injector/NROIPChanger.Injector.Desktop.x64.exe", $"{gameProcess.Id} {tbNewIP.Text}:{nudNewPort.Value} {cbDebugMode.Checked}");
+                Process.Start("Injector\\NROIPChanger.Injector.Desktop.x64.exe", $"{gameProcess.Id} {tbNewIP.Text}:{nudNewPort.Value} {cbDebugMode.Checked} {cbForceLocalhost.Checked}");
         }
 
         void btnInject_Click(object sender, EventArgs e)
@@ -108,9 +108,9 @@ namespace NROIPChanger.GUI.Desktop
                 return;
             }
             if (is32)
-                Process.Start("Injector\\NROIPChanger.Injector.Desktop.x86.exe", $"{processItem.Process.Id} {tbNewIP.Text}:{nudNewPort.Value} {cbDebugMode.Checked}");
+                Process.Start("Injector\\NROIPChanger.Injector.Desktop.x86.exe", $"{processItem.Process.Id} {tbNewIP.Text}:{nudNewPort.Value} {cbDebugMode.Checked}  {cbForceLocalhost.Checked}");
             else if (is64)
-                Process.Start("Injector\\NROIPChanger.Injector.Desktop.x64.exe", $"{processItem.Process.Id} {tbNewIP.Text}:{nudNewPort.Value} {cbDebugMode.Checked}");
+                Process.Start("Injector\\NROIPChanger.Injector.Desktop.x64.exe", $"{processItem.Process.Id} {tbNewIP.Text}:{nudNewPort.Value} {cbDebugMode.Checked}  {cbForceLocalhost.Checked}");
         }
 
         void tbGamePath_DragEnter(object sender, DragEventArgs e)

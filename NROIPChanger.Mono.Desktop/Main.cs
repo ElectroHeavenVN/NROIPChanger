@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
 using HarmonyLib;
@@ -12,6 +13,7 @@ namespace NROIPChanger.Mono.Desktop
     {
         internal static string ipAndPort;
         internal static bool debugMode;
+        internal static bool forceLocalhost;
 
         internal static void Initialize()
         {
@@ -41,6 +43,7 @@ namespace NROIPChanger.Mono.Desktop
             debugMode = bool.Parse(reader.ReadLine());
             if (debugMode)
                 OpenConsole();
+            forceLocalhost = bool.Parse(reader.ReadLine());
             reader.Close();
             pipe.Close();
         }

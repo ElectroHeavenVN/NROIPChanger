@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Net.Sockets;
+using System.Text.RegularExpressions;
 using HarmonyLib;
 
 namespace NROIPChanger.Mono.Desktop
@@ -16,7 +17,14 @@ namespace NROIPChanger.Mono.Desktop
         {
             static void Prefix(ref string hostname, ref int port)
             {
-                if (string.IsNullOrEmpty(Main.ipAndPort))
+                if (!Main.forceLocalhost && (hostname == "127.0.0.1" || hostname.Equals("localhost", StringComparison.OrdinalIgnoreCase)))
+                {
+                    AccessTools.Method("UnityEngine.Debug:Log", new Type[] { typeof(object) })?.Invoke(null, new object[] { $"[NROIPChanger.Mono.Desktop] Localhost" });
+                    Console.WriteLine($"[NROIPChanger.Mono.Desktop] Localhost");
+                    return;
+                }
+                Regex regex = new Regex("((^10\\.)|(^172\\.(1[6-9]|2[0-9]|3[0-1])\\.)|(^192\\.168\\.))");
+                if (regex.IsMatch(hostname) || string.IsNullOrEmpty(Main.ipAndPort))
                 {
                     AccessTools.Method("UnityEngine.Debug:Log", new Type[] { typeof(object) })?.Invoke(null, new object[] { $"[NROIPChanger.Mono.Desktop] {hostname}:{port}" });
                     Console.WriteLine($"[NROIPChanger.Mono.Desktop] {hostname}:{port}");

@@ -42,6 +42,7 @@
             btnRun = new Button();
             btnRefresh = new Button();
             cbDebugMode = new CheckBox();
+            cbForceLocalhost = new CheckBox();
             ((System.ComponentModel.ISupportInitialize)nudNewPort).BeginInit();
             SuspendLayout();
             // 
@@ -87,7 +88,7 @@
             cbProcess.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             cbProcess.DropDownStyle = ComboBoxStyle.DropDownList;
             cbProcess.FormattingEnabled = true;
-            cbProcess.Location = new Point(12, 242);
+            cbProcess.Location = new Point(12, 276);
             cbProcess.Name = "cbProcess";
             cbProcess.Size = new Size(190, 36);
             cbProcess.TabIndex = 4;
@@ -96,7 +97,7 @@
             // lbProcess
             // 
             lbProcess.AutoSize = true;
-            lbProcess.Location = new Point(6, 205);
+            lbProcess.Location = new Point(6, 239);
             lbProcess.Name = "lbProcess";
             lbProcess.Size = new Size(98, 28);
             lbProcess.TabIndex = 5;
@@ -109,7 +110,7 @@
             btnInject.Enabled = false;
             btnInject.FlatStyle = FlatStyle.Flat;
             btnInject.Font = new Font("Segoe UI", 10.2F, FontStyle.Regular, GraphicsUnit.Point, 163);
-            btnInject.Location = new Point(236, 242);
+            btnInject.Location = new Point(236, 276);
             btnInject.Name = "btnInject";
             btnInject.Size = new Size(84, 36);
             btnInject.TabIndex = 6;
@@ -122,7 +123,7 @@
             tbGamePath.AllowDrop = true;
             tbGamePath.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             tbGamePath.BorderStyle = BorderStyle.FixedSingle;
-            tbGamePath.Location = new Point(12, 321);
+            tbGamePath.Location = new Point(12, 355);
             tbGamePath.Name = "tbGamePath";
             tbGamePath.Size = new Size(192, 34);
             tbGamePath.TabIndex = 7;
@@ -133,7 +134,7 @@
             // lbGamePath
             // 
             lbGamePath.AutoSize = true;
-            lbGamePath.Location = new Point(6, 284);
+            lbGamePath.Location = new Point(6, 318);
             lbGamePath.Name = "lbGamePath";
             lbGamePath.Size = new Size(169, 28);
             lbGamePath.TabIndex = 8;
@@ -145,7 +146,7 @@
             btnBrowseGameFile.BackColor = Color.White;
             btnBrowseGameFile.FlatStyle = FlatStyle.Flat;
             btnBrowseGameFile.Font = new Font("Segoe UI", 10.2F, FontStyle.Regular, GraphicsUnit.Point, 163);
-            btnBrowseGameFile.Location = new Point(203, 321);
+            btnBrowseGameFile.Location = new Point(203, 355);
             btnBrowseGameFile.Name = "btnBrowseGameFile";
             btnBrowseGameFile.Size = new Size(34, 34);
             btnBrowseGameFile.TabIndex = 9;
@@ -160,7 +161,7 @@
             btnRun.Enabled = false;
             btnRun.FlatStyle = FlatStyle.Flat;
             btnRun.Font = new Font("Segoe UI", 10.2F, FontStyle.Regular, GraphicsUnit.Point, 163);
-            btnRun.Location = new Point(236, 321);
+            btnRun.Location = new Point(236, 355);
             btnRun.Name = "btnRun";
             btnRun.Size = new Size(84, 34);
             btnRun.TabIndex = 10;
@@ -174,7 +175,7 @@
             btnRefresh.BackColor = Color.White;
             btnRefresh.FlatStyle = FlatStyle.Flat;
             btnRefresh.Font = new Font("Segoe UI", 10.2F, FontStyle.Regular, GraphicsUnit.Point, 163);
-            btnRefresh.Location = new Point(201, 242);
+            btnRefresh.Location = new Point(201, 276);
             btnRefresh.Name = "btnRefresh";
             btnRefresh.Size = new Size(36, 36);
             btnRefresh.TabIndex = 11;
@@ -193,12 +194,24 @@
             cbDebugMode.Text = "Chế độ gỡ lỗi";
             cbDebugMode.UseVisualStyleBackColor = true;
             // 
+            // cbForceLocalhost
+            // 
+            cbForceLocalhost.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            cbForceLocalhost.CheckAlign = ContentAlignment.MiddleRight;
+            cbForceLocalhost.Location = new Point(6, 197);
+            cbForceLocalhost.Name = "cbForceLocalhost";
+            cbForceLocalhost.Size = new Size(314, 43);
+            cbForceLocalhost.TabIndex = 13;
+            cbForceLocalhost.Text = "Buộc Localhost";
+            cbForceLocalhost.UseVisualStyleBackColor = true;
+            // 
             // MainForm
             // 
             AllowDrop = true;
             AutoScaleDimensions = new SizeF(11F, 28F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(332, 373);
+            ClientSize = new Size(332, 403);
+            Controls.Add(cbForceLocalhost);
             Controls.Add(cbDebugMode);
             Controls.Add(btnRefresh);
             Controls.Add(btnRun);
@@ -215,7 +228,7 @@
             Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 163);
             Icon = (Icon)resources.GetObject("$this.Icon");
             Margin = new Padding(4);
-            MinimumSize = new Size(350, 420);
+            MinimumSize = new Size(350, 450);
             Name = "MainForm";
             Text = "NROIPChanger Desktop";
             Load += MainForm_Load;
@@ -239,5 +252,6 @@
         private Button btnRun;
         private Button btnRefresh;
         private CheckBox cbDebugMode;
+        private CheckBox cbForceLocalhost;
     }
 }

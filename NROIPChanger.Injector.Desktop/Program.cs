@@ -8,17 +8,22 @@ namespace NROIPChanger.Injector.Desktop
     {
         static int Main(string[] args)
         {
-            if (args.Length != 2 && args.Length != 3)
+            if (args.Length < 2 || args.Length > 4)
             {
-                Console.WriteLine("Usage: NROIPChanger.Injector.Desktop.exe <pid> <hostname:port> [debug]");
+                Console.WriteLine("Usage: NROIPChanger.Injector.Desktop.exe <pid> <hostname:port> [debug] [force localhost]");
                 return 1;
             }
             int processID = int.Parse(args[0]);
             string hostname = args[1];
             ushort port = ushort.Parse(hostname.Split(':')[1]);
             bool debugMode = false;
-            if (args.Length == 3)
+            bool forceLocalhost = false;
+            if (args.Length >= 3)
+            {
                 debugMode = bool.Parse(args[2]);
+                if (args.Length >= 4)
+                    forceLocalhost = bool.Parse(args[3]);
+            }
             hostname = hostname.Split(':')[0];
 
             Process process = Process.GetProcessById(processID);
@@ -34,7 +39,7 @@ namespace NROIPChanger.Injector.Desktop
                 IInjector injector = Utils.CreateInjector(process);
                 Console.WriteLine($"Scripting backend type: {injector.GetScriptingBackend()}");
                 injector.Inject();
-                injector.SetIP(hostname, port, debugMode);
+                injector.SetIP(hostname, port, debugMode, forceLocalhost);
             }
             catch (Exception ex)
             {

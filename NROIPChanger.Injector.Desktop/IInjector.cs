@@ -13,6 +13,6 @@ namespace NROIPChanger.Injector.Desktop
 
         string GetScriptingBackend();
         bool Inject();
-        bool SetIP(string hostname, ushort port, bool debugMode = false);
+        bool SetIP(string hostname, ushort port, bool debugMode = false, bool forceLocalhost = false);
     }
 }

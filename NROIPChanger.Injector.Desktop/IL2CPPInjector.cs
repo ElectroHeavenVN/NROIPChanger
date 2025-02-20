@@ -28,7 +28,7 @@ namespace NROIPChanger.Injector.Desktop
             return LoadLibrary(_process, dllPath);
         }
 
-        public bool SetIP(string hostname, ushort port, bool debugMode = false)
+        public bool SetIP(string hostname, ushort port, bool debugMode = false, bool forceLocalhost = false)
         {
             if (_process == null)
                 return false;
@@ -38,6 +38,7 @@ namespace NROIPChanger.Injector.Desktop
             pipe.Write(BitConverter.GetBytes(ip.Length), 0, sizeof(int));
             pipe.Write(Encoding.Unicode.GetBytes(ip), 0, ip.Length * sizeof(char));
             pipe.Write(BitConverter.GetBytes(debugMode), 0, sizeof(bool));
+            pipe.Write(BitConverter.GetBytes(forceLocalhost), 0, sizeof(bool));
             pipe.Flush();
             pipe.Close();
             return true;

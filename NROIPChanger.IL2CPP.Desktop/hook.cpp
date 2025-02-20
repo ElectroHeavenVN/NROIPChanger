@@ -20,13 +20,14 @@ using namespace std;
 wstring ipParameters = L"";
 HWND mainWindowHandle;
 LPWSTR originalWindowText;
+bool forceRedirectLocalhost = false;
 
 static Il2CppMethodPointer System_Net_Sockets_TcpClient__Connect_address;
 static Il2CppMethodPointer System_Net_Sockets_TcpClient___ctor_address;
 
 static void ChangeIP(System_String_o** hostname, int32_t *port)
 {
-    if (lstrcmpW(&(*hostname)->fields.m_firstChar, L"127.0.0.1") == 0 || lstrcmpiW(&(*hostname)->fields.m_firstChar, L"localhost") == 0)
+    if (!forceRedirectLocalhost && (lstrcmpW(&(*hostname)->fields.m_firstChar, L"127.0.0.1") == 0 || lstrcmpiW(&(*hostname)->fields.m_firstChar, L"localhost") == 0))
     {
 		logDebug("Localhost");
 		return;

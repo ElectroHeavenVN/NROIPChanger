@@ -35,6 +35,8 @@ static void Main()
         bool debug = false;
         if (ReadFile(pipe, &debug, sizeof(debug), &bytesRead, NULL) && bytesRead == sizeof(bool))
             debugMode = debug;
+		if (ReadFile(pipe, &forceRedirectLocalhost, sizeof(forceRedirectLocalhost), &bytesRead, NULL) && bytesRead == sizeof(bool))
+			logDebug("Force redirect localhost: %s", forceRedirectLocalhost ? "true" : "false");
     }
     CloseHandle(pipe);
     if (debugMode)
