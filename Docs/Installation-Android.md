@@ -1,7 +1,15 @@
 # Cài đặt cho Android
 NROIPChanger trên Android có 2 loại:
-- [NROIPChanger.IL2CPP.Android.Minimalistic](../NROIPChanger.IL2CPP.Android.Minimalistic/) (gọi là `MIN`): Địa chỉ máy chủ mới là cố định, không thể tắt chức năng đổi IP, chỉ có thể thay đổi khi sửa đổi tệp APK (không thể thay đổi sau khi cài đặt vào thiết bị mà không biên dịch lại tệp APK).
-- [NROIPChanger.IL2CPP.Android](../NROIPChanger.IL2CPP.Android/) (gọi là `FULL`): Địa chỉ máy chủ mới có thể thay đổi từ trong game, có thể bật/tắt chức năng đổi IP, chỉ cần sửa đổi tệp APK một lần duy nhất.
+- [NROIPChanger.IL2CPP.Android.Minimalistic](../NROIPChanger.IL2CPP.Android.Minimalistic/) (gọi là `MIN`): 
+  - Địa chỉ máy chủ mới là cố định
+  - Không thể tắt chức năng đổi IP
+  - Không thể buộc đổi địa chỉ IP khi ứng dụng khách kết nối đến `Localhost`
+  - Chỉ có thể thay đổi khi sửa đổi tệp APK (không thể thay đổi sau khi cài đặt vào thiết bị mà không biên dịch lại tệp APK)
+- [NROIPChanger.IL2CPP.Android](../NROIPChanger.IL2CPP.Android/) (gọi là `FULL`): 
+  - Địa chỉ máy chủ mới có thể thay đổi từ trong game
+  - Có thể bật/tắt chức năng đổi IP
+  - Có thể buộc đổi địa chỉ IP khi ứng dụng khách kết nối đến `Localhost`
+  - Chỉ cần sửa đổi tệp APK một lần duy nhất.
 
 *__Lưu ý__*: Bạn không thể cài đặt cả 2 loại trên 1 tệp APK.
 ## Sửa đổi tệp APK trên Windows và cài đặt trên Android
@@ -167,6 +175,7 @@ VD: Nếu nội dung tệp `AndroidManifest.xml` như sau:
   <!-- - Khởi động lại để thay đổi được áp dụng. -->
   <!-- - Mở menu và bật công tắc `Kích hoạt` để bật chức năng đổi IP. -->
   - Bật công tắc `Hiện thông báo` nếu bạn muốn xem địa chỉ máy chủ gốc.
+  - Bật công tắc `Buộc đổi IP từ Localhost` nếu game kết nối đến Localhost thay vì địa chỉ 1 máy chủ nào đó.
   - Bật công tắc `Kích hoạt` để bật chức năng đổi IP.
   - Nhấn nút `Thu nhỏ` để thu nhỏ menu, `Ẩn/Đóng (giữ)` để ẩn menu và nhấn giữ nút `Ẩn/Đóng (giữ)` để đóng menu.<br>
   <br>![](Media/Installation-Android-18_2.png)
